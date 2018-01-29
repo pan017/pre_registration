@@ -1,0 +1,11 @@
+C:\Users\panysh\source\repos\pre_registration\pre_registration\bin\Debug\netcoreapp2.0\pre_registration.deps.json
+C:\Users\panysh\source\repos\pre_registration\pre_registration\bin\Debug\netcoreapp2.0\pre_registration.runtimeconfig.json
+C:\Users\panysh\source\repos\pre_registration\pre_registration\bin\Debug\netcoreapp2.0\pre_registration.runtimeconfig.dev.json
+C:\Users\panysh\source\repos\pre_registration\pre_registration\bin\Debug\netcoreapp2.0\pre_registration.dll
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.csprojResolveAssemblyReference.cache
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.csproj.CoreCompileInputs.cache
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.AssemblyInfoInputs.cache
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.AssemblyInfo.cs
+C:\Users\panysh\source\repos\pre_registration\pre_registration\bin\Debug\netcoreapp2.0\pre_registration.pdb
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.dll
+C:\Users\panysh\source\repos\pre_registration\pre_registration\obj\Debug\netcoreapp2.0\pre_registration.pdb

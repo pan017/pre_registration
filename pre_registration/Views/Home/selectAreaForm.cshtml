@@ -1,0 +1,48 @@
+﻿<div>
+    <label>Выберите район</label>
+    <select asp-items="ViewBag.AreasList" class="selectAreaList">
+        <option disabled selected>Выберите район</option>      
+    </select>
+</div>
+<script>
+
+    $(document).ready(function () {
+        var SelectedDate = new Date(@ViewBag.SelectedDate.Year, @ViewBag.SelectedDate.Month, @ViewBag.SelectedDate.Day);
+        var SelectedArea = '@ViewBag.SelectedArea'
+        console.log(SelectedArea);
+        if (SelectedDate.getFullYear() != 1901) {
+            $('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = ViewBag.SelectedDate})' + '&areaId=' + SelectedArea );
+            showTime();
+
+        }
+        else {
+
+            //var SelectedArea = '@ViewBag.SelectedArea';
+            if (SelectedArea.length > 0)
+                showCalendar(SelectedArea);
+        }
+    });
+
+            $('.selectAreaList').change(function (e) {
+                if ($('.selectAreaList').prop('selectedIndex') != 0)
+                {
+
+                    var selectedArea = $('.selectAreaList').val();
+                    selectedArea = encodeURIComponent(selectedArea);
+                    showCalendar(selectedArea);
+                    console.log(selectedArea);
+
+                }
+    });
+            function showTime()
+            {
+                $(".selectArea").hide();
+                $('.selectTime').show();
+            }
+        function showCalendar(id)
+        {
+            $(".selectArea").hide();
+            $(".selectDate").show();
+            $('.calendar').load('@Url.Action("viewCalendar", "Cupon")?areaId=' + id)
+        }
+</script>

@@ -1,0 +1,52 @@
+﻿@model pre_registration.Models.Client
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<div>
+    <form method="post" asp-action="addRecord" asp-controller="Home">
+        <div>
+            <label asp-for="Name"></label>
+            @if (ViewBag.user != null)
+            {
+                <input asp-for="Name" value="@ViewBag.user.Result.Name" />
+            }
+            else
+            {
+                <input asp-for="Name" />
+            }
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="phone"></label>
+            @if (ViewBag.user != null)
+            {
+                <input asp-for="phone" value="@ViewBag.user.Result.PhoneNumber" />
+            }
+            else
+            {
+                <input asp-for="phone" />
+            }
+            <span asp-validation-for="phone"></span>
+        </div>
+        <div>
+            <label asp-for="email"></label>
+            @if (ViewBag.user != null)
+            {
+                <input asp-for="email" value="@ViewBag.user.Result.Email" />
+            }
+            else
+            {
+                <input asp-for="email" />
+            }
+            <span asp-validation-for="email"></span>
+        </div>
+        <div>
+            <label asp-for="comment"></label>
+            <input asp-for="comment" />
+            <span asp-validation-for="comment"></span>
+        </div>
+        <div> 
+            <div class="g-recaptcha" data-sitekey="6LdwakIUAAAAAEbnlV7nGwe2jzErM6nvjBVqGiJl"></div>
+            <input type="submit" value="Добавить"/>
+        </div>
+    </form>
+</div>

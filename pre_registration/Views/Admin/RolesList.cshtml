@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity;
+
+@model List<IdentityRole>
+
+<h2>Roles</h2>
+<div class="validation" asp-validation-summary="ModelOnly"></div>
+<table class="table">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>users</th>
+    </tr>
+    @foreach(var item in Model)
+        {
+        <tr>
+            <td>@item.Id </td>
+            <td>@item.Name</td>
+            <td>@ViewBag.UserManager.GetUsersInRole(item.Name)</td>
+        </tr>
+
+    }
+</table>

@@ -1,0 +1,34 @@
+﻿
+@model pre_registration.Models.LoginViewModel
+<div class="loginForm">
+    <h2>Вход в приложение</h2>
+    <form method="post" asp-controller="Account" asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="Login"></label><br />
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="RememberMe"></label><br />
+            <input asp-for="RememberMe" />
+        </div>
+        <div>
+            <input type="submit" value="Войти" />
+        </div>
+        <div>
+            <a class="viewTimeWithOutRegistrationButton" href="@Url.Action("continueWithOutRegistration", "Account")">Продолжить без регистрации</a> 
+        </div>
+        <div>
+            <a href="@Url.Action("Registration", "Account")">Зарегестрироваться</a>
+        </div>
+    </form>
+</div>
+<script>
+
+</script>

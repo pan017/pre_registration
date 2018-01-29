@@ -1,0 +1,144 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+
+/* ---------------------------------------------- */
+calendar {
+    background: #fff;
+    width: 100%;
+    border: solid 1px #f2f2f2;
+    float: left;
+    margin-bottom: 20px;
+}
+
+.calendar .week {
+    display: inline-block;
+    width: 100%;
+    border: solid 1px #f2f2f2;
+    margin: -1px 0 0 -1px;
+    float: left;
+}
+
+    .calendar .week a.day, .calendar .week div.day {
+        width: 14.285714285714%;
+        float: left;
+        border-right: solid 1px #f2f2f2;
+        height: 75px;
+        font-size: 20px;
+        padding: 12px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+        .calendar .week a.day.existCoupon:hover, .calendar .week a.day.existCoupon.open {
+            color: #333;
+        }
+
+            .calendar .week a.day.existCoupon:hover:before, .calendar .week a.day.existCoupon.open:before {
+                content: "";
+                height: 75px;
+                width: 3px;
+                display: inline-block;
+                background-color: #f60;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+        .calendar .week a.day.notActive {
+            color: #999;
+        }
+
+            .calendar .week a.day.notActive:hover {
+                background-color: #fbfbfb;
+            }
+
+        .calendar .week a.day:nth-child(6).notActive, .calendar .week a.day:nth-child(7).notActive {
+            color: #f1c6bf;
+        }
+
+        .calendar .week a.day .visitTimes {
+            font-size: 12px;
+            float: right;
+            margin-top: -3px;
+        }
+
+        .calendar .week a.day .couponsCount {
+            font-size: 12px;
+            color: #f60;
+            margin-top: 13px;
+        }
+
+        .calendar .week a.day.notAvailable .couponsCount, .calendar .week a.day.orderedCoupon .couponsCount {
+            color: #999;
+        }
+
+        .calendar .week a.day.notAvailable.open:before, .calendar .week a.day.notAvailable.existCoupon:hover:before, .calendar .week a.day.orderedCoupon.open:before, .calendar .week a.day.orderedCoupon.existCoupon:hover:before {
+            background-color: #999;
+        }
+
+        .calendar .week a.day.orderedCoupon .couponsCount {
+            color: #62a942;
+        }
+
+        .calendar .week a.day.orderedCoupon.open:before, .calendar .week a.day.orderedCoupon.existCoupon:hover:before {
+            background-color: #999;
+        }
+
+        .calendar .week a.day.today {
+            background: #f60;
+            color: #333;
+        }
+
+            .calendar .week a.day.today .couponsCount {
+                color: #fff;
+            }
+
+            .calendar .week a.day.today:hover {
+                background: #f60;
+            }
+
+            .calendar .week a.day.today.open:before, .calendar .week a.day.today.existCoupon:hover:before {
+                content: none;
+            }
+
+    .calendar .week.name div {
+        height: 35px;
+        font-size: 15px;
+        padding: 10px;
+        text-align: center;
+    }

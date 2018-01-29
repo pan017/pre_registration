@@ -1,0 +1,98 @@
+﻿@model List<pre_registration.Models.CuponDate>
+<div>
+    <h2>Выберите дату</h2>
+    <style type="text/css">
+        td a {
+            width: 100%;
+            height: 100%;
+            display: block;
+            padding: 5px;
+        }
+    </style>
+    <script>
+        function showTimeLink()
+        {
+            $('.selectTime').show();
+            $('.selectDate').hide();
+
+        }
+           $('.backToSelectArea').click(function () {
+            $(".selectArea").show();
+            $(".selectDate").hide();
+            $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
+         });
+        @*$(document).ready(function () {
+            $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
+        });*@
+    </script>
+    <div>
+        <a class="backToSelectArea">Вернуться к выбору района</a>
+        @{
+            DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            while (true)
+            {
+                if (currentDate.DayOfWeek != DayOfWeek.Monday)
+                {
+                    currentDate = currentDate.AddDays(-1);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        <table border="1" class="table">
+            @for (int i = 0; i < 5; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < 7; j++)
+                    {
+                        <td style="width:100px; height:100px;">
+                            @{ 
+                                int freeCupons = 0;
+                                foreach (var item in Model)
+                                {
+                                    if (currentDate.Date == item.date.Date )//&& item.date.TimeOfDay > DateTime.Now.TimeOfDay)
+                                    {
+                                        if (DateTime.Now.Date == currentDate.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
+                                        {
+                                            continue;
+
+                                        }
+
+                                        freeCupons++;
+                                    }
+
+                                }
+                            }
+                            @if (currentDate < DateTime.Now.AddDays(-1) || freeCupons == 0)
+                            {
+                                <div style="text-align:center;">
+                                    @currentDate.ToString("dd.MM")
+                                </div>
+                            }
+                            else
+                            {
+                                    <div style="text-align:center;" onclick="$('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = currentDate, areaId = ViewBag.SelectedArea})'); showTimeLink()">
+                                        @currentDate.ToString("dd.MM")
+                                    </div>
+                                    <div>
+                                        Свободных мест
+                                        @freeCupons
+                                    </div>
+
+                                
+
+                            }
+
+                        </td>
+
+                        currentDate = currentDate.AddDays(1);
+                                }
+                   
+                </tr>
+                                    }
+            
+        </table>
+    </div>
+</div>

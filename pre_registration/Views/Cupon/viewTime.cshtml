@@ -1,0 +1,36 @@
+﻿@model List<pre_registration.Models.CuponDate>
+    <script>
+        $('.backToSelectDate').click(function () {
+            $(".selectTime").hide();
+            $(".selectDate").show();
+            $('.selectDate').load('@Url.Action("returnToSelectDate", "Home")');
+        });
+        function selectCuponTime(id) {
+            $('.recordForm').load('@Url.Action("recordForm", "Home")' + '?id=' + id);
+            $(".selectTime").hide();
+            $(".selectDate").hide();
+            $('.recordForm').show();
+
+        }
+    </script>
+<div>
+    @{ 
+        int i = 1;
+    }
+    <a class="backToSelectDate">Вернуться к выбору даты</a>
+    @foreach (var item in Model)
+    {
+        if (DateTime.Now.Date == item.date.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
+        {
+            continue;
+
+        }
+        <div>
+            <div  onclick="selectCuponTime('@item.id')" class="cuponTime">@i @item.date.ToShortTimeString()</div>
+        </div>
+         
+             i++;
+          
+
+    }
+</div>

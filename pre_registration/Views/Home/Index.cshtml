@@ -1,0 +1,29 @@
+﻿@section scripts
+    {
+    <script type="text/javascript">
+
+   
+        $(document).ready(function () {
+            $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
+        });
+    </script>
+}
+
+<div>
+    
+    <h2>Запись на прием в службу "Одно окно"</h2>
+    
+    <div class="selectArea">
+    </div>
+
+    <div class="selectDate" hidden>
+        
+        <div class="calendar">
+        </div>
+    </div>
+    <div class="selectTime">
+        
+    </div>
+
+    <div class="recordForm"></div>
+</div>
