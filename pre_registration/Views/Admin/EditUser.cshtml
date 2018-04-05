@@ -1,7 +1,7 @@
-﻿@model pre_registration.Models.AddUserViewModel
+﻿@model pre_registration.Models.ViewModels.EditUserViewModel
 <h2>Edit нового пользователя</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
-<form method="post" asp-controller="Admin" asp-action="AddNewUser">
+<form method="post" asp-controller="Admin" asp-action="EditUser" asp-route-id="@ViewBag.UserId">
     <div>
         <label asp-for="Name"></label>
         <input asp-for="Name" />

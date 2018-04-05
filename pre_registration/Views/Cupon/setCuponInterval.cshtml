@@ -1,0 +1,50 @@
+﻿@model pre_registration.Models.ViewModels.SetCuponIntervalViewModel
+
+<h2>Добавление новых талонов для записи</h2>
+<div class="validation" asp-validation-summary="ModelOnly"></div>
+    <form method="post" asp-controller="Cupon" asp-action="setCuponInterval">
+
+        <label asp-for="AreaId"></label>
+        <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")'></select>
+        <div>
+            <label asp-for="beginDate"></label>
+            <input type="date" asp-for="beginDate" />
+        </div>
+        <div>
+            <label asp-for="endDate"></label>
+            <input type="date" asp-for="endDate" />
+        </div>
+
+        <div>
+            <label asp-for="interval"></label>
+            <input type="datetime" asp-for="interval" />
+        </div>
+        <div>
+            пн<input type="checkbox" asp-for="daysOfWeek[1]" />
+            вт <input type="checkbox" asp-for="daysOfWeek[2]" />
+            ср<input type="checkbox" asp-for="daysOfWeek[3]" />
+            чт <input type="checkbox" asp-for="daysOfWeek[4]" />
+            пт <input type="checkbox" asp-for="daysOfWeek[5]" />
+            сб <input type="checkbox" asp-for="daysOfWeek[6]" />
+            вс <input type="checkbox" asp-for="daysOfWeek[0]" />
+
+        </div>
+        <div>
+            <label asp-for="beginTimeHours"></label>
+            <select asp-for="beginTimeHours" asp-items='new SelectList(ViewBag.Hours)'></select>
+            :
+            <select asp-for="beginTimeMins" asp-items='new SelectList(ViewBag.Mins)'></select>
+            <label asp-for="beginTimeMins"></label>
+        </div>
+        <div>
+            <label asp-for="endTimeHours"></label>
+            <select asp-for="endTimeHours" asp-items='new SelectList(ViewBag.Hours)'></select>
+            :
+
+            <select asp-for="endTimeMins" asp-items='new SelectList(ViewBag.Mins)'></select>
+            <label asp-for="endTimeMins"></label>
+        </div>
+        <input type="submit" />
+
+    </form>
+</div>

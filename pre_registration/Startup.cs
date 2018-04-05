@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using pre_registration.Jobs;
 using pre_registration.Models;
 namespace pre_registration
 {
@@ -23,8 +24,15 @@ namespace pre_registration
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataBaseConnection")));
-            services.AddIdentity<User, IdentityRole>(option =>
+            services.AddDbContext<ApplicationContext>(
+
+                options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("DataBaseConnection"));
+                }
+            
+            );
+            services.AddIdentity<User, ApplicationRole>(option =>
             {
                 option.Password.RequireDigit = true;
                 option.Password.RequiredLength = 6;
@@ -42,11 +50,13 @@ namespace pre_registration
 
                 option.User.RequireUniqueEmail = false;
 
+                
                
             }).AddEntityFrameworkStores<ApplicationContext>();
             services.AddDistributedMemoryCache();
             services.AddSession(options => 
             options.Cookie.HttpOnly = true);
+            
             services.AddMvc();
         }
 
@@ -65,7 +75,8 @@ namespace pre_registration
             app.UseSession();
             app.UseAuthentication();
             app.UseStaticFiles();
-
+            OldEmptyCuponsScheduler.Run();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

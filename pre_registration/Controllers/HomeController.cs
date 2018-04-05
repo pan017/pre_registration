@@ -35,12 +35,18 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("Date");
             return RedirectToAction("viewCalendar", "Cupon", new { areaId = HttpContext.Session.GetInt32("Area")});
         }
+        public IActionResult returnToSelectTime()
+        {
+            //HttpContext.Session.Remove("")
+            return RedirectToAction("Home");
+        }
         public IActionResult Index()
         {
-            //db.Areas.Add(new Area(){ Email = "cen@mgaon.by", Name = "Центральный", Phone = "+375177418596" });
-            //db.Areas.Add(new Area(){ Email = "zav@mgaon.by", Name = "Заводской", Phone = "+375177418596" });
+            
+            //db.Areas.Add(new Area() { Email = "cen@mgaon.by", Name = "Центральный", Phone = "+375177418596" });
+            //db.Areas.Add(new Area() { Email = "zav@mgaon.by", Name = "Заводской", Phone = "+375177418596" });
             //db.SaveChanges();
-            //DateTime beginDate = new DateTime(2018, 1, 22, 8, 0, 0);
+            //DateTime beginDate = new DateTime(2018, 1, 30, 8, 0, 0);
             //DateTime endDate = beginDate.AddMonths(1);
             //for (int i = 0; i < 30; i++)
             //{
@@ -52,6 +58,7 @@ namespace pre_registration.Controllers
             //    }
             //    beginDate = beginDate.AddHours(14);
             //}
+            
             return View();
         }
         
@@ -77,7 +84,10 @@ namespace pre_registration.Controllers
             {
                 
                 var user =  _userManager.GetUserAsync(User);
+               
+                Client userClient = db.Clients.Where(x => x.UserId == user.Id).First();
                 ViewBag.user = user;
+               
             }
             
             HttpContext.Session.SetString("CuponId", id);
@@ -87,7 +97,6 @@ namespace pre_registration.Controllers
         public IActionResult addRecord(Client model)
         {
             string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://www.google.com");
 
@@ -98,7 +107,7 @@ namespace pre_registration.Controllers
              ("response", captchaResponse));
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
-
+            
             string verificationResponse = response.Content.
             ReadAsStringAsync().Result;
             var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
@@ -106,10 +115,24 @@ namespace pre_registration.Controllers
             {
                 
             }
-            CuponDate cuponDate = db.CuponDates.First(x => x.id == Guid.Parse(HttpContext.Session.GetString("CuponId")));
-            db.Clients.Add(model);
+            CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
+            //User user = new User { Email = model.User.Email, UserName = model.User.Email,  PhoneNumber = model.User.PhoneNumber }; //Name = model.User.Name,
+            
+            var userData = model.UserData;
+            db.UsersData.Add(userData);
             db.SaveChanges();
-            cuponDate.Client = model;
+            model.UserDataID = userData.id;
+            // Client client = new Client();
+            pre_registration.Models.Client newClient = new pre_registration.Models.Client();
+            newClient.UserDataID = userData.id;
+            newClient.Comment = model.Comment;
+            if (model.UserId != null)
+                newClient.UserId = model.UserId;
+            
+            db.Clients.Add(newClient);
+            db.SaveChanges();
+
+            cuponDate.ClientId = newClient.id;
             cuponDate.regDate = DateTime.Now;
             cuponDate.Status = "1";
             db.Entry(cuponDate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -117,6 +140,7 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("Date");
             HttpContext.Session.Remove("Area");
             HttpContext.Session.Remove("CuponId");
+            HttpContext.Session.Remove("continueWithOutRegistration");
             return View();
         }
         public IActionResult About()

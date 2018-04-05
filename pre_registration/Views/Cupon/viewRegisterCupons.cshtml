@@ -1,0 +1,28 @@
+﻿@model List<pre_registration.Models.CuponDate>
+
+<h2>viewRegisterCupons</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>date</th>
+        <th>time</th>
+        <th>date of reg</th>
+        <th>client</th>
+        <th>email</th>
+        <th>phone</th>
+        <th>coment</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.id</td>
+            <td>@item.date.Date.ToShortDateString()</td>
+            <td>@item.date.ToShortTimeString()</td>
+            <td>@item.regDate.Value.ToShortDateString()</td>
+            @*<td>@item.Client.Name</td>
+            <td>@item.Client.email</td>
+            <td>@item.Client.phone</td>*@
+            <td>@item.Client.Comment</td>
+        </tr>
+    }
+</table>

@@ -7,7 +7,7 @@ namespace pre_registration.Models
 {
     public class Denied
     {
-        public Guid id { get; set; }
+        public int id { get; set; }
         public DateTime deniedDate { get; set; }
         public virtual CuponDate CuponDate { get; set; }
         public string reason { get; set; }

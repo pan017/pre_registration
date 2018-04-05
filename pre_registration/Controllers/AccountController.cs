@@ -13,8 +13,10 @@ namespace pre_registration.Controllers
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
+        ApplicationContext db;
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, ApplicationContext context)
         {
+            db = context;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -71,13 +73,24 @@ namespace pre_registration.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                User user = new User { Email = model.Email, UserName = model.Email, Name = model.Name, PhoneNumber = model.Phone };
-                var result = await _userManager.CreateAsync(user, model.Password);
+            //   if (ModelState.IsValid)
+            //  {
+           
+            UserData userData = new UserData();
+            userData.EmailAdress = model.Email;
+            userData.FirstName = model.FirstName;
+            userData.LastName = model.LastName;
+            userData.SecondName = model.SecondName;
+            userData.Phone = model.Phone;
+            db.UsersData.Add(userData);
+            db.SaveChanges();
+            User user = new User { Email = model.Email, UserName = model.Email, PhoneNumber = model.Phone, UserDataID = userData.id }; //Name = model.Name,
+            var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    
                     await _signInManager.SignInAsync(user, false);
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -87,7 +100,7 @@ namespace pre_registration.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-            }
+          //  }
             return View(model);
         }
         public IActionResult continueWithOutRegistration()

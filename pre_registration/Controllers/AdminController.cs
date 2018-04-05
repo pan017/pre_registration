@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using pre_registration.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using pre_registration.Models.ViewModels;
 
 namespace pre_registration.Controllers
 {
@@ -13,14 +14,15 @@ namespace pre_registration.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+      //  private readonly RoleManager<IdentityRole> _roleManager;
         private ApplicationContext db;
-        public AdminController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager, ApplicationContext context)
+
+        public AdminController(UserManager<User> userManager,  SignInManager<User> signInManager, ApplicationContext context) //RoleManager<IdentityRole> roleManager,
         {
             db = context;
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
+          //  _roleManager = roleManager;
           //  _roleManager.CreateAsync(new IdentityRole("Пользователь"));
             
 
@@ -32,7 +34,7 @@ namespace pre_registration.Controllers
         [HttpGet]
         public IActionResult AddNewUser()
         {
-            ViewBag.Roles = _roleManager.Roles.ToList();
+      //      ViewBag.Roles = _roleManager.Roles.ToList();
             ViewBag.Areas = db.Areas.ToList();
             return View();
         }
@@ -44,9 +46,10 @@ namespace pre_registration.Controllers
             {
                 UsersListViewModel viewModel = new UsersListViewModel();
                 viewModel.Login = User.UserName;
-                viewModel.Id = User.Id;
-                viewModel.Name = User.Name;
-               // viewModel.Area = db.Areas.First(x => x.Id == User.AreaId).Name;
+                //viewModel.Id = User.Id;
+              //  viewModel.Name = User.Name;
+              //  viewModel.Area = User.Area.Name;
+                viewModel.Area = db.Areas.First(x => x.Id == User.AreaId).Name;
                 IList<string> a = await _userManager.GetRolesAsync(User);
                 viewModel.Role = a.FirstOrDefault();            
                 usersList.Add(viewModel);
@@ -88,11 +91,24 @@ namespace pre_registration.Controllers
             AddUserViewModel model = new AddUserViewModel();// = new AddUserViewModel({ AreaID = user.Area.Id, Login = user.UserName, Name = user.Name });
           //  model.AreaID = user.AreaId.GetValueOrDefault();
             model.Login = user.UserName;
-            model.Name = user.Name;
-        
-            ViewBag.Roles = _roleManager.Roles.ToList();
+          //  model.Name = user.Name;
+            ViewBag.UserId = id;
+      //      ViewBag.Roles = _roleManager.Roles.ToList();
             ViewBag.Areas = db.Areas.ToList();
             return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(AddUserViewModel model, string id)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+           // user.Name = model.Name;
+            user.UserName = model.Login;
+            user.PhoneNumber = model.Phone;
+            user.Area = db.Areas.First(x => x.Id == model.AreaID);
+            db.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            db.SaveChanges();
+            
+            return RedirectToAction("UsersList");
         }
         [HttpPost]
         public async Task<IActionResult> AddNewUser(AddUserViewModel model)
@@ -101,9 +117,9 @@ namespace pre_registration.Controllers
             //if (ModelState.IsValid)
             //{
                 User user = new User();
-                user.Name = model.Name;
-                user.UserName = model.Login;
-               // user.Area = db.Areas.First(x => x.Id == model.AreaID);
+              //  user.Name = model.Name;
+             //   user.UserName = model.Login;
+                user.Area = db.Areas.First(x => x.Id == model.AreaID);
                 var result = await _userManager.CreateAsync(user, model.Password);
                 //await _userManager.AddToRoleAsync(user, _roleManager.Roles.First(x => x.Id == model.RoleId).Name);
                 if (result.Succeeded)
@@ -121,7 +137,7 @@ namespace pre_registration.Controllers
                 }
                 
             //}
-            ViewBag.Roles = _roleManager.Roles.ToList();
+        //    ViewBag.Roles = _roleManager.Roles.ToList();
             ViewBag.Areas = db.Areas.ToList();
             return View(model);
         }
@@ -144,34 +160,34 @@ namespace pre_registration.Controllers
             ModelState.AddModelError(string.Empty, "Роль добавлена!");
             return RedirectToAction("UsersList");
         }
-        public ActionResult RolesList()
-        {
-            ViewBag.UserManager = _userManager;
-            return View(_roleManager.Roles.ToList());
-        }
+        //public ActionResult RolesList()
+        //{
+        //    ViewBag.UserManager = _userManager;
+        //    return View(_roleManager.Roles.ToList());
+        //}
 
         public ActionResult CreateRole()
         {
-            return View();
+            return PartialView();
         }
-        [HttpPost]
-        public async Task<ActionResult> CreateRole(string model)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(model));
-                if (result.Succeeded)
-                {
-                    ModelState.AddModelError(string.Empty, "Роль добавлена!");
-                    return RedirectToAction("RolesList");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Что-то пошло не так");
-                }
-            }
-            return View(model);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> CreateRole(string name)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //       // IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
+        //        if (result.Succeeded)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Роль добавлена!");
+        //            return RedirectToAction("RolesList");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Что-то пошло не так");
+        //        }
+        //    }
+        //    return View(name);
+        //}
 
         //public async Task<ActionResult> EditRole(string id)
         //{
@@ -206,16 +222,16 @@ namespace pre_registration.Controllers
         //    return View(model);
         //}
 
-        public async Task<ActionResult> DeleteRole(string id)
-        {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
-            {
-                IdentityResult result = await _roleManager.DeleteAsync(role);
-            }
+        //public async Task<ActionResult> DeleteRole(string id)
+        //{
+        //    //var role = await _roleManager.FindByIdAsync(id);
+        //    if (role != null)
+        //    {
+        //  //      IdentityResult result = await _roleManager.DeleteAsync(role);
+        //    }
 
-            ModelState.AddModelError(string.Empty, "Роль удалена!");
-            return RedirectToAction("RolesList");
-        }
+        //    ModelState.AddModelError(string.Empty, "Роль удалена!");
+        //    return RedirectToAction("RolesList");
+        //}
     }
 }

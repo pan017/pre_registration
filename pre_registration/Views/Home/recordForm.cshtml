@@ -1,48 +1,79 @@
 ﻿@model pre_registration.Models.Client
-
+    <script>
+        $('.backToSelectTime').click(function () {
+            $('.recordForm').hide();
+            $(".selectTime").show();
+            $('.selectTime').load('@Url.Action("returnToSelectDate", "Home")');
+        });
+    </script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <div>
+    <a class="backToSelectTime">Вернуться к выбору времени</a>
     <form method="post" asp-action="addRecord" asp-controller="Home">
         <div>
-            <label asp-for="Name"></label>
+            <label asp-for="UserData.LastName"></label>
             @if (ViewBag.user != null)
             {
-                <input asp-for="Name" value="@ViewBag.user.Result.Name" />
+                <input asp-for="UserData.LastName" value="@ViewBag.user.UserData.LastName" />
             }
             else
             {
-                <input asp-for="Name" />
+                <input asp-for="UserData.LastName" />
             }
-            <span asp-validation-for="Name"></span>
+            <span asp-validation-for="UserData.LastName"></span>
         </div>
         <div>
-            <label asp-for="phone"></label>
+            <label asp-for="UserData.FirstName"></label>
             @if (ViewBag.user != null)
             {
-                <input asp-for="phone" value="@ViewBag.user.Result.PhoneNumber" />
+                <input asp-for="UserData.FirstName" value="@ViewBag.user.UserData.FirstName" />
             }
             else
             {
-                <input asp-for="phone" />
+                <input asp-for="UserData.FirstName" />
             }
-            <span asp-validation-for="phone"></span>
+            <span asp-validation-for="UserData.FirstName"></span>
         </div>
         <div>
-            <label asp-for="email"></label>
+            <label asp-for="UserData.SecondName"></label>
             @if (ViewBag.user != null)
             {
-                <input asp-for="email" value="@ViewBag.user.Result.Email" />
+                <input asp-for="UserData.SecondName" value="@ViewBag.user.UserData.SecondName" />
             }
             else
             {
-                <input asp-for="email" />
+                <input asp-for="UserData.SecondName" />
             }
-            <span asp-validation-for="email"></span>
+            <span asp-validation-for="UserData.SecondName"></span>
         </div>
         <div>
-            <label asp-for="comment"></label>
-            <input asp-for="comment" />
-            <span asp-validation-for="comment"></span>
+            <label asp-for="UserData.Phone"></label>
+            @if (ViewBag.user != null)
+            {
+                <input asp-for="UserData.Phone" value="@ViewBag.user.Result.PhoneNumber" />
+            }
+            else
+            {
+                <input asp-for="UserData.Phone" />
+            }
+            <span asp-validation-for="UserData.Phone"></span>
+        </div>
+        <div>
+            <label asp-for="UserData.EmailAdress"></label>
+            @if (ViewBag.user != null)
+            {
+                <input asp-for="UserData.EmailAdress" value="@ViewBag.user.Result.Email" />
+            }
+            else
+            {
+                <input asp-for="UserData.EmailAdress" />
+            }
+            <span asp-validation-for="UserData.EmailAdress"></span>
+        </div>
+        <div>
+            <label asp-for="Comment"></label>
+            <input asp-for="Comment" />
+            <span asp-validation-for="Comment"></span>
         </div>
         <div> 
             <div class="g-recaptcha" data-sitekey="6LdwakIUAAAAAEbnlV7nGwe2jzErM6nvjBVqGiJl"></div>

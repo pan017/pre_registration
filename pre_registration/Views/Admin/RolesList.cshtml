@@ -8,15 +8,33 @@
     <tr>
         <th>id</th>
         <th>name</th>
-        <th>users</th>
+        @*<th>users</th>*@
     </tr>
     @foreach(var item in Model)
         {
         <tr>
             <td>@item.Id </td>
             <td>@item.Name</td>
-            <td>@ViewBag.UserManager.GetUsersInRole(item.Name)</td>
+            @*<td>@ViewBag.UserManager.GetUsersInRole(item.Name)</td>*@
         </tr>
 
     }
 </table>
+<a asp-controller="Admin" asp-action="CreateRole" class="compItem">Добавить роль</a>
+
+@section scripts
+    {
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}

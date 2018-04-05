@@ -4,22 +4,30 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pre_registration.Models
+namespace pre_registration.Models.ViewModels
 {
-    public class AddUserViewModel
+    public class EditUserViewModel
     {
         [Required]
         [Display(Name = "Логин")]
         public string Login { get; set; }
 
         [Required]
-        [Display(Name = "Пароль")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [Display(Name = "Фамилия")]
+        public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "ФИО")]
-        public string Name { get; set; }
+        [Display(Name = "Имя")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Отчетсво")]
+        public string SecondName { get; set; }
+
+
+        [Required]
+        [Display(Name = "Номер телефона")]
+        public string Phone { get; set; }
 
         [Required]
         [Display(Name = "Район")]
