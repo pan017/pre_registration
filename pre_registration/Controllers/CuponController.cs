@@ -8,25 +8,66 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using pre_registration.Models.ViewModels;
+using pre_registration.Models.DataBaseModel;
+using System.Security.Claims;
 
 namespace pre_registration.Controllers
 {
     public class CuponController : Controller
     {
         ApplicationContext db;
-        SignInManager<User> _signInManager;
+        //SignInManager<ApplicationUser> _signInManager;
+        string _currentUser;
         public IActionResult Index()
         {
             return View();
         }
-        public  CuponController (ApplicationContext context, SignInManager<User> signInManager)
+        public  CuponController (ApplicationContext context)
         {
             db = context;
-            _signInManager = signInManager;
+          //  _signInManager = signInManager;
+         //   UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
+         //   _currentUser = userResolverService.GetUser();
+      //      var a = db.Users.FirstOrDefault(x => x.Login == _currentUser).AccessLevel;
+       //     //var currentUserId = _userManager.GetUserId(User);
+        //    ViewBag.CurrentUserAccessLevel = db.Users.FirstOrDefault(x => x.Login == _currentUser).AccessLevel;
+        }
+      
+        public List<CuponDate> getFreeCupons(int areaId)
+        {
+            List<Order> orders = db.Orders.ToList();
+            List<CuponDate> allCuponList = db.CuponDates.Where(x => x.Area.Id == areaId).ToList();
+            List<CuponDate> busyCupons = new List<CuponDate>();
+
+
+            foreach (var cupon in allCuponList)
+            {
+                foreach (var order in orders)
+                {
+                    if (cupon.id == order.CuponDateId)
+                        busyCupons.Add(cupon);
+                }
+            }
+            return allCuponList.Except(busyCupons).ToList();
+
         }
         public IActionResult viewCalendar(int areaId)
-        {
-            List<CuponDate> model = db.CuponDates.Where(x => x.Area.Id == areaId && x.Status =="0").ToList();
+        { 
+       
+            //List<Order> orders = db.Orders.ToList();
+            //List<CuponDate> allCuponList =  db.CuponDates.Where(x => x.Area.Id == areaId).ToList();
+            //List<CuponDate> busyCupons = new List<CuponDate>();
+            
+
+            //    foreach (var cupon in allCuponList)
+            //    {
+            //        foreach (var order in orders)
+            //        {
+            //            if (cupon.id == order.CuponDateId)
+            //                busyCupons.Add(cupon);
+            //        }
+            //    }
+            List<CuponDate> model = getFreeCupons(areaId);//allCuponList.Except(busyCupons).ToList();
             if (areaId != 0)
                 HttpContext.Session.SetInt32("Area", areaId);
             ViewBag.SelectedArea = areaId;
@@ -49,7 +90,7 @@ namespace pre_registration.Controllers
             if (User.Identity.IsAuthenticated || continueWithOutRegistration)
             {                 
                 DateTime d = selectedDay.Date;
-                List<CuponDate> model = db.CuponDates.Where(x => x.Area.Id == areaId && x.date.Date == selectedDay.Date).ToList();
+                List<CuponDate> model = getFreeCupons(areaId).Where(x => x.date.Date == selectedDay.Date).ToList();//db.CuponDates.Where(x => x.Area.Id == areaId && x.date.Date == selectedDay.Date).ToList();
                 return PartialView(model);
             }
             else
@@ -57,20 +98,26 @@ namespace pre_registration.Controllers
                 return RedirectToAction("LoginOrContinue", "Account");
             }
         }
-        public IActionResult viewRegisterCupons(int AreaId)
+        public IActionResult viewRegisterCupons()
         {
-            var model = db.CuponDates.Include(x => x.Area).Include(x => x.Client).Where(x => x.AreaId == AreaId && x.Status == "1").ToList(); 
-            //List<CuponDate> model = db.CuponDates.Where(x => x.AreaId == AreaId && x.Status == "1").ToList();
-            //db.Entry(model).References("Clients").Load();
-            //foreach (var item in db.CuponDates.Where(x => x.AreaId == AreaId && x.Status == "1").ToList())
-            //{
-            //    //model.Add(item);
-            //    CuponDate cuponDate = item;
-            //    cuponDate.Client = db.Clients.First(x => x.id == item.ClientId);
-            //    cuponDate.Area = db.Areas.First(x => x.Id == item.AreaId);
-            //    model.Add(cuponDate);
-            //}
-            return View(model);
+            
+            List<Order> orders;
+            if (User.Identity.IsAuthenticated && User.IsInRole("superuser"))
+            {
+                var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+                orders = db.Orders.Where(x => x.CuponDate.AreaId == user.AreaId.Value).ToList();
+            }
+            else
+                orders = db.Orders.ToList();
+
+            foreach (var item in orders)
+            {
+                item.Client = db.Clients.First(x => x.id == item.ClientId);
+                item.CuponDate = db.CuponDates.First(x => x.id == item.CuponDateId);
+                item.Client.UserData = db.UsersData.First(x => x.id == item.Client.UserDataID);
+            }
+            
+            return View(orders);
             
         }
 
@@ -103,6 +150,11 @@ namespace pre_registration.Controllers
                 ViewBag.Areas = db.Areas.ToList();
                 return View(model);               
             }
+            if (User.Identity.IsAuthenticated && User.IsInRole("superuser"))
+            {
+                var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+                model.AreaId = user.AreaId.Value;
+            }
             DateTime tempDate = model.beginDate;
             while (model.endDate >= tempDate)
             {
@@ -113,7 +165,7 @@ namespace pre_registration.Controllers
                     while (tempBeginTime <= tempEndTime)
                     {
 
-                        db.CuponDates.Add(new CuponDate() { Area = db.Areas.First(), date = tempBeginTime, Status = "0" });
+                        db.CuponDates.Add(new CuponDate() { Area = db.Areas.First(x => x.Id == model.AreaId), date = tempBeginTime });
 
                         tempBeginTime= tempBeginTime.AddMinutes(model.interval);
 
@@ -122,6 +174,45 @@ namespace pre_registration.Controllers
                 tempDate = tempDate.AddDays(1);
             }
             db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult DeniedCupon(string key)
+        {
+            DeniedCupon deniedCupon = db.DeniedCupons.FirstOrDefault(x => x.DeniedKey == key);
+            if (deniedCupon != null)
+            {
+                Order order = db.Orders.FirstOrDefault(x => x.id == deniedCupon.OrderId);
+                db.Orders.Remove(order);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("MyCupons", "Cupon");
+        }
+
+        public ActionResult MyCupons()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+                List<MyCuponsViewModel> model = new List<MyCuponsViewModel>();
+                var orderList = db.Orders.Where(x => x.Client.UserId == user.Id).ToList();
+                foreach (var item in orderList)
+                {
+                    item.Client = db.Clients.First(x => x.id == item.ClientId);
+                    item.CuponDate = db.CuponDates.First(x => x.id == item.CuponDateId);
+                    MyCuponsViewModel modelItem = new MyCuponsViewModel();
+                    modelItem.id = item.id;
+                    modelItem.orderDate = item.OrderDate.ToShortDateString();
+                    modelItem.cuponDate = item.CuponDate.date.ToShortDateString();
+                    modelItem.cuponTime = item.CuponDate.date.ToShortTimeString();
+                    modelItem.Coment = item.Comment;
+                    modelItem.DeniedKey = db.DeniedCupons.FirstOrDefault(x => x.OrderId == item.id).DeniedKey;
+                    model.Add(modelItem);
+                  //  item.Client.UserData = db.UsersData.First(x => x.id == item.Client.UserDataID);
+                }
+                return View(model);
+            }
             return RedirectToAction("Index", "Home");
         }
     }

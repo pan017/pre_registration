@@ -1,23 +1,46 @@
 ﻿@model pre_registration.Models.Area
+<div>
 
-<form method="post" asp-controller="Admin" asp-action="AddArea">
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="Phone"></label>
-        <input asp-for="Phone" />
-        <span asp-validation-for="Phone"></span>
-    </div>
-    <div>
-        <input type="submit" value="Добавить" />
-    </div>
-</form>
+    <h2>Новый район</h2>
 
+    <form method="post" asp-controller="Admin" asp-action="AddArea">
+        <div>
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="NotificationEmail"></label><br />
+            <input asp-for="NotificationEmail" />
+            <span asp-validation-for="NotificationEmail"></span>
+        </div>
+        <div>
+            <label asp-for="Phone"></label><br />
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+        <div>
+            <label asp-for="website"></label><br />
+            <input asp-for="website" />
+            <span asp-validation-for="website"></span>
+        </div>
+        <div>
+            <label asp-for="WorkTime"></label><br />
+            <input asp-for="WorkTime" />
+            <span asp-validation-for="WorkTime"></span>
+        </div>
+        <div>
+            <label asp-for="Adres"></label><br />
+            <input asp-for="Adres" />
+            <span asp-validation-for="Adres"></span>
+        </div>
+        <div>
+            <label asp-for="email"></label><br />
+            <input asp-for="email" />
+            <span asp-validation-for="email"></span>
+        </div>
+        <div>
+            <input type="submit" value="Добавить" />
+        </div>
+    </form>
+</div>

@@ -11,18 +11,30 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
+using pre_registration.Models.DataBaseModel;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using pre_registration.Services;
 
 namespace pre_registration.Controllers
 {
     public class HomeController : Controller
     {
         ApplicationContext db;
-        private UserManager<User> _userManager;
-        public HomeController(ApplicationContext context, UserManager<User> userManager)
+       // private UserManager<ApplicationUser> _userManager;
+        string _currentUser;
+        public HomeController(ApplicationContext context, IHttpContextAccessor httpContextAccessor)
         {
-            _userManager = userManager;
-            db = context;   
-            
+            //_userManager = userManager;
+            db = context;
+           
+            UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
+            _currentUser = userResolverService.GetUser();
+          //  var a = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
+            //var currentUserId = _userManager.GetUserId(User);
+          //  HttpContext.Session.SetInt32("userAccessLevel", db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel);
+          //  ViewBag.CurrentUserAccessLevel = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
+           
         }
 
         public IActionResult returnToSelectArea()
@@ -37,12 +49,38 @@ namespace pre_registration.Controllers
         }
         public IActionResult returnToSelectTime()
         {
-            //HttpContext.Session.Remove("")
-            return RedirectToAction("Home");
+            HttpContext.Session.Remove("CuponId");
+            return RedirectToAction("viewTime", "Cupon", new { selectedDay = DateTime.Parse(HttpContext.Session.GetString("Date")), areaId = HttpContext.Session.GetInt32("Area") });
+        }
+        public Area getSessionArea()
+        {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetInt32("Area").ToString()))
+                return new Area();
+            else
+                return db.Areas.FirstOrDefault(x => x.Id == HttpContext.Session.GetInt32("Area")); 
+        }
+        public string getSelectedDate()
+        {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetInt32("Area").ToString()))
+                return "";
+            else
+                return HttpContext.Session.GetString("Date");
+        }
+        public CuponDate GetSelectedCupon()
+        {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("CuponId")))
+                return new CuponDate();
+            else
+                return db.CuponDates.FirstOrDefault(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
         }
         public IActionResult Index()
         {
-            
+        
+            //var a = _userManager.GetUsersInRoleAsync("ПОЛЬЗОВАТЕЛЬ");
+            //var b = _userManager.Users;
+            //  var c = _roleManager.Roles;
+            //      IConfigurationSection connStrings = Configuration.GetSection("ConnectionStrings");
+
             //db.Areas.Add(new Area() { Email = "cen@mgaon.by", Name = "Центральный", Phone = "+375177418596" });
             //db.Areas.Add(new Area() { Email = "zav@mgaon.by", Name = "Заводской", Phone = "+375177418596" });
             //db.SaveChanges();
@@ -58,7 +96,7 @@ namespace pre_registration.Controllers
             //    }
             //    beginDate = beginDate.AddHours(14);
             //}
-            
+
             return View();
         }
         
@@ -70,90 +108,137 @@ namespace pre_registration.Controllers
         public IActionResult selectAreaForm()
         {
             List<Area> AreasList = db.Areas.ToList();
+
             ViewBag.SelectedArea = HttpContext.Session.GetInt32("Area");
             DateTime selectedDate = new DateTime();
             DateTime.TryParse(HttpContext.Session.GetString("Date"), out selectedDate);
             ViewBag.selectedDate = selectedDate;
             SelectList areasSelectList = new SelectList(AreasList, "Id", "Name");
-            ViewBag.AreasList = areasSelectList;
-             return PartialView();
+            ViewBag.AreasList = db.Areas.ToList(); //areasSelectList;
+            
+            return PartialView();
         }
         public IActionResult recordForm(string id)
         {
             if (User.Identity.IsAuthenticated)
             {
+
+                int userId = 1;//int.Parse(_userManager.GetUserId(User));
+                var userDataId = db.Users.Where(x => x.Id == userId).First().UserDataID;
+                var userData = db.UsersData.Where(x => x.id == userDataId).First();
+                Client userClient = new Client();
+                userClient.UserData = userData;
                 
-                var user =  _userManager.GetUserAsync(User);
-               
-                Client userClient = db.Clients.Where(x => x.UserId == user.Id).First();
-                ViewBag.user = user;
-               
+
+
+                Order order = new Order();
+                order.Client = userClient;
+                order.CuponDate = db.CuponDates.First(x => x.id == int.Parse(id));
+                ViewBag.order = order;
             }
             
             HttpContext.Session.SetString("CuponId", id);
             return PartialView();
         }
         [HttpPost]
-        public IActionResult addRecord(Client model)
+        public IActionResult addRecord(Order model)
         {
-            string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://www.google.com");
+            //string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri("https://www.google.com");
 
-            var values = new List<KeyValuePair<string, string>>();
-            values.Add(new KeyValuePair<string, string>
-            ("secret", "6LdwakIUAAAAAFnZmf_drdtNojJPIeNSSRH32krI"));
-            values.Add(new KeyValuePair<string, string>
-             ("response", captchaResponse));
-            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
-            
-            string verificationResponse = response.Content.
-            ReadAsStringAsync().Result;
-            var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
-            if (!res.Success)
-            {
-                
-            }
+            //var values = new List<KeyValuePair<string, string>>();
+            //values.Add(new KeyValuePair<string, string>
+            //("secret", "6LdwakIUAAAAAFnZmf_drdtNojJPIeNSSRH32krI"));
+            //values.Add(new KeyValuePair<string, string>
+            // ("response", captchaResponse));
+            //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            //HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
+
+            //string verificationResponse = response.Content.
+            //ReadAsStringAsync().Result;
+            //var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
+            //if (!res.Success)
+            //{
+
+            //}
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
-            //User user = new User { Email = model.User.Email, UserName = model.User.Email,  PhoneNumber = model.User.PhoneNumber }; //Name = model.User.Name,
-            
-            var userData = model.UserData;
-            db.UsersData.Add(userData);
-            db.SaveChanges();
-            model.UserDataID = userData.id;
-            // Client client = new Client();
-            pre_registration.Models.Client newClient = new pre_registration.Models.Client();
-            newClient.UserDataID = userData.id;
-            newClient.Comment = model.Comment;
-            if (model.UserId != null)
-                newClient.UserId = model.UserId;
-            
-            db.Clients.Add(newClient);
-            db.SaveChanges();
+            Order newOrder = new Order();
 
-            cuponDate.ClientId = newClient.id;
-            cuponDate.regDate = DateTime.Now;
-            cuponDate.Status = "1";
-            db.Entry(cuponDate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            newOrder.CuponDateId = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId"))).id;
+            newOrder.OrderDate = DateTime.Now;
+            newOrder.Comment = model.Comment;
+            if (User.Identity.IsAuthenticated)
+            {
+                int userId = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name).Id;
+                Client userClient = db.Clients.Where(x => x.User.Id == userId).FirstOrDefault();
+
+                if (userClient == null)
+                {
+                    Client newClient = new Client();
+                    newClient.UserId = userId;
+                    newClient.UserDataID = db.Users.First(x => x.Id == userId).UserDataID;
+                    db.Clients.Add(newClient);
+                    db.SaveChanges();
+                    userClient = newClient;
+                }
+                newOrder.ClientId = userClient.id;
+            }
+            else
+            {
+                var userData = model.Client.UserData;
+                db.UsersData.Add(userData);
+                db.SaveChanges();
+                pre_registration.Models.Client newClient = new pre_registration.Models.Client();
+                newClient.UserDataID = userData.id;
+                db.Clients.Add(newClient);
+                db.SaveChanges();
+                newOrder.ClientId = newClient.id;
+
+
+            }
+            newOrder.Client = db.Clients.FirstOrDefault(x => x.id == newOrder.ClientId);
+            newOrder.Client.UserData = db.UsersData.FirstOrDefault(x => x.id == newOrder.Client.UserDataID);
+            newOrder.CuponDate = db.CuponDates.FirstOrDefault(x => x.id == newOrder.CuponDateId);
+            newOrder.CuponDate.Area = db.Areas.FirstOrDefault(x => x.Id == newOrder.CuponDate.AreaId);
+            db.Orders.Add(newOrder);
             db.SaveChanges();
+            DeniedCupon deniedCupon = new DeniedCupon(newOrder.id, Helpers.ConvertStringtoMD5(Guid.NewGuid().ToString()));
+            db.DeniedCupons.Add(deniedCupon);
+            db.SaveChanges();
+            
+            string s = String.Format("<a href='{0}/Cupon/DeniedCupon?key={1}>Отменить</a>", Request.Host.Value, deniedCupon.DeniedKey);
             HttpContext.Session.Remove("Date");
             HttpContext.Session.Remove("Area");
             HttpContext.Session.Remove("CuponId");
             HttpContext.Session.Remove("continueWithOutRegistration");
-            return View();
-        }
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
 
-            return View();
-        }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+            string messageBody = String.Format("<html><body><br><img src='http://www.cyberforum.ru/images/cyberforum_logo.jpg\' alt='Super Game!'>" +
+                " <br>Вы получили это письмо, потому что вы зарегистрировались на http://www.supergame.ru или сменили e-mail в профиле. <br>{4}<br>{5}    <br>{6} <br>{7} " +
+                "<br>Код активации:       {3}<br><br>Мы будем рады видеть Вас на нашем сайте и желаем Вам приятой игры!" +
+                "</body></html>",
+                
+                newOrder.Client.UserData.FirstName,
+                 newOrder.Client.UserData.SecondName,
+                 newOrder.Client.UserData.LastName,
 
+                 String.Format("http://{0}/Cupon/DeniedCupon?key={1}", Request.Host.Value, deniedCupon.DeniedKey),
+                  newOrder.CuponDate.date.ToShortDateString(),
+                newOrder.CuponDate.date.ToShortTimeString(),
+                newOrder.CuponDate.Area.Adres,
+                newOrder.CuponDate.Area.Phone
+                );
+            EmailService emailService = new EmailService();
+            
+            emailService.SendMail(newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", messageBody);
+
+            //String.Format("<h2>Благодарим за запись</h2> Дата: {0} Время:{1} Адрес: {2} Телефон: {3} Отмена записи: {4} ",
+            //    newOrder.CuponDate.date.ToShortDateString(),
+            //    newOrder.CuponDate.date.ToShortTimeString(),
+            //    newOrder.CuponDate.Area.Adres,
+            //    newOrder.CuponDate.Area.Phone,
+            //    String.Format("<a href='{0}/Cupon/DeniedCupon?key={1}>Отменить</a>", Request.Host.Value, deniedCupon.DeniedKey))
             return View();
         }
 

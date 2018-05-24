@@ -11,7 +11,7 @@ namespace pre_registration.Models
         public DateTime deniedDate { get; set; }
         public virtual CuponDate CuponDate { get; set; }
         public string reason { get; set; }
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
     }
 }

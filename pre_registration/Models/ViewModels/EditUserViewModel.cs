@@ -9,7 +9,8 @@ namespace pre_registration.Models.ViewModels
     public class EditUserViewModel
     {
         [Required]
-        [Display(Name = "Логин")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "E-mail")]
         public string Login { get; set; }
 
         [Required]
@@ -29,12 +30,11 @@ namespace pre_registration.Models.ViewModels
         [Display(Name = "Номер телефона")]
         public string Phone { get; set; }
 
-        [Required]
         [Display(Name = "Район")]
         public int AreaID { get; set; }
 
-        [Required]
+
         [Display(Name = "Роль")]
-        public string RoleId { get; set; }
+        public int RoleId { get; set; }
     }
 }

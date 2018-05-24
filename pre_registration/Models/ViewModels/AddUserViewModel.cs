@@ -13,6 +13,10 @@ namespace pre_registration.Models.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-
+        [Required]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Подтвердить пароль")]
+        public string PasswordConfirm { get; set; }
     }
 }

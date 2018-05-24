@@ -3,27 +3,44 @@
 <h2>Регистрация нового пользователя</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
     <form method="post" asp-controller="Admin" asp-action="AddNewUser">
+
         <div>
-            <label asp-for="Name"></label>
-            <input asp-for="Name" />
-            <span asp-validation-for="Name"></span>
-        </div>
-        <div>
-            <label asp-for="Login"></label>
+            <label asp-for="Login"></label><br />
             <input asp-for="Login" />
             <span asp-validation-for="Login"></span>
         </div>
         <div>
-            <label asp-for="Password"></label>
+            <label asp-for="FirstName"></label><br />
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div>
+            <label asp-for="LastName"></label><br />
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div>
+            <label asp-for="SecondName"></label><br />
+            <input asp-for="SecondName" />
+            <span asp-validation-for="SecondName"></span>
+        </div>
+        <div>
+            <label asp-for="Phone"></label><br />
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password"></label><br />
             <input asp-for="Password" />
             <span asp-validation-for="Password"></span>
         </div>
         <div>
-            <label asp-for="RoleId"></label>
+            <label asp-for="RoleId"></label><br />
             <select asp-for="RoleId" asp-items='new SelectList(ViewBag.Roles, "Id", "Name")'></select>
         </div>
         <div>
-            <label asp-for="AreaID"></label>
+            <label asp-for="AreaID"></label><br />
             <select asp-for="AreaID" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")'></select>
         </div>
         <div>

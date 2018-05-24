@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-
+using pre_registration.Models.DataBaseModel;
 namespace pre_registration.Jobs
 {
     public class RemoveOldEmptyCupons : IJob
@@ -21,8 +21,20 @@ namespace pre_registration.Jobs
                 .UseSqlServer(connectionString)
                 .Options;
             using (ApplicationContext db = new ApplicationContext(options))
-            {            
-                var oldItems = db.CuponDates.Where(x => x.date < DateTime.Now && x.Status == "0" && x.regDate == null && x.ClientId == null).ToList();
+            {
+                List<Order> orders = db.Orders.ToList();
+                List<CuponDate> allCuponList = db.CuponDates.Where(x => x.date < DateTime.Now).ToList();
+                List<CuponDate> busyCupons = new List<CuponDate>();
+
+                foreach (var cupon in allCuponList)
+                {
+                    foreach (var order in orders)
+                    {
+                        if (cupon.id == order.CuponDateId)
+                            busyCupons.Add(cupon);
+                    }
+                }
+                List<CuponDate> oldItems = allCuponList.Except(busyCupons).ToList();                
                 foreach (var item in oldItems)
                 {
                     db.CuponDates.Remove(item);

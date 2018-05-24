@@ -20,109 +20,38 @@ namespace pre_registration.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("pre_registration.Models.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClaimType");
+                    b.Property<int?>("AreaId");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("Login");
 
-                    b.Property<int>("RoleId");
+                    b.Property<string>("Password");
+
+                    b.Property<int?>("RoleId");
+
+                    b.Property<int>("UserDataID");
+
+                    b.Property<int?>("UserSettingsId");
+
+                    b.Property<string>("confirmKey");
+
+                    b.Property<bool>("confirmedEmail");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
-                });
+                    b.HasIndex("UserDataID");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.HasIndex("UserSettingsId");
 
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("pre_registration.Models.ApplicationRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("pre_registration.Models.Area", b =>
@@ -130,13 +59,25 @@ namespace pre_registration.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Adres")
                         .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<string>("NotificationEmail")
+                        .IsRequired();
+
                     b.Property<string>("Phone")
+                        .IsRequired();
+
+                    b.Property<string>("WorkTime")
+                        .IsRequired();
+
+                    b.Property<string>("email")
+                        .IsRequired();
+
+                    b.Property<string>("website")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -149,9 +90,7 @@ namespace pre_registration.Migrations
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Comment");
-
-                    b.Property<int?>("UserDataID");
+                    b.Property<int>("UserDataID");
 
                     b.Property<int?>("UserId");
 
@@ -171,21 +110,77 @@ namespace pre_registration.Migrations
 
                     b.Property<int>("AreaId");
 
-                    b.Property<int?>("ClientId");
-
-                    b.Property<string>("Status");
-
                     b.Property<DateTime>("date");
-
-                    b.Property<DateTime?>("regDate");
 
                     b.HasKey("id");
 
                     b.HasIndex("AreaId");
 
+                    b.ToTable("CuponDates");
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.ApplicationRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.DeniedCupon", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DeniedKey");
+
+                    b.Property<int>("OrderId");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("DeniedCupons");
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.Order", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClientId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<int>("CuponDateId");
+
+                    b.Property<DateTime>("OrderDate");
+
+                    b.HasKey("id");
+
                     b.HasIndex("ClientId");
 
-                    b.ToTable("CuponDates");
+                    b.HasIndex("CuponDateId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.UserSettings", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("SendEmail");
+
+                    b.Property<bool>("SendReminder");
+
+                    b.HasKey("id");
+
+                    b.ToTable("UserSettings");
                 });
 
             modelBuilder.Entity("pre_registration.Models.Denied", b =>
@@ -210,137 +205,59 @@ namespace pre_registration.Migrations
                     b.ToTable("Denied");
                 });
 
-            modelBuilder.Entity("pre_registration.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<int?>("AreaId");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<int>("UserDataID");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("UserDataID");
-
-                    b.ToTable("AspNetUsers");
-                });
-
             modelBuilder.Entity("pre_registration.Models.UserData", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("EmailAdress");
+                    b.Property<string>("EmailAdress")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
-                    b.Property<string>("SecondName");
+                    b.Property<string>("SecondName")
+                        .IsRequired();
 
                     b.HasKey("id");
 
                     b.ToTable("UsersData");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("pre_registration.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("pre_registration.Models.ApplicationRole")
+                    b.HasOne("pre_registration.Models.Area", "Area")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                        .HasForeignKey("AreaId");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.HasOne("pre_registration.Models.User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                    b.HasOne("pre_registration.Models.DataBaseModel.ApplicationRole", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.HasOne("pre_registration.Models.User")
+                    b.HasOne("pre_registration.Models.UserData", "UserData")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.HasOne("pre_registration.Models.ApplicationRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("UserDataID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("pre_registration.Models.User")
+                    b.HasOne("pre_registration.Models.DataBaseModel.UserSettings", "UserSettings")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.HasOne("pre_registration.Models.User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserSettingsId");
                 });
 
             modelBuilder.Entity("pre_registration.Models.Client", b =>
                 {
                     b.HasOne("pre_registration.Models.UserData", "UserData")
                         .WithMany()
-                        .HasForeignKey("UserDataID");
+                        .HasForeignKey("UserDataID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("pre_registration.Models.User", "User")
+                    b.HasOne("pre_registration.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
@@ -351,10 +268,27 @@ namespace pre_registration.Migrations
                         .WithMany()
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.DeniedCupon", b =>
+                {
+                    b.HasOne("pre_registration.Models.DataBaseModel.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.Order", b =>
+                {
                     b.HasOne("pre_registration.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("pre_registration.Models.CuponDate", "CuponDate")
+                        .WithMany()
+                        .HasForeignKey("CuponDateId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("pre_registration.Models.Denied", b =>
@@ -363,21 +297,9 @@ namespace pre_registration.Migrations
                         .WithMany()
                         .HasForeignKey("CuponDateid");
 
-                    b.HasOne("pre_registration.Models.User", "User")
+                    b.HasOne("pre_registration.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("pre_registration.Models.User", b =>
-                {
-                    b.HasOne("pre_registration.Models.Area", "Area")
-                        .WithMany()
-                        .HasForeignKey("AreaId");
-
-                    b.HasOne("pre_registration.Models.UserData", "UserData")
-                        .WithMany()
-                        .HasForeignKey("UserDataID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

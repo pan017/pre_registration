@@ -1,11 +1,15 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Администрирование";
 }
 
 <h2>Index</h2>
-<a asp-area="" asp-controller="Admin" asp-action="AddArea">AddArea</a><br />
-<a asp-area="" asp-controller="Admin" asp-action="AddNewUser">AddNewUser</a><br />
+<input type="button" class="newButton" onclick="location.href='@Url.Action("AddArea", "Admin")'" value="Добавить район"/><br /><br />
+<input type="button" class="newButton" onclick="location.href='@Url.Action("AddNewUser", "Admin")'" value="Добавить пользователя" /><br /><br />
+<input type="button" class="newButton" onclick="location.href='@Url.Action("RolesList", "Admin")'" value="Роли пользователей" /><br /><br />
+<input type="button" class="newButton" onclick="location.href='@Url.Action("UsersList", "Admin")'" value="Список пользователей" /><br /><br />
+<input type="button" class="newButton" onclick="location.href='@Url.Action("viewRegisterCupons", "Cupon")'" value="Зарегистрированные купоны" /><br /><br />
+@*<a asp-area="" asp-controller="Admin" asp-action="AddNewUser">AddNewUser</a><br />
 <a asp-area="" asp-controller="Admin" asp-action="RolesList">RolesList</a><br />
 <a asp-area="" asp-controller="Admin" asp-action="UsersList">UsersList</a><br />
-<a asp-area="" asp-controller="Cupon" asp-action="viewRegisterCupons" asp-route-AreaId="1">UsersList</a><br />
+<a asp-area="" asp-controller="Cupon" asp-action="viewRegisterCupons" asp-route-AreaId="1">UsersList</a><br />*@

@@ -1,0 +1,49 @@
+﻿@model pre_registration.Models.ViewModels.AddUserViewModel
+
+<h2>Регистрация нового пользователя</h2>
+<div class="validation" asp-validation-summary="ModelOnly"></div>
+    <form method="post" asp-controller="Admin" asp-action="AddNewUser">
+
+        <div>
+            <label asp-for="Login"></label>
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div>
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div>
+            <label asp-for="SecondName"></label>
+            <input asp-for="SecondName" />
+            <span asp-validation-for="SecondName"></span>
+        </div>
+        <div>
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="RoleId"></label>
+            <select asp-for="RoleId" asp-items='new SelectList(ViewBag.Roles, "Id", "Name")'></select>
+        </div>
+        <div>
+            <label asp-for="AreaID"></label>
+            <select asp-for="AreaID" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")'></select>
+        </div>
+        <div>
+            <input type="submit" value="Регистрация" />
+        </div>
+    </form>

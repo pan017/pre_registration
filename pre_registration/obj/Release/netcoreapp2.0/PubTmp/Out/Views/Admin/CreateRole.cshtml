@@ -1,0 +1,18 @@
+﻿@model string
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+        <h4>Создать роль</h4>
+    </div>
+    <div class="modal-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form asp-action="CreateRole" asp-controller="Admin" method="post">
+            <div class="form-group">
+                <label for="name">Новая роль</label>
+                <input name="name" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+        </div>
+</div>

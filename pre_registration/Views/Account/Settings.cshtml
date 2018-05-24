@@ -1,0 +1,39 @@
+﻿@model pre_registration.Models.ViewModels.SettingsViewModel
+<h2>Редактировать пользователя @Model.Login</h2>
+<div class="validation" asp-validation-summary="ModelOnly"></div>
+<form method="post" asp-controller="Account" asp-action="Settings">
+    <input asp-for="id" hidden />
+    <div>
+        <label asp-for="FirstName"></label><br />
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div>
+        <label asp-for="LastName"></label><br />
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="SecondName"></label><br />
+        <input asp-for="SecondName" />
+        <span asp-validation-for="SecondName"></span>
+    </div>
+    <div>
+        <label asp-for="Phone"></label><br />
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone"></span>
+    </div>
+    <div>
+        <label asp-for="SendEmail"></label>
+        <input asp-for="SendEmail" />
+    </div>
+    <div>
+        <label asp-for="SendReminder"></label>
+        <input asp-for="SendReminder" />
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>
+<a asp-area="" asp-controller="Account" asp-action="ChangePassword">Изменить пароль</a>
+

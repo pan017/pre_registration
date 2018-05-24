@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using pre_registration.Jobs;
 using pre_registration.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+
 namespace pre_registration
 {
     public class Startup
@@ -29,34 +32,25 @@ namespace pre_registration
                 options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("DataBaseConnection"));
+                    
                 }
             
             );
-            services.AddIdentity<User, ApplicationRole>(option =>
-            {
-                option.Password.RequireDigit = true;
-                option.Password.RequiredLength = 6;
-                option.Password.RequireNonAlphanumeric = false;
-                option.Password.RequireUppercase = false;
-                option.Password.RequireLowercase = false;
-                option.Password.RequiredUniqueChars = 2;
-
-                option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
-                option.Lockout.MaxFailedAccessAttempts = 5;
-                option.Lockout.AllowedForNewUsers = false;
-
-                option.SignIn.RequireConfirmedEmail = false;
-                option.SignIn.RequireConfirmedPhoneNumber = false;
-
-                option.User.RequireUniqueEmail = false;
-
-                
-               
-            }).AddEntityFrameworkStores<ApplicationContext>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
+            //services.AddScoped<RoleManager<ApplicationRole>>();
+        
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDistributedMemoryCache();
+
             services.AddSession(options => 
             options.Cookie.HttpOnly = true);
-            
+
+
+
             services.AddMvc();
         }
 
@@ -67,14 +61,17 @@ namespace pre_registration
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();
-            app.UseStaticFiles();
+         //   dbInitializer.Initialize();
+           
             OldEmptyCuponsScheduler.Run();
             
             app.UseMvc(routes =>

@@ -1,0 +1,30 @@
+﻿@model List<pre_registration.Models.ViewModels.MyCuponsViewModel>
+
+<h2>Мои талоны</h2>
+<table class="table ">
+    <tr>
+        <th style="text-align:center">Дата записи</th>
+        <th style="text-align:center">Дата талона</th>
+        <th style="text-align:center">Время талона</th>
+        <th style="text-align:center">Коментарий</th>
+        <th style="text-align:center"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+
+            <td>@item.orderDate</td>
+            <td>@item.cuponDate</td>
+            <td>@item.cuponTime</td>
+            <td>@item.Coment</td>
+            <td>
+                @if (DateTime.Parse(item.cuponDate) > DateTime.Now)
+                {
+                    <a class="cancelButton" asp-action="DeniedCupon" asp-controller="Cupon" asp-route-key="@item.DeniedKey">Отменить</a>
+
+                }
+            </td>
+        </tr>
+    }
+</table>
