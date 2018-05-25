@@ -25,5 +25,6 @@ namespace pre_registration.Services
     {
         public string Login { get; set; }
         public string Password { get; set; }
+        public string DisplayngName { get; set; }
     }
 }

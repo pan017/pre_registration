@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using pre_registration.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using pre_registration.Services;
+using Microsoft.Extensions.Options;
 
 namespace pre_registration.Controllers
 {
@@ -20,10 +21,11 @@ namespace pre_registration.Controllers
        // private readonly SignInManager<ApplicationUser> _signInManager;
         //private readonly UserManager<ApplicationUser> _userManager;
         ApplicationContext db;
-
-        public AccountController(ApplicationContext context)
+        private IOptions<AppConfig> config;
+        public AccountController(ApplicationContext context, IOptions<AppConfig> config)
         {
             db = context;
+            this.config = config;
         }
         public IActionResult Login(string returnUrl = null)
         {
@@ -97,8 +99,8 @@ namespace pre_registration.Controllers
                 "Account", 
                 new { userId = user.Id, code = user.confirmKey }, 
                 protocol: HttpContext.Request.Scheme);
-                EmailService emailService = new EmailService();
-                emailService.SendMail(user.Login, "Подтверждение электронной почты",
+               // EmailService emailService = new EmailService();
+                EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Подтверждение электронной почты",
                     $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
                 return RedirectToAction("Index", "Home");
 
@@ -114,9 +116,11 @@ namespace pre_registration.Controllers
         public async Task<IActionResult> ConfirmEmail( int userId, string code)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == userId && x.confirmKey == code);
+            user.Role = db.Roles.FirstOrDefault(x => x.Id == user.RoleId);
             user.confirmedEmail = true;
+            db.SaveChanges();
             await Authenticate(user);
-            return View();
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult continueWithOutRegistration()
         {

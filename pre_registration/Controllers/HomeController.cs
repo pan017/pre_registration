@@ -23,15 +23,15 @@ namespace pre_registration.Controllers
     public class HomeController : Controller
     {
         ApplicationContext db;
-        string _currentUser;
+        //string _currentUser;
 
         private readonly IOptions<AppConfig> config;
-        public HomeController(ApplicationContext context, IHttpContextAccessor httpContextAccessor, IOptions<AppConfig> config)//, IOptions<NotificationEmailModel> config)
+        public HomeController(ApplicationContext context, IOptions<AppConfig> config)
         {
             db = context;
             this.config = config;
-            UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
-            _currentUser = userResolverService.GetUser();
+            //UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
+          //  _currentUser = userResolverService.GetUser();
           //  var a = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
             //var currentUserId = _userManager.GetUserId(User);
           //  HttpContext.Session.SetInt32("userAccessLevel", db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel);
@@ -237,9 +237,9 @@ namespace pre_registration.Controllers
                 newOrder.CuponDate.Area.Adres,
                 newOrder.CuponDate.Area.Phone
                 );
-            EmailService emailService = new EmailService();
-            
-            emailService.SendMail(newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", messageBody);
+          //  EmailService emailService = new EmailService();
+
+            EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", messageBody);
 
             //String.Format("<h2>Благодарим за запись</h2> Дата: {0} Время:{1} Адрес: {2} Телефон: {3} Отмена записи: {4} ",
             //    newOrder.CuponDate.date.ToShortDateString(),

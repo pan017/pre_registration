@@ -29,14 +29,14 @@ namespace pre_registration.Services
             }
 
         }
-        public void SendMail(string email, string subject, string message)
+        public static void SendMail(NotificationEmail fromMail, string toMail, string subject, string message)
         {
             try
             {
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("webmail.active.by", 25);
-                MailAddress from = new MailAddress("ilya.panysh@mgaon.by", "ilya.panysh@mgaon.by");
+                MailAddress from = new MailAddress(fromMail.Login, fromMail.DisplayngName);
                 // кому отправляем
-                MailAddress to = new MailAddress(email);
+                MailAddress to = new MailAddress(toMail);
                 // создаем объект сообщения
                 MailMessage mailMessage = new MailMessage(from, to);
                 // тема письма
@@ -45,7 +45,7 @@ namespace pre_registration.Services
 
                 mailMessage.Body = message;
 
-                client.Credentials = new NetworkCredential("ilya.panysh@mgaon.by", "7632bxr29ZX6");
+                client.Credentials = new NetworkCredential(fromMail.Login, fromMail.Password);
                 client.EnableSsl = true;
                 client.Timeout = 30000;
 
