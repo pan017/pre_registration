@@ -1,5 +1,5 @@
 ﻿@model pre_registration.Models.ViewModels.AddUserViewModel
-
+<script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
 <h2>Регистрация нового пользователя</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
 <form method="post" asp-controller="Account" asp-action="Registration">
@@ -44,3 +44,9 @@
         <input type="submit" value="Регистрация" />
     </div>
 </form>
+
+<script>
+    $(function () {
+        $("#Phone").mask("+375 (99) 999-99-99");
+    });
+</script>

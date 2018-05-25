@@ -36,4 +36,9 @@
     </div>
 </form>
 <a asp-area="" asp-controller="Account" asp-action="ChangePassword">Изменить пароль</a>
-
+<script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $("#Phone").mask("+375 (99) 999-99-99");
+    });
+</script>
