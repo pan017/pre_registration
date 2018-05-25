@@ -12,16 +12,17 @@ using pre_registration.Jobs;
 using pre_registration.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using pre_registration.Services;
 
 namespace pre_registration
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,8 +32,7 @@ namespace pre_registration
 
                 options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("DataBaseConnection"));
-                    
+                    options.UseSqlServer(Configuration.GetConnectionString("DataBaseConnection"));                   
                 }
             
             );
@@ -41,7 +41,6 @@ namespace pre_registration
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
-            //services.AddScoped<RoleManager<ApplicationRole>>();
         
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDistributedMemoryCache();
@@ -49,9 +48,9 @@ namespace pre_registration
             services.AddSession(options => 
             options.Cookie.HttpOnly = true);
 
-
-
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<AppConfig>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +69,6 @@ namespace pre_registration
             app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();
-         //   dbInitializer.Initialize();
            
             OldEmptyCuponsScheduler.Run();
             

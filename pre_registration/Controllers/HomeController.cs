@@ -13,21 +13,23 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using pre_registration.Models.DataBaseModel;
 using System.Security.Claims;
-using Microsoft.Extensions.Configuration;
+
 using pre_registration.Services;
+using System.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace pre_registration.Controllers
 {
     public class HomeController : Controller
     {
         ApplicationContext db;
-       // private UserManager<ApplicationUser> _userManager;
         string _currentUser;
-        public HomeController(ApplicationContext context, IHttpContextAccessor httpContextAccessor)
+
+        private readonly IOptions<AppConfig> config;
+        public HomeController(ApplicationContext context, IHttpContextAccessor httpContextAccessor, IOptions<AppConfig> config)//, IOptions<NotificationEmailModel> config)
         {
-            //_userManager = userManager;
             db = context;
-           
+            this.config = config;
             UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
             _currentUser = userResolverService.GetUser();
           //  var a = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
@@ -75,7 +77,13 @@ namespace pre_registration.Controllers
         }
         public IActionResult Index()
         {
-        
+            
+        //    var b = ConfigurationManager.GetSection("NotificationEmail");
+
+          //  var a = Configuration.
+         //   var a = config;
+            //notificationEmailModel.Login = 
+            //GetSection("NotificationEmail").Bind(notificationEmailModel);
             //var a = _userManager.GetUsersInRoleAsync("ПОЛЬЗОВАТЕЛЬ");
             //var b = _userManager.Users;
             //  var c = _roleManager.Roles;
