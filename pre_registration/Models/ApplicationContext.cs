@@ -34,5 +34,7 @@ namespace pre_registration.Models
         public DbSet<Denied> Denied { get; set; }
         public DbSet<UserData> UsersData { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<ResetPassword> ResetPasswords { get; set; }
+        public DbSet<SentNotification> SentNotifications { get; set; }
     }
 }

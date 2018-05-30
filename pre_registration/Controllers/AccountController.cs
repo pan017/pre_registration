@@ -18,8 +18,6 @@ namespace pre_registration.Controllers
 {
     public class AccountController : Controller
     {
-       // private readonly SignInManager<ApplicationUser> _signInManager;
-        //private readonly UserManager<ApplicationUser> _userManager;
         ApplicationContext db;
         private IOptions<AppConfig> config;
         public AccountController(ApplicationContext context, IOptions<AppConfig> config)
@@ -40,7 +38,7 @@ namespace pre_registration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!String.IsNullOrEmpty(model.Login) || !String.IsNullOrEmpty(model.Password))
             {
 
                 ApplicationUser user = db.Users.FirstOrDefault(x => x.Login == model.Login && x.Password == model.Password);
@@ -56,11 +54,13 @@ namespace pre_registration.Controllers
                     return View("LoginForm", model);
                 }
             }
-            
-            return View(model);
+            ModelState.AddModelError("", "Заполните все поля");
+            return View("LoginForm", model);
         }
         private async Task Authenticate(ApplicationUser user)
         {
+            if (user.Role == null)
+                user.Role = db.Roles.FirstOrDefault(x => x.Id == user.RoleId);
             // создаем один claim
             var claims = new List<Claim>
             {
@@ -206,6 +206,71 @@ namespace pre_registration.Controllers
             }
             return RedirectToAction("Settings");
         }
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            ApplicationUser user = db.Users.Where(x => x.Login == model.Query).FirstOrDefault();
+            if (user == null)
+            {
+                UserData userData = db.UsersData.FirstOrDefault(x => x.Phone == model.Query);
+                if (userData == null)
+                {
+                    ModelState.AddModelError("", "");
+                    return View(model);
+                }
+                else
+                {
+                    user = db.Users.Where(x => x.UserDataID == userData.id).FirstOrDefault();
+                }
+            }
+            pre_registration.Models.DataBaseModel.ResetPassword resetPassword = new Models.DataBaseModel.ResetPassword();
+            resetPassword.ApplicationUser = user;
+            resetPassword.ApplicationUserId = user.Id;
+            resetPassword.UniqueKey = Helpers.ConvertStringtoMD5(user.Login + user.confirmKey + DateTime.Now.ToLongTimeString());
+            db.ResetPasswords.Add(resetPassword);
+            db.SaveChanges();
+            var callbackUrl = Url.Action("ChangeResetPassword",
+               "Account",
+               new { confirmKey =resetPassword.UniqueKey},
+               protocol: HttpContext.Request.Scheme);
+            // EmailService emailService = new EmailService();
+            EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Восстановление пароля",
+                $"Для восстановления пароля перейдите по ссылке: <a href='{callbackUrl}'>link</a>");
+            return View("ChangePasswordNotification");
+        }
+
+        public IActionResult ChangeResetPassword(string confirmKey)
+        {
+            var resetPasswordModel = db.ResetPasswords.FirstOrDefault(x => x.UniqueKey == confirmKey);
+            if (resetPasswordModel == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ResetPasswordViewModel model = new ResetPasswordViewModel();
+                model.Query = confirmKey;
+                model.ResetPassword = resetPasswordModel;
+                model.ResetPassword.ApplicationUser = db.Users.FirstOrDefault(x => x.Id == resetPasswordModel.ApplicationUserId);
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeResetPassword(ResetPasswordViewModel model)
+        {
+            model.ResetPassword = db.ResetPasswords.FirstOrDefault(x => x.id == model.ResetPassword.id);
+            var user = db.Users.FirstOrDefault(x => x.Id == model.ResetPassword.ApplicationUserId);
+            user.Password = model.NewPassword;
+            db.SaveChanges();
+            db.ResetPasswords.Remove(model.ResetPassword);
+            db.SaveChanges();
+            await Authenticate(user);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

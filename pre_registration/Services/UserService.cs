@@ -10,25 +10,6 @@ namespace pre_registration
 {
     public class UserService
     {
-        //public static ApplicationUser CreateUser(RegisterViewModel model, ApplicationContext db)
-        //{
-        //    UserData userData = new UserData();
-        //    userData.EmailAdress = model.Login;
-        //    userData.FirstName = model.FirstName;
-        //    userData.LastName = model.LastName;
-        //    userData.SecondName = model.SecondName;
-        //    userData.Phone = model.Phone;
-        //    db.UsersData.Add(userData);
-        //    db.SaveChanges();
-        //    ApplicationUser newUser = new ApplicationUser { Login = model.Login, Password = model.Password, UserDataID = userData.id };
-        //    ApplicationRole userRole = db.Roles.FirstOrDefault(x => x.Id == model.RoleId);
-           
-        //    if (userRole != null)
-        //        newUser.RoleId = userRole.Id;
-        //    db.Users.Add(newUser);
-        //    db.SaveChanges();
-        //    return newUser;
-        //}
         public static ApplicationUser CreateUser(AddUserViewModel model, ApplicationContext db)
         {
             UserData userData = new UserData();

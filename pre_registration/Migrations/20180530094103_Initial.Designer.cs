@@ -11,7 +11,7 @@ using System;
 namespace pre_registration.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20180426062521_Initial")]
+    [Migration("20180530094103_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,6 +170,38 @@ namespace pre_registration.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.ResetPassword", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ApplicationUserId");
+
+                    b.Property<string>("UniqueKey");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ResetPasswords");
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.SentNotification", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<bool>("isSent");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("SentNotifications");
+                });
+
             modelBuilder.Entity("pre_registration.Models.DataBaseModel.UserSettings", b =>
                 {
                     b.Property<int>("id")
@@ -289,6 +321,22 @@ namespace pre_registration.Migrations
                     b.HasOne("pre_registration.Models.CuponDate", "CuponDate")
                         .WithMany()
                         .HasForeignKey("CuponDateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.ResetPassword", b =>
+                {
+                    b.HasOne("pre_registration.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("pre_registration.Models.DataBaseModel.SentNotification", b =>
+                {
+                    b.HasOne("pre_registration.Models.DataBaseModel.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

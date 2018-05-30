@@ -13,7 +13,7 @@ namespace pre_registration.Jobs
             scheduler.Start();
 
             IJobDetail job = JobBuilder.Create<RemoveOldEmptyCupons>().Build();
-
+            
             ITrigger trigger = TriggerBuilder.Create()  // создаем триггер
                 .WithIdentity("trigger1", "group1")     // идентифицируем триггер с именем и группой
                 .StartNow()                            // запуск сразу после начала выполнения

@@ -191,6 +191,26 @@ namespace pre_registration.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResetPasswords",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    UniqueKey = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResetPasswords", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ResetPasswords_Users_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -238,6 +258,26 @@ namespace pre_registration.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SentNotifications",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OrderId = table.Column<int>(nullable: false),
+                    isSent = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SentNotifications", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_SentNotifications_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_UserDataID",
                 table: "Clients",
@@ -279,6 +319,16 @@ namespace pre_registration.Migrations
                 column: "CuponDateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResetPasswords_ApplicationUserId",
+                table: "ResetPasswords",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SentNotifications_OrderId",
+                table: "SentNotifications",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_AreaId",
                 table: "Users",
                 column: "AreaId");
@@ -306,6 +356,12 @@ namespace pre_registration.Migrations
 
             migrationBuilder.DropTable(
                 name: "DeniedCupons");
+
+            migrationBuilder.DropTable(
+                name: "ResetPasswords");
+
+            migrationBuilder.DropTable(
+                name: "SentNotifications");
 
             migrationBuilder.DropTable(
                 name: "Orders");
