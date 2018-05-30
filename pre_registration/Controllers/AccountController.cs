@@ -217,10 +217,10 @@ namespace pre_registration.Controllers
             ApplicationUser user = db.Users.Where(x => x.Login == model.Query).FirstOrDefault();
             if (user == null)
             {
-                UserData userData = db.UsersData.FirstOrDefault(x => x.Phone == model.Query);
+                UserData userData = db.UsersData.FirstOrDefault(x => x.Phone.Trim().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "") == model.Query.Trim().Replace("(","").Replace(")","").Replace("-", "").Replace(" ", ""));
                 if (userData == null)
                 {
-                    ModelState.AddModelError("", "");
+                    ModelState.AddModelError("", "Пользователь не найден! Проверьте правильность ввода данных и повторите попытку");
                     return View(model);
                 }
                 else
@@ -228,6 +228,7 @@ namespace pre_registration.Controllers
                     user = db.Users.Where(x => x.UserDataID == userData.id).FirstOrDefault();
                 }
             }
+            user.UserData = db.UsersData.FirstOrDefault(x => x.id == user.UserDataID);
             pre_registration.Models.DataBaseModel.ResetPassword resetPassword = new Models.DataBaseModel.ResetPassword();
             resetPassword.ApplicationUser = user;
             resetPassword.ApplicationUserId = user.Id;
@@ -238,9 +239,13 @@ namespace pre_registration.Controllers
                "Account",
                new { confirmKey =resetPassword.UniqueKey},
                protocol: HttpContext.Request.Scheme);
-            // EmailService emailService = new EmailService();
             EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Восстановление пароля",
-                $"Для восстановления пароля перейдите по ссылке: <a href='{callbackUrl}'>link</a>");
+                $"<b>Здравствуйте, {user.UserData.GetFullName()}</b> <br>" +
+                $"Мы получили запрос на смену пароля от вашего аккаунта на OneWin.by " +               
+                $"Чтобы его изменить, перейдите по ссылке " +
+                $"<br> <a href='{callbackUrl}'>Изменить пароль</a> " +
+                $"<p>Если вы не отправляли запрос, просто проигнорируйте это письмо. " +
+                $"Ваш пароль не изменится, пока вы не перейдете по ссылке и не введете новые данные</p>");
             return View("ChangePasswordNotification");
         }
 
@@ -267,7 +272,11 @@ namespace pre_registration.Controllers
             var user = db.Users.FirstOrDefault(x => x.Id == model.ResetPassword.ApplicationUserId);
             user.Password = model.NewPassword;
             db.SaveChanges();
-            db.ResetPasswords.Remove(model.ResetPassword);
+            var resetPasswordsCollection = db.ResetPasswords.Where(x => x.ApplicationUserId == user.Id);
+            foreach (var item in resetPasswordsCollection)
+            {
+                db.ResetPasswords.Remove(item);
+            }
             db.SaveChanges();
             await Authenticate(user);
             return RedirectToAction("Index", "Home");

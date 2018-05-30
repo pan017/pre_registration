@@ -24,5 +24,10 @@ namespace pre_registration.Models
         [Required]
         [Display(Name = "Адрес электронной почты")]
         public string EmailAdress { get; set; }
+
+        public string GetFullName()
+        {
+            return String.Format("{0} {1} {2}", LastName, FirstName, SecondName);
+        }
     }
 }
