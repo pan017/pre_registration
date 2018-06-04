@@ -131,7 +131,7 @@ namespace pre_registration.Controllers
             if (User.Identity.IsAuthenticated)
             {
 
-                int userId = 1;//int.Parse(_userManager.GetUserId(User));
+                int userId = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name).Id;
                 var userDataId = db.Users.Where(x => x.Id == userId).First().UserDataID;
                 var userData = db.UsersData.Where(x => x.id == userDataId).First();
                 Client userClient = new Client();
@@ -222,7 +222,7 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("continueWithOutRegistration");
 
 
-            string messageBody = String.Format("<html><body><br><img src='http://www.cyberforum.ru/images/cyberforum_logo.jpg\' alt='Super Game!'>" +
+            string messageBody = String.Format("<html><body><br>" +
                 " <br>Вы получили это письмо, потому что вы зарегистрировались на http://www.supergame.ru или сменили e-mail в профиле. <br>{4}<br>{5}    <br>{6} <br>{7} " +
                 "<br>Код активации:       {3}<br><br>Мы будем рады видеть Вас на нашем сайте и желаем Вам приятой игры!" +
                 "</body></html>",
@@ -231,7 +231,7 @@ namespace pre_registration.Controllers
                  newOrder.Client.UserData.SecondName,
                  newOrder.Client.UserData.LastName,
 
-                 String.Format("http://{0}/Cupon/DeniedCupon?key={1}", Request.Host.Value, deniedCupon.DeniedKey),
+                 String.Format("<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
                   newOrder.CuponDate.date.ToShortDateString(),
                 newOrder.CuponDate.date.ToShortTimeString(),
                 newOrder.CuponDate.Area.Adres,

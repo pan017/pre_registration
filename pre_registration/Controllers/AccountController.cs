@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using pre_registration.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -101,13 +100,19 @@ namespace pre_registration.Controllers
                 protocol: HttpContext.Request.Scheme);
                // EmailService emailService = new EmailService();
                 EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Подтверждение электронной почты",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                    $"" +
+                    $"<div>" +
+                    $"<H3>Здравсвуйте, {user.UserData.GetFullName()}</H3>" +
+                    $"<p>Благодарим вас за регистрацию на {config.Value.WebSiteName}</p>" +
+                    $"<p> Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>" +
+                    $"</p>" +
+                    $"</div>");
                 return RedirectToAction("Index", "Home");
 
             }
             else
             {
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                ModelState.AddModelError("", "Пользователь с таким адресом электронной почты уже зарегестрирован");
             }
             
 

@@ -9,6 +9,7 @@ namespace pre_registration.Services
     {
         public Logging Logging { get; set; }
         public NotificationEmail NotificationEmail { get; set; }
+        public string WebSiteName { get; set; }
 
     }
     public class Logging
