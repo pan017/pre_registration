@@ -23,20 +23,11 @@ namespace pre_registration.Controllers
     public class HomeController : Controller
     {
         ApplicationContext db;
-        //string _currentUser;
-
         private readonly IOptions<AppConfig> config;
         public HomeController(ApplicationContext context, IOptions<AppConfig> config)
         {
             db = context;
-            this.config = config;
-            //UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
-          //  _currentUser = userResolverService.GetUser();
-          //  var a = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
-            //var currentUserId = _userManager.GetUserId(User);
-          //  HttpContext.Session.SetInt32("userAccessLevel", db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel);
-          //  ViewBag.CurrentUserAccessLevel = db.Users.FirstOrDefault(x => x.UserName == _currentUser).AccessLevel;
-           
+            this.config = config;           
         }
 
         public IActionResult returnToSelectArea()
@@ -173,6 +164,8 @@ namespace pre_registration.Controllers
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
             Order newOrder = new Order();
 
+            ApplicationUser applicationUser = new ApplicationUser();// = db.Users.FirstOrDefault(x => x.Id == userId);
+            
             newOrder.CuponDateId = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId"))).id;
             newOrder.OrderDate = DateTime.Now;
             newOrder.Comment = model.Comment;
@@ -180,6 +173,8 @@ namespace pre_registration.Controllers
             {
                 int userId = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name).Id;
                 Client userClient = db.Clients.Where(x => x.User.Id == userId).FirstOrDefault();
+                applicationUser = db.Users.FirstOrDefault(x => x.Id == userId);
+                applicationUser.UserSettings = db.UserSettings.FirstOrDefault(x => x.id == applicationUser.UserSettingsId);
 
                 if (userClient == null)
                 {
@@ -189,6 +184,7 @@ namespace pre_registration.Controllers
                     db.Clients.Add(newClient);
                     db.SaveChanges();
                     userClient = newClient;
+                   
                 }
                 newOrder.ClientId = userClient.id;
             }
@@ -202,8 +198,6 @@ namespace pre_registration.Controllers
                 db.Clients.Add(newClient);
                 db.SaveChanges();
                 newOrder.ClientId = newClient.id;
-
-
             }
             newOrder.Client = db.Clients.FirstOrDefault(x => x.id == newOrder.ClientId);
             newOrder.Client.UserData = db.UsersData.FirstOrDefault(x => x.id == newOrder.Client.UserDataID);
@@ -215,44 +209,53 @@ namespace pre_registration.Controllers
             db.DeniedCupons.Add(deniedCupon);
             db.SaveChanges();
             
-            string s = String.Format("<a href='{0}/Cupon/DeniedCupon?key={1}>Отменить</a>", Request.Host.Value, deniedCupon.DeniedKey);
+            if (applicationUser.UserSettings != null)
+            {
+                if (applicationUser.UserSettings.SendEmail)
+                {
+                    EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", getMessageBody(newOrder, deniedCupon));
+                }
+                if (applicationUser.UserSettings.SendReminder)
+                {
+                    SentNotification sentNotification = new SentNotification();
+                    sentNotification.isSent = false;
+                    sentNotification.OrderId = newOrder.id;
+                    db.SentNotifications.Add(new SentNotification
+                    {
+                        isSent = false,
+                        OrderId = newOrder.id
+                    });
+                    db.SaveChanges();
+                }
+            }
+            else
+            {
+                EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", getMessageBody(newOrder, deniedCupon));
+            }        
             HttpContext.Session.Remove("Date");
             HttpContext.Session.Remove("Area");
             HttpContext.Session.Remove("CuponId");
-            HttpContext.Session.Remove("continueWithOutRegistration");
-
-
-            string messageBody = String.Format("<html><body><br>" +
-                " <br>Вы получили это письмо, потому что вы зарегистрировались на http://www.supergame.ru или сменили e-mail в профиле. <br>{4}<br>{5}    <br>{6} <br>{7} " +
-                "<br>Код активации:       {3}<br><br>Мы будем рады видеть Вас на нашем сайте и желаем Вам приятой игры!" +
-                "</body></html>",
-                
-                newOrder.Client.UserData.FirstName,
-                 newOrder.Client.UserData.SecondName,
-                 newOrder.Client.UserData.LastName,
-
-                 String.Format("<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
-                  newOrder.CuponDate.date.ToShortDateString(),
-                newOrder.CuponDate.date.ToShortTimeString(),
-                newOrder.CuponDate.Area.Adres,
-                newOrder.CuponDate.Area.Phone
-                );
-          //  EmailService emailService = new EmailService();
-
-            EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", messageBody);
-
-            //String.Format("<h2>Благодарим за запись</h2> Дата: {0} Время:{1} Адрес: {2} Телефон: {3} Отмена записи: {4} ",
-            //    newOrder.CuponDate.date.ToShortDateString(),
-            //    newOrder.CuponDate.date.ToShortTimeString(),
-            //    newOrder.CuponDate.Area.Adres,
-            //    newOrder.CuponDate.Area.Phone,
-            //    String.Format("<a href='{0}/Cupon/DeniedCupon?key={1}>Отменить</a>", Request.Host.Value, deniedCupon.DeniedKey))
+            HttpContext.Session.Remove("continueWithOutRegistration");         
+           
             return View();
         }
 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public string getMessageBody(Order order, DeniedCupon deniedCupon)
+        {
+            return String.Format(@"<html><body><br><br>Вы получили это письмо, потому что вы зарегистрировались на http://www.supergame.ru или сменили e-mail в профиле. <br>{4}<br>Мы будем рады видеть Вас на нашем сайте и желаем Вам приятой игры!</body></html>",
+              order.Client.UserData.FirstName,
+              order.Client.UserData.SecondName,
+              order.Client.UserData.LastName,
+              String.Format(@"<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
+              order.CuponDate.date.ToShortDateString(),
+              order.CuponDate.date.ToShortTimeString(),
+              order.CuponDate.Area.Adres,
+              order.CuponDate.Area.Phone);
         }
     }
 }
