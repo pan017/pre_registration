@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace pre_registration.Jobs
 {
-    public class SentNotificationJob
+    public class SentNotificationJob: IJob
     {
         public Task Execute(IJobExecutionContext context)
         {
@@ -25,12 +25,14 @@ namespace pre_registration.Jobs
                 foreach (var item in sentNotificationsList)
                 {
                     item.Order = db.Orders.FirstOrDefault(x => x.id == item.OrderId);
+                    item.Order.Client = db.Clients.FirstOrDefault(x => x.id == item.Order.ClientId);
+                    item.Order.Client.UserData = db.UsersData.FirstOrDefault(x => x.id == item.Order.Client.UserDataID);
                 }
                 foreach (var item in sentNotificationsList)
                 {
                     if (item.Order.OrderDate.AddDays(1) > DateTime.Now)
                     {
-                        //TODO SendMail
+                        Services.EmailService.SendEmailAsync(item.Order.Client.UserData.EmailAdress, "Напоминание", "");
                         item.isSent = true;
                         db.SaveChanges();
                     }

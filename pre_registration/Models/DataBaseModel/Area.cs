@@ -20,9 +20,17 @@ namespace pre_registration.Models
         [Required]
         [Display(Name = "Адрес")]
         public string Adres { get; set; }
+        //[Required]
+        //[Display(Name = "Время работы в сб")]
+        //public string WorkWeekTime { get; set; }
+        //[Required]
+        //[Display(Name = "Время раобы пн-пт")]
+        //public string WorkDayTime { get; set; }
+
         [Required]
-        [Display(Name = "Время работы")]
+        [Display(Name = "Время раобы")]
         public string WorkTime { get; set; }
+
         [Required]
         [Display(Name = "Сайт")]
         public string website { get; set; }

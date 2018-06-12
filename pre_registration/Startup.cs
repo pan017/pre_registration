@@ -71,7 +71,7 @@ namespace pre_registration
             app.UseAuthentication();
            
             OldEmptyCuponsScheduler.Run();
-            
+            SentNotificationScheduler.Run();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

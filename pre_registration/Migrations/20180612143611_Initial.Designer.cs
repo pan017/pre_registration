@@ -11,7 +11,7 @@ using System;
 namespace pre_registration.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20180530094103_Initial")]
+    [Migration("20180612143611_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

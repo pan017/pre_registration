@@ -25,12 +25,7 @@ namespace pre_registration.Controllers
         public  CuponController (ApplicationContext context)
         {
             db = context;
-          //  _signInManager = signInManager;
-         //   UserResolverService userResolverService = new UserResolverService(httpContextAccessor);
-         //   _currentUser = userResolverService.GetUser();
-      //      var a = db.Users.FirstOrDefault(x => x.Login == _currentUser).AccessLevel;
-       //     //var currentUserId = _userManager.GetUserId(User);
-        //    ViewBag.CurrentUserAccessLevel = db.Users.FirstOrDefault(x => x.Login == _currentUser).AccessLevel;
+      
         }
       
         public List<CuponDate> getFreeCupons(int areaId)

@@ -98,7 +98,6 @@ namespace pre_registration.Controllers
                 "Account", 
                 new { userId = user.Id, code = user.confirmKey }, 
                 protocol: HttpContext.Request.Scheme);
-               // EmailService emailService = new EmailService();
                 EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Подтверждение электронной почты",
                     $"" +
                     $"<div>" +
