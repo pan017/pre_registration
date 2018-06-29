@@ -12,14 +12,10 @@
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>
-                            <td>@ViewBag.AreasList[i].Adres</td>
+
                         </tr>
-
-                        <tr><td>@ViewBag.AreasList[i].email</td><td>@ViewBag.AreasList[i].website</td></tr>
                         <tr>
-                            <td>@ViewBag.AreasList[i].Phone</td>
-                            <td>@ViewBag.AreasList[i].WorkTime</td>
-
+                            <td>@ViewBag.AreasList[i].Adres</td>
                         </tr>
                     </table>
                     @*@ViewBag.AreasList[i].Name <br /><br />
@@ -70,16 +66,20 @@
         var SelectedCupon = getSelectedCupon();
         if (SelectedCupon.id != 0) {
             selectCuponTime(SelectedCupon.id);
+            showAreaInfo(GetArea().id)
             return;
         }
         if (SelectedDate.getFullYear() != 1901) {
             $('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = ViewBag.SelectedDate})' + '&areaId=' + SelectedArea );
             showTime();
-
+            showAreaInfo(GetArea().id)
         }
         else {
-            if (SelectedArea.length > 0)
+            if (SelectedArea.length > 0) {
+
                 showCalendar(SelectedArea);
+                showAreaInfo(GetArea().id)
+            }
         }
     });
     function seclectArea(index)
@@ -108,6 +108,14 @@
             $(".selectArea").hide();
             $(".selectDate").show();
             $('.selectDate').load('@Url.Action("viewCalendar", "Cupon")?areaId=' + id)
+            showAreaInfo(id);
+    }
+
+    function showAreaInfo(id)
+        {
+        $(".areaInfo").show();
+        $('.areaInfo').load('@Url.Action("showAreaInfo", "Home")?areaId=' + id);
+
             }
      function selectCuponTime(id) {
          $('.recordForm').load('@Url.Action("recordForm", "Home")' + '?id=' + id);

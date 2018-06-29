@@ -66,6 +66,16 @@ namespace pre_registration.Controllers
             else
                 return db.CuponDates.FirstOrDefault(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
         }
+
+        public IActionResult showAreaInfo(int areaId)
+        {
+            
+            return PartialView(db.Areas.FirstOrDefault(x => x.Id == areaId));
+        }
+        public IActionResult GetMap(int areaId)
+        {
+            return PartialView(db.Areas.FirstOrDefault(x => x.Id == areaId));
+        }
         public IActionResult Index()
         {
             

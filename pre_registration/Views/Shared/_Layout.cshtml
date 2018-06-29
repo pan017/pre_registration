@@ -45,14 +45,14 @@
     @RenderSection("Scripts", required: false)
     <div class="container-body">
         <div style="position:absolute; width:inherit;">
-            
+
 
             <div style="background-color:#e7e7e7; vertical-align:middle;">
 
-                <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif"/></a>
+                <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
                 <div class="head-row" style="">
                     @if (User.Identity.IsAuthenticated)
-            {
+                    {
                         <p id="userName">@User.Identity.Name</p>
                     }
                     else
@@ -113,14 +113,16 @@
             <br />
             <div style="text-align:center">
                 @RenderBody()
-                </div>
+            </div>
             <hr />
-            <footer >
-                <p>&copy; 2018 - pre_registration</p>
-            </footer>
+            <div>
+                <footer>
+                    <p>&copy; 2018 - pre_registration</p>
+                </footer>
+            </div>
         </div>
 
-       
+
 
         <script type="text/javascript">
             var userMenuIsHide = true;
@@ -142,8 +144,7 @@
                     $("#userMenu").show();
                     userMenuIsHide = false;
                 }
-                else
-                {
+                else {
                     $("#userMenu").hide();
                     userMenuIsHide = true;
 

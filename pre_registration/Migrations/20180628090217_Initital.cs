@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace pre_registration.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,12 +16,15 @@ namespace pre_registration.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Adres = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    MapUrl = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     NotificationEmail = table.Column<string>(nullable: false),
                     Phone = table.Column<string>(nullable: false),
-                    WorkTime = table.Column<string>(nullable: false),
+                    PhotoUrl = table.Column<string>(nullable: true),
+                    WorkTime = table.Column<string>(nullable: true),
                     email = table.Column<string>(nullable: false),
-                    website = table.Column<string>(nullable: false)
+                    website = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

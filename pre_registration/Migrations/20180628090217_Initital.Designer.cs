@@ -11,8 +11,8 @@ using System;
 namespace pre_registration.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20180612143611_Initial")]
-    partial class Initial
+    [Migration("20180628090217_Initital")]
+    partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,6 +63,10 @@ namespace pre_registration.Migrations
                     b.Property<string>("Adres")
                         .IsRequired();
 
+                    b.Property<string>("Description");
+
+                    b.Property<string>("MapUrl");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -72,14 +76,14 @@ namespace pre_registration.Migrations
                     b.Property<string>("Phone")
                         .IsRequired();
 
-                    b.Property<string>("WorkTime")
-                        .IsRequired();
+                    b.Property<string>("PhotoUrl");
+
+                    b.Property<string>("WorkTime");
 
                     b.Property<string>("email")
                         .IsRequired();
 
-                    b.Property<string>("website")
-                        .IsRequired();
+                    b.Property<string>("website");
 
                     b.HasKey("Id");
 

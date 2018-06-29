@@ -62,6 +62,10 @@ namespace pre_registration.Migrations
                     b.Property<string>("Adres")
                         .IsRequired();
 
+                    b.Property<string>("Description");
+
+                    b.Property<string>("MapUrl");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -71,14 +75,14 @@ namespace pre_registration.Migrations
                     b.Property<string>("Phone")
                         .IsRequired();
 
-                    b.Property<string>("WorkTime")
-                        .IsRequired();
+                    b.Property<string>("PhotoUrl");
+
+                    b.Property<string>("WorkTime");
 
                     b.Property<string>("email")
                         .IsRequired();
 
-                    b.Property<string>("website")
-                        .IsRequired();
+                    b.Property<string>("website");
 
                     b.HasKey("Id");
 

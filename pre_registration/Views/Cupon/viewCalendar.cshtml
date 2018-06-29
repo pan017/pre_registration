@@ -18,7 +18,8 @@
         }
            $('.backToSelectArea').click(function () {
             $(".selectArea").show();
-            $(".selectDate").hide();
+               $(".selectDate").hide();
+               $(".areaInfo").hide();
             $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
         });
         $(document).ready(setCheckOutBar());
