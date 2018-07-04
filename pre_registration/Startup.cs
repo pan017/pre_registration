@@ -74,9 +74,9 @@ namespace pre_registration
             app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();
-           
-            OldEmptyCuponsScheduler.Run();
-            SentNotificationScheduler.Run();
+          
+            OldEmptyCuponsScheduler.Run(app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetRequiredService<ApplicationContext>().Database.GetDbConnection().ConnectionString);
+            SentNotificationScheduler.Run(app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetRequiredService<ApplicationContext>().Database.GetDbConnection().ConnectionString);
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

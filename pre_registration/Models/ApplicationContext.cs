@@ -7,14 +7,6 @@ using System.Configuration;
 
 namespace pre_registration.Models
 {
-    //public class ApplicationRole : IdentityRole<int>
-    //{
-    //    public ApplicationRole() : base()
-    //    { }
-    //    public ApplicationRole(string roleName) : base(roleName)
-    //    {
-    //    }
-    //}
     public class ApplicationContext:DbContext
     {
 
