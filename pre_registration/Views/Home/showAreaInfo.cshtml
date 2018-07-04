@@ -5,23 +5,34 @@
     <h4><a asp-controller="Home" asp-action="GetMap" asp-route-areaId="@Model.Id" class="showMap">@Model.Adres</a></h4>
     <div>
         <p>Время работы</p>
-        <table>
+        <table align="center" cellspacing="10" class="workTimeTable">
             <tr>
                 <td><b>ПН-ПТ</b></td>
-                <td><b>08:00 - 20:00</b></td>
+                <td>08:00 - 20:00</td>
             </tr>
             <tr>
-                <td>СБ</td>
+                <td style="text-align: right;"><b>СБ</b></td>
                 <td>08:00 - 17:00</td>
             </tr>
         </table>
-        @{
-            string[] phones = Model.Phone.Split(", ");
-            foreach (var item in phones)
-            {
-                <br />@item
+        <table style="width:100%">
+            @{
+                string[] phones = Model.Phone.Split(", ");
+                foreach (var item in phones)
+                {
+                    <tr>
+                        <td><img src="~/images/tel.png" width="30" /> @item</td>
+                    </tr>
+                  
+                    
+                }
             }
-        }
+            <tr>
+                <td> <img src="~/images/email.png" width="25" /><a href="mailto:@Model.email">@Model.email</a>  </td>
+            </tr>
+        </table>
+        <br />
+       
     </div>
 </div>
 
