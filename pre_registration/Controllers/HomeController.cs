@@ -26,6 +26,7 @@ namespace pre_registration.Controllers
         private readonly IOptions<AppConfig> config;
         public HomeController(ApplicationContext context, IOptions<AppConfig> config)
         {
+
             db = context;
             this.config = config;           
         }
@@ -40,10 +41,27 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("Date");
             return RedirectToAction("viewCalendar", "Cupon", new { areaId = HttpContext.Session.GetInt32("Area")});
         }
+        private DateTime GetDateFromSession()
+        {
+            try
+            {
+                var stringDate = HttpContext.Session.GetString("Date");
+                int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
+                return new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
+
+            }
+            catch (Exception e)
+            {
+                return new DateTime();
+            }
+        }
         public IActionResult returnToSelectTime()
         {
             HttpContext.Session.Remove("CuponId");
-            return RedirectToAction("viewTime", "Cupon", new { selectedDay = DateTime.Parse(HttpContext.Session.GetString("Date")), areaId = HttpContext.Session.GetInt32("Area") });
+            //var stringDate = HttpContext.Session.GetString("Date"); 
+            //int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
+            //DateTime selectDay = new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
+            return RedirectToAction("viewTime", "Cupon", new { selectedDay = GetDateFromSession(), areaId = HttpContext.Session.GetInt32("Area") });
         }
         public Area getSessionArea()
         {
@@ -54,6 +72,7 @@ namespace pre_registration.Controllers
         }
         public string getSelectedDate()
         {
+
             if (String.IsNullOrEmpty(HttpContext.Session.GetInt32("Area").ToString()))
                 return "";
             else
@@ -121,7 +140,7 @@ namespace pre_registration.Controllers
             ViewBag.SelectedArea = HttpContext.Session.GetInt32("Area");
             DateTime selectedDate = new DateTime();
             DateTime.TryParse(HttpContext.Session.GetString("Date"), out selectedDate);
-            ViewBag.selectedDate = selectedDate;
+            ViewBag.selectedDate = GetDateFromSession();
             SelectList areasSelectList = new SelectList(AreasList, "Id", "Name");
             ViewBag.AreasList = db.Areas.ToList(); //areasSelectList;
             
@@ -152,25 +171,26 @@ namespace pre_registration.Controllers
         [HttpPost]
         public IActionResult addRecord(Order model)
         {
-            //string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("https://www.google.com");
+            string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://www.google.com");
 
-            //var values = new List<KeyValuePair<string, string>>();
-            //values.Add(new KeyValuePair<string, string>
-            //("secret", "6LdwakIUAAAAAFnZmf_drdtNojJPIeNSSRH32krI"));
-            //values.Add(new KeyValuePair<string, string>
-            // ("response", captchaResponse));
-            //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            //HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
+            var values = new List<KeyValuePair<string, string>>();
+            values.Add(new KeyValuePair<string, string>
+            ("secret", "6LdwakIUAAAAAFnZmf_drdtNojJPIeNSSRH32krI"));
+            values.Add(new KeyValuePair<string, string>
+             ("response", captchaResponse));
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
 
-            //string verificationResponse = response.Content.
-            //ReadAsStringAsync().Result;
-            //var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
-            //if (!res.Success)
-            //{
-
-            //}
+            string verificationResponse = response.Content.
+            ReadAsStringAsync().Result;
+            var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
+            if (!res.Success)
+            {
+                ModelState.AddModelError("", "Ошибка! Капча");
+                return RedirectToAction("recordForm", "Home", model);
+            }
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
             Order newOrder = new Order();
 
@@ -254,16 +274,45 @@ namespace pre_registration.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        private string getAreaNameDeclination(string areaName)
+        {
+            if (areaName == "Мингорисполком")
+                return areaName;
+            else
+            {
+                string result = areaName;//.Replace("кий", "ого");
+                result = result.Replace("кий", "ого");
+                result = result.Replace("ный", "ного");
+                result = result.Replace("кой", "кого");
+                result = result + " района";
+                return result;
+            }
+        }
         public string getMessageBody(Order order, DeniedCupon deniedCupon)
         {
-            return String.Format(@"<html><body><br><br>Вы получили это письмо, потому что вы зарегистрировались на http://www.supergame.ru или сменили e-mail в профиле. <br>{4}<br>Мы будем рады видеть Вас на нашем сайте и желаем Вам приятой игры!</body></html>",
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            return String.Format(@"
+                <html>
+                <body>
+                <br>
+                <br>Здравствуйте {0} {1} {2}, <br> Вы забронировали время подачи документов в службе Одно окно {3} на {4} в {5}.
+                Желательно распечатать это сообщение и принести его с собой на подачу документов.
+                <p><b>Если Вы не можете</b> прийти в забронированное время, то, пожалуйста, <b>аннулируйте</b> бронирование здесь {6} </p>
+                <br>Это письмо было сгенерировано автоматически. Пожалуйста, не отвечайте на него.
+                <p>Служба Одно окно {7}.<br>
+                {8}<br>
+                {9}</p>
+                </body>
+                </html>",
+              order.Client.UserData.LastName,
               order.Client.UserData.FirstName,
               order.Client.UserData.SecondName,
-              order.Client.UserData.LastName,
-              String.Format(@"<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
+
+              getAreaNameDeclination(order.CuponDate.Area.Name),
               order.CuponDate.date.ToShortDateString(),
               order.CuponDate.date.ToShortTimeString(),
+              String.Format(@"<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
+              getAreaNameDeclination(order.CuponDate.Area.Name),
               order.CuponDate.Area.Adres,
               order.CuponDate.Area.Phone);
         }

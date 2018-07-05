@@ -33,7 +33,7 @@ namespace pre_registration.Services
         {
             try
             {
-                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("webmail.active.by", 25);
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("smtp.yandex.ru", 587);
                 MailAddress from = new MailAddress(fromMail.Login, fromMail.DisplayngName);
                 // кому отправляем
                 MailAddress to = new MailAddress(toMail);

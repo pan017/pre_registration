@@ -1,5 +1,7 @@
 ﻿@model List<pre_registration.Models.DataBaseModel.Order>
-
+@{ 
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+}
 <h2>viewRegisterCupons</h2>
 <table class="table">
     <tr>

@@ -1,13 +1,23 @@
 ﻿@section scripts
     {
     <script type="text/javascript">
+        var dateOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long',
+            timezone: 'UTC',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
 
         var currentArea;
         $(document).ready(function () {
             $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
         });
         $(document).ready(setCheckOutBar());
-
+        
         function GetArea() {
             var result;
             $.ajax({   
@@ -53,13 +63,12 @@
             var selectedArea = GetArea();
             var selectedDate = GetSelectedDate();
             var selectedCupon = getSelectedCupon();
-            console.log(selectedCupon);
             if (selectedCupon.id != 0)
             {
                 var date = new Date(selectedCupon.date);
                 $("#firstPunkt").text(selectedArea.name)
-                $("#secondPunkt").text(date.toDateString());
-                $("#thirdPunkt").text(date.getHours() + ':' + date.getMinutes());
+                $("#secondPunkt").text(date.toLocaleDateString());
+                $("#thirdPunkt").text(date.getHours() + ':' + (date.getMinutes() == 0 ? '00' : date.getMinutes()));
                 $("#forthPunkt").addClass('active');
                 $("#thirdPunkt").addClass('visited');
                 $("#secondPunkt").addClass('visited');
@@ -70,7 +79,7 @@
             {
                 var date = new Date(selectedDate);
                 $("#firstPunkt").text(selectedArea.name)
-                $("#secondPunkt").text(date.toDateString());
+                $("#secondPunkt").text(selectedDate);
                 $("#thirdPunkt").text('Выбор времени');
                 $("#forthPunkt").removeClass();
                 $("#thirdPunkt").removeClass();

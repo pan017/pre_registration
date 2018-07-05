@@ -75,7 +75,9 @@
                         <div class="userMenuRow">
                             <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
                         </div>
-
+                        <div class="userMenuRow">
+                            <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные купоны</a>
+                        </div>
                     }
                     if (User.IsInRole("admin"))
                     {

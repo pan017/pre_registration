@@ -1,5 +1,7 @@
 ﻿@model List<pre_registration.Models.ViewModels.MyCuponsViewModel>
-
+@{ 
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+}
 <h2>Мои талоны</h2>
 <table class="table ">
     <tr>

@@ -17,7 +17,6 @@ namespace pre_registration.Controllers
     {
         ApplicationContext db;
         //SignInManager<ApplicationUser> _signInManager;
-        string _currentUser;
         public IActionResult Index()
         {
             return View();
@@ -78,6 +77,7 @@ namespace pre_registration.Controllers
         }
         public IActionResult viewTime(DateTime selectedDay, int areaId)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             HttpContext.Session.SetString("Date", selectedDay.ToString("d"));
             var a = HttpContext.Session.GetString("continueWithOutRegistration");
             bool continueWithOutRegistration = false;
@@ -100,10 +100,10 @@ namespace pre_registration.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("superuser"))
             {
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
-                orders = db.Orders.Where(x => x.CuponDate.AreaId == user.AreaId.Value).ToList();
+                orders = db.Orders.Where(x => x.CuponDate.AreaId == user.AreaId.Value && x.CuponDate.date > DateTime.Now).ToList();
             }
             else
-                orders = db.Orders.ToList();
+                orders = db.Orders.Where(x => x.CuponDate.date > DateTime.Now).ToList();
 
             foreach (var item in orders)
             {
@@ -187,6 +187,7 @@ namespace pre_registration.Controllers
 
         public ActionResult MyCupons()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             if (User.Identity.IsAuthenticated)
             {
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);

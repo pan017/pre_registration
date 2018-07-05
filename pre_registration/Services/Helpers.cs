@@ -20,5 +20,10 @@ namespace pre_registration
             }
             return sb.ToString();
         }
+        public static DateTime ConvertStringDateToDateTime(string inputString)
+        {
+            int[] dateComponents = inputString.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
+            return new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
+        }
     }
 }
