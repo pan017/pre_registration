@@ -4,11 +4,13 @@
             <option disabled selected>Выберите район</option>
         </select>*@
     <br />
-    <div>
+    <div style="margin-left:15%;">
         @for (int i = 0; i < ViewBag.AreasList.Count; i++)
         {
-           
-                <div class="newButton" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+            if (i % 2 != 0)
+            {
+
+                <div class="newButton" style="position:absolute; width:20%; margin-left:21%; margin-bottom:20%; text-align:center; min-width:125px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>
@@ -18,12 +20,38 @@
                             <td>@ViewBag.AreasList[i].Adres</td>
                         </tr>
                     </table>
-                    @*@ViewBag.AreasList[i].Name <br /><br />
-                    @ViewBag.AreasList[i].Phone*@
+                </div>
+                <br /> <br /> <br /> <br />
+            }
+            else
+            {
 
+                <div class="newButton" style="position:absolute;  width:20%;  margin-top:20px;  min-width:125px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                    <table class="selectAreaTable">
+                        <tr>
+                            <td>@ViewBag.AreasList[i].Name</td>
+
+                        </tr>
+                        <tr>
+                            <td>@ViewBag.AreasList[i].Adres</td>
+                        </tr>
+                    </table>
                 </div>
                 <br />
-               
+            }
+            @*<div class="newButton" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                <table class="selectAreaTable">
+                    <tr>
+                        <td>@ViewBag.AreasList[i].Name</td>
+
+                    </tr>
+                    <tr>
+                        <td>@ViewBag.AreasList[i].Adres</td>
+                    </tr>
+                </table>
+            </div>
+            <br />*@
+
             @*}
             else
             {
@@ -43,18 +71,18 @@
                             </tr>
                         </table>
                     </div>
-                  
+
             }*@
         }
         @*@foreach (var item in ViewBag.AreasList)
-            {
-                <div class="newButton" onclick="showCalendar(@item.Id)">
+        {
+            <div class="newButton" onclick="showCalendar(@item.Id)">
 
-                        @item.Name <br />
-                        @item.Phone
+                    @item.Name <br />
+                    @item.Phone
 
-                </div>
-            }*@
+            </div>
+        }*@
     </div>
 </div>
 <script>

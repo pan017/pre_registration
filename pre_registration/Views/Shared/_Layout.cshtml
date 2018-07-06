@@ -41,10 +41,10 @@
 
 
 </head>
-<body>
+<body style="min-width">
     @RenderSection("Scripts", required: false)
     <div class="container-body">
-        <div style="position:absolute; width:inherit;">
+        <div style="position:absolute; width:inherit;min-width: 1200px;">
 
 
             <div style="background-color:#e7e7e7; vertical-align:middle;">
@@ -108,7 +108,7 @@
         </div>
         <br />
         <br />
-        <div>
+        <div style="min-width: 1200px;">
             <div id="modDialog" class="modal">
                 <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
             </div>
