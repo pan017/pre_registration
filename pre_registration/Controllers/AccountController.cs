@@ -12,6 +12,8 @@ using pre_registration.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using pre_registration.Services;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace pre_registration.Controllers
 {
@@ -85,6 +87,41 @@ namespace pre_registration.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(AddUserViewModel model)
         {
+            string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://www.google.com");
+
+            var values = new List<KeyValuePair<string, string>>();
+            values.Add(new KeyValuePair<string, string>
+            ("secret", "6LcdnGIUAAAAAP_4UrRGJOTEaofjTPxbbfyu5Xtm"));
+            values.Add(new KeyValuePair<string, string>
+             ("response", captchaResponse));
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
+
+            string verificationResponse = response.Content.
+            ReadAsStringAsync().Result;
+            var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
+            if (!res.Success)
+                ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
+            if (String.IsNullOrEmpty(model.Login))
+                ModelState.AddModelError("", "Ошибка! Введите e-mail");
+            if (String.IsNullOrEmpty(model.LastName))
+                ModelState.AddModelError("", "Ошибка! Введите фамилию");
+            if (String.IsNullOrEmpty(model.FirstName))
+                ModelState.AddModelError("", "Ошибка! Введите имя");
+            if (String.IsNullOrEmpty(model.SecondName))
+                ModelState.AddModelError("", "Ошибка! Введите отчество");
+            if (String.IsNullOrEmpty(model.Phone))
+                ModelState.AddModelError("", "Ошибка! Введите телефон");           
+            if (String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm))
+                ModelState.AddModelError("", "Ошибка! Введите пароль");
+            if (!String.IsNullOrEmpty(model.Password) && !String.IsNullOrEmpty(model.PasswordConfirm) && model.PasswordConfirm != model.Password)
+                ModelState.AddModelError("", "Ошибка! Пароли не совпадают");
+            if (ModelState.ErrorCount != 0)
+            {
+                return View(model);
+            }
             ApplicationUser user = db.Users.FirstOrDefault(x => x.Login == model.Login);
             if (user == null)
             {

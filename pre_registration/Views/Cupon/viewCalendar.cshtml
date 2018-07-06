@@ -1,6 +1,6 @@
 ﻿@model List<pre_registration.Models.CuponDate>
 <div>
-    <h2>Выберите дату</h2>
+    @*<h2>Выберите дату</h2>*@
     <style type="text/css">
         td a {
             width: 100%;
@@ -16,19 +16,15 @@
             $('.selectDate').hide();
 
         }
-           $('.backToSelectArea').click(function () {
-            $(".selectArea").show();
-               $(".selectDate").hide();
-               $(".areaInfo").hide();
-            $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
-        });
+          
         $(document).ready(setCheckOutBar());
         @*$(document).ready(function () {
             $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
         });*@
     </script>
     <div>
-        <a class="backToSelectArea">Вернуться к выбору района</a>
+        <br />
+        @*<a class="backToSelectArea">Вернуться к выбору района</a>*@
         @{
             DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             while (true)
@@ -51,55 +47,55 @@
                     {
 
 
-                    <td style="width:100px; height:100px;" class="tdItem">
-                        @{
-                            int freeCupons = 0;
-                            foreach (var item in Model)
-                            {
-                                if (currentDate.Date == item.date.Date)//&& item.date.TimeOfDay > DateTime.Now.TimeOfDay)
+                        <td style="width:100px; height:100px;" class="tdItem">
+                            @{
+                                int freeCupons = 0;
+                                foreach (var item in Model)
                                 {
-                                    if (DateTime.Now.Date == currentDate.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
+                                    if (currentDate.Date == item.date.Date)//&& item.date.TimeOfDay > DateTime.Now.TimeOfDay)
                                     {
-                                        continue;
+                                        if (DateTime.Now.Date == currentDate.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
+                                        {
+                                            continue;
 
+                                        }
+
+                                        freeCupons++;
                                     }
 
-                                    freeCupons++;
                                 }
-
                             }
-                        }
-                        @if (currentDate < DateTime.Now.AddDays(-1) || freeCupons == 0)
-                        {
-                            <div style="text-align:center;">
-                                @currentDate.ToString("dd.MM")
-                            </div>
-                        }
-                        else
-                        {
-                            <div onclick="$('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = currentDate, areaId = ViewBag.SelectedArea})'); showTimeLink()">
+                            @if (currentDate < DateTime.Now.AddDays(-1) || freeCupons == 0)
+                            {
                                 <div style="text-align:center;">
                                     @currentDate.ToString("dd.MM")
                                 </div>
-                                <div>
-                                    Свободных мест
-                                    @freeCupons
+                            }
+                            else
+                            {
+                                <div onclick="$('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = currentDate, areaId = ViewBag.SelectedArea})'); showTimeLink()">
+                                    <div style="text-align:center;">
+                                        @currentDate.ToString("dd.MM")
+                                    </div>
+                                    <div>
+                                        Свободных мест
+                                        @freeCupons
+                                    </div>
                                 </div>
-                            </div>
 
 
-                        }
+                            }
 
-                    </td>
+                        </td>
 
 
 
-                                        currentDate = currentDate.AddDays(1);
-                                    }
+                        currentDate = currentDate.AddDays(1);
+                    }
 
                 </tr>
-                                    }
-            
+            }
+
         </table>
     </div>
 </div>

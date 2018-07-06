@@ -17,7 +17,30 @@
             $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
         });
         $(document).ready(setCheckOutBar());
-        
+
+        function backToSelectArea() {
+            $(".selectArea").show();
+            $('.recordForm').hide();
+            $(".selectDate").hide();
+            $(".selectTime").hide();
+            $(".areaInfo").hide();
+            $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
+
+        }
+
+        function backToSelectTime() {
+            $('.recordForm').hide();
+
+            $(".selectTime").show();
+            $('.selectTime').load('@Url.Action("returnToSelectTime", "Home")');
+
+        }
+        function backToSelectDate() {
+            $(".selectTime").hide();
+            $('.recordForm').hide();
+            $(".selectDate").show();
+            $('.selectDate').load('@Url.Action("returnToSelectDate", "Home")');
+        }     
         function GetArea() {
             var result;
             $.ajax({   
@@ -66,9 +89,14 @@
             if (selectedCupon.id != 0)
             {
                 var date = new Date(selectedCupon.date);
-                $("#firstPunkt").text(selectedArea.name)
+                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
+                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
                 $("#secondPunkt").text(date.toLocaleDateString());
+                $("#secondPunkt").attr('onClick', 'backToSelectDate()');
+                //$("#secondPunkt").html('<p onClick="backToSelectDate()">' + date.toLocaleDateString() + '</p>');
+                //$("#thirdPunkt").html('<p onClick="backToSelectTime()">' + date.getHours() + ':' + (date.getMinutes() == 0 ? '00' : date.getMinutes()) + '</p>');
                 $("#thirdPunkt").text(date.getHours() + ':' + (date.getMinutes() == 0 ? '00' : date.getMinutes()));
+                $("#thirdPunkt").attr('onClick', 'backToSelectTime()');
                 $("#forthPunkt").addClass('active');
                 $("#thirdPunkt").addClass('visited');
                 $("#secondPunkt").addClass('visited');
@@ -78,8 +106,12 @@
             if (selectedDate != undefined && selectedDate.length > 2)
             {
                 var date = new Date(selectedDate);
-                $("#firstPunkt").text(selectedArea.name)
+                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
+                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
+                //$("#firstPunkt").html('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');
+                //$("#secondPunkt").html('<p onClick="backToSelectDate()">' + selectedDate + '</p>');
                 $("#secondPunkt").text(selectedDate);
+                $("#secondPunkt").attr('onClick', 'backToSelectDate()');
                 $("#thirdPunkt").text('Выбор времени');
                 $("#forthPunkt").removeClass();
                 $("#thirdPunkt").removeClass();
@@ -93,9 +125,11 @@
             if (selectedArea.id != 0)
             {
 
-                $("#firstPunkt").text(selectedArea.name)
-                $("#thirdPunkt").removeClass();
+                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
+                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
                 $("#secondPunkt").removeClass();
+                $("#thirdPunkt").removeClass();
+                $("#forthPunkt").removeClass();
                 $("#secondPunkt").text('Выбор даты');
                 $("#secondPunkt").addClass('active');
                 $("#firstPunkt").addClass('visited');
@@ -105,8 +139,12 @@
             if (selectedArea.id == 0)
             {
                 $("#firstPunkt").text('Выбор района');
+                $("#secondPunkt").text('Выбор даты');
+                $("#thirdPunkt").text('Выбор времени');
                 $("#secondPunkt").removeClass();
                 $("#firstPunkt").removeClass();
+                $("#forthPunkt").removeClass();
+                $("#thirdPunkt").removeClass();
                 $("#firstPunkt").addClass('active');
                 $("#firstPunkt").addClass('first');
             }
@@ -133,24 +171,24 @@
 
             </ul>
         </div>
-        <br />
+        <br /> <br />
         <br /><br />
-              <div>
-                  <div class="areaInfo" style="float:left; width:30%;"></div>
-                  <div class="selectArea">
-                  </div>
+        <div>
+            <div class="areaInfo" style="float:right; width:30%;"></div>
+            <div class="selectArea">
+            </div>
 
-                  <div class="selectDate" style="float:right; width:70%;" hidden>
-                  </div>
-                      <div class="calendar"  style="float:right; width:70%;">
-                      </div>
-                  
-                  <div class="selectTime" style="float:right; width:70%;">
+            <div class="selectDate" style="float:right; width:70%;" hidden>
+            </div>
+            <div class="calendar" style="float:right; width:70%;">
+            </div>
 
-                  </div>
+            <div class="selectTime" style="float:right; width:70%;">
 
-                  <div class="recordForm" style="float:right; width:70%;"></div>
-              </div>
+            </div>
+
+            <div class="recordForm" style="float:right; width:70%;"></div>
+        </div>
     </div>
 
 <script>

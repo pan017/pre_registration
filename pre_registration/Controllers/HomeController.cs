@@ -34,12 +34,23 @@ namespace pre_registration.Controllers
         public IActionResult returnToSelectArea()
         {
             HttpContext.Session.Remove("Area");
+            HttpContext.Session.Remove("CuponId");
+            HttpContext.Session.Remove("Date");
             return RedirectToAction("selectAreaForm");
         }
         public IActionResult returnToSelectDate()
         {
             HttpContext.Session.Remove("Date");
+            HttpContext.Session.Remove("CuponId");
             return RedirectToAction("viewCalendar", "Cupon", new { areaId = HttpContext.Session.GetInt32("Area")});
+        }
+        public IActionResult returnToSelectTime()
+        {
+            HttpContext.Session.Remove("CuponId");
+            //var stringDate = HttpContext.Session.GetString("Date"); 
+            //int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
+            //DateTime selectDay = new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
+            return RedirectToAction("viewTime", "Cupon", new { selectedDay = GetDateFromSession(), areaId = HttpContext.Session.GetInt32("Area") });
         }
         private DateTime GetDateFromSession()
         {
@@ -55,20 +66,16 @@ namespace pre_registration.Controllers
                 return new DateTime();
             }
         }
-        public IActionResult returnToSelectTime()
-        {
-            HttpContext.Session.Remove("CuponId");
-            //var stringDate = HttpContext.Session.GetString("Date"); 
-            //int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
-            //DateTime selectDay = new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
-            return RedirectToAction("viewTime", "Cupon", new { selectedDay = GetDateFromSession(), areaId = HttpContext.Session.GetInt32("Area") });
-        }
+       
         public Area getSessionArea()
         {
             if (String.IsNullOrEmpty(HttpContext.Session.GetInt32("Area").ToString()))
                 return new Area();
             else
-                return db.Areas.FirstOrDefault(x => x.Id == HttpContext.Session.GetInt32("Area")); 
+            {
+                return db.Areas.FirstOrDefault(x => x.Id == HttpContext.Session.GetInt32("Area"));
+            }
+                
         }
         public string getSelectedDate()
         {
@@ -97,34 +104,6 @@ namespace pre_registration.Controllers
         }
         public IActionResult Index()
         {
-            
-        //    var b = ConfigurationManager.GetSection("NotificationEmail");
-
-          //  var a = Configuration.
-         //   var a = config;
-            //notificationEmailModel.Login = 
-            //GetSection("NotificationEmail").Bind(notificationEmailModel);
-            //var a = _userManager.GetUsersInRoleAsync("ПОЛЬЗОВАТЕЛЬ");
-            //var b = _userManager.Users;
-            //  var c = _roleManager.Roles;
-            //      IConfigurationSection connStrings = Configuration.GetSection("ConnectionStrings");
-
-            //db.Areas.Add(new Area() { Email = "cen@mgaon.by", Name = "Центральный", Phone = "+375177418596" });
-            //db.Areas.Add(new Area() { Email = "zav@mgaon.by", Name = "Заводской", Phone = "+375177418596" });
-            //db.SaveChanges();
-            //DateTime beginDate = new DateTime(2018, 1, 30, 8, 0, 0);
-            //DateTime endDate = beginDate.AddMonths(1);
-            //for (int i = 0; i < 30; i++)
-            //{
-            //    while (beginDate.Hour <= 18)
-            //    {
-            //        db.CuponDates.Add(new CuponDate() { Area = db.Areas.First(), date = beginDate, Status = "0" });
-            //        beginDate = beginDate.AddMinutes(30);
-            //        db.SaveChanges();
-            //    }
-            //    beginDate = beginDate.AddHours(14);
-            //}
-
             return View();
         }
         
@@ -136,7 +115,10 @@ namespace pre_registration.Controllers
         public IActionResult selectAreaForm()
         {
             List<Area> AreasList = db.Areas.ToList();
-
+            //for (int i = 0; i < AreasList.Count; i++)
+            //{
+            //    AreasList[i].Name = AreasList[i].Name == "Мингорисполком" ? AreasList[i].Name : AreasList[i].Name + " район";
+            //}
             ViewBag.SelectedArea = HttpContext.Session.GetInt32("Area");
             DateTime selectedDate = new DateTime();
             DateTime.TryParse(HttpContext.Session.GetString("Date"), out selectedDate);
@@ -177,7 +159,7 @@ namespace pre_registration.Controllers
 
             var values = new List<KeyValuePair<string, string>>();
             values.Add(new KeyValuePair<string, string>
-            ("secret", "6LdwakIUAAAAAFnZmf_drdtNojJPIeNSSRH32krI"));
+            ("secret", "6LcdnGIUAAAAAP_4UrRGJOTEaofjTPxbbfyu5Xtm"));
             values.Add(new KeyValuePair<string, string>
              ("response", captchaResponse));
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
@@ -188,7 +170,7 @@ namespace pre_registration.Controllers
             var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
             if (!res.Success)
             {
-                ModelState.AddModelError("", "Ошибка! Капча");
+                ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
                 return RedirectToAction("recordForm", "Home", model);
             }
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));

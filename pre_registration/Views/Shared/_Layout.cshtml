@@ -44,10 +44,10 @@
 <body style="min-width">
     @RenderSection("Scripts", required: false)
     <div class="container-body">
-        <div style="position:absolute; width:inherit;min-width: 1200px;">
+        <div style="width:inherit;min-width: 1200px;">
 
 
-            <div style="background-color:#e7e7e7; vertical-align:middle;">
+            <div style="background-color:#e7e7e7; vertical-align:middle; ">
 
                 <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
                 <div class="head-row" style="">
@@ -58,61 +58,60 @@
                     else
                     {
                         <div>
-                            <a asp-controller="Account" asp-action="Login" class="loginButton">Вход</a>
-                            <a asp-controller="Account" asp-action="Registration">Регистрация</a>
+
+                            <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
+                            <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
                         </div>
                     }
                 </div>
 
+                <div style="width:15%; background-color:#c1c1c1; position: absolute;right:0;  " id="userMenu">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("superuser"))
+                        {
+                            <div class="userMenuRow">
+                                <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
+                            </div>
+                            <div class="userMenuRow">
+                                <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные купоны</a>
+                            </div>
+                        }
+                        if (User.IsInRole("admin"))
+                        {
+                            <div class="userMenuRow">
+                                <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
+                            </div>
+                            <div class="userMenuRow">
+                                <a asp-controller="Admin" asp-action="Index" class="userMenuButton">Администрирование</a>
+                            </div>
+                        }
+                        if (User.IsInRole("user"))
+                        {
+                            <div class="userMenuRow">
+                                <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
+                            </div>
 
+                        }
+                    }
+
+                    <div class="userMenuRow">
+                        <a asp-controller="Account" asp-action="Settings" class="userMenuButton">Настройки</a>
+                    </div>
+
+                    <div class="userMenuRow">
+                        <a asp-controller="Account" asp-action="LogOff" class="userMenuButton">Выход</a>
+                    </div>
+                </div>
+            </div>
 
             </div>
-            <div style="width:15%; background-color:#c1c1c1; position: absolute; right: 0; " id="userMenu">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    if (User.IsInRole("superuser"))
-                    {
-                        <div class="userMenuRow">
-                            <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
-                        </div>
-                        <div class="userMenuRow">
-                            <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные купоны</a>
-                        </div>
-                    }
-                    if (User.IsInRole("admin"))
-                    {
-                        <div class="userMenuRow">
-                            <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
-                        </div>
-                        <div class="userMenuRow">
-                            <a asp-controller="Admin" asp-action="Index" class="userMenuButton">Администрирование</a>
-                        </div>
-                    }
-                    if (User.IsInRole("user"))
-                    {
-                        <div class="userMenuRow">
-                            <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
-                        </div>
-
-                    }
-                }
-
-                <div class="userMenuRow">
-                    <a asp-controller="Account" asp-action="Settings" class="userMenuButton">Настройки</a>
-                </div>
-
-                <div class="userMenuRow">
-                    <a asp-controller="Account" asp-action="LogOff" class="userMenuButton">Выход</a>
-                </div>
-            </div>
-        </div>
-        <br />
-        <br />
+          
         <div style="min-width: 1200px;">
             <div id="modDialog" class="modal">
                 <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
             </div>
-            <br />
+
             <div style="text-align:center">
                 @RenderBody()
             </div>

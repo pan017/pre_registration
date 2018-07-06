@@ -48,14 +48,21 @@ userMenuRow {
 
 .container-body {
 
-
+    width:1200px;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }
-
-@media (min-width: 768px) {
+.loginButton:hover {
+    text-decoration: none;
+    color: white;
+}
+.registrationButton:hover {
+    text-decoration: none;
+    color: white;
+}
+/*@media (min-width: 768px) {
     .container-body {
         width: 750px;
     }
@@ -71,8 +78,7 @@ userMenuRow {
     .container-body {
         width: 1170px;
     }
-}
-
+}*/
 input[type=text] {
     width: 50%;
     padding: 12px 20px;
@@ -483,3 +489,6 @@ ul.checkout-bar a {
                     width: 100%;
                     z-index: 9;
                 }
+.checkout-bar li:hover{
+    cursor:pointer;
+}

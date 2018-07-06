@@ -1,10 +1,6 @@
 ﻿@model List<pre_registration.Models.CuponDate>
     <script>
-        $('.backToSelectDate').click(function () {
-            $(".selectTime").hide();
-            $(".selectDate").show();
-            $('.selectDate').load('@Url.Action("returnToSelectDate", "Home")');
-        });
+     
         function selectCuponTime(id) {
             $('.recordForm').load('@Url.Action("recordForm", "Home")' + '?id=' + id);
             $(".selectTime").hide();
@@ -14,57 +10,58 @@
         }
         $(document).ready(setCheckOutBar());
     </script>
-<div>
-    <h2>Выберите время</h2>
-    @{ 
-        int j = 1;
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-    }
-    <a class="backToSelectDate">Вернуться к выбору даты</a>
-
-    @*@foreach (var item in Model)
-    {
-        if (DateTime.Now.Date == item.date.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
-        {
-            continue;
-
+    <div>
+        @*<h2>Выберите время</h2>*@
+        @{
+            int j = 1;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
         }
-        <div class="timeButton">
-            <div  onclick="selectCuponTime('@item.id')" class="cuponTime">@item.date.ToShortTimeString()</div>
-        </div>
-         
-             j++;
-          
+        @*<a class="backToSelectDate">Вернуться к выбору даты</a>*@
 
-    }*@
-    <table width="80%" align="center">
-        @for (int i = 0; i < Model.Count;)
+        @*@foreach (var item in Model)
         {
-            if (DateTime.Now.Date == Model[i].date.Date && Model[i].date.TimeOfDay < DateTime.Now.TimeOfDay)
+            if (DateTime.Now.Date == item.date.Date && item.date.TimeOfDay < DateTime.Now.TimeOfDay)
             {
                 continue;
 
             }
-            <tr>
-                @for (int k = 0; k < 5; k++)
+            <div class="timeButton">
+                <div  onclick="selectCuponTime('@item.id')" class="cuponTime">@item.date.ToShortTimeString()</div>
+            </div>
+
+                 j++;
+
+
+        }*@
+        <br /> <br />
+        <table width="80%" align="center">
+            @for (int i = 0; i < Model.Count;)
+            {
+                if (DateTime.Now.Date == Model[i].date.Date && Model[i].date.TimeOfDay < DateTime.Now.TimeOfDay)
                 {
-                    if (i >= Model.Count)
-                    {
-                        <td></td>
+                    continue;
 
-                    }
-                    else
-                    {
-                    <td>
-                        <div class="timeButton">
-                            <div onclick="selectCuponTime('@Model[i].id')" class="cuponTime">@Model[i].date.ToShortTimeString()</div>
-
-                        </div>
-                    </td>
-                        i++;
-                    }
                 }
-            </tr>
-        }
-    </table>
-</div>
+                <tr>
+                    @for (int k = 0; k < 5; k++)
+                    {
+                        if (i >= Model.Count)
+                        {
+                            <td></td>
+
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="timeButton">
+                                    <div onclick="selectCuponTime('@Model[i].id')" class="cuponTime">@Model[i].date.ToShortTimeString()</div>
+
+                                </div>
+                            </td>
+                            i++;
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </div>

@@ -1,16 +1,16 @@
 ﻿<div>
-    <h2>Выберите район</h2>
+    @*<h2>Выберите район</h2>*@
     @*<select asp-items="ViewBag.AreasList" class="selectAreaList">
             <option disabled selected>Выберите район</option>
         </select>*@
     <br />
-    <div style="margin-left:15%;">
+    <div style="margin-left:19%;">
         @for (int i = 0; i < ViewBag.AreasList.Count; i++)
         {
             if (i % 2 != 0)
             {
 
-                <div class="newButton" style="position:absolute; width:20%; margin-left:21%; margin-bottom:20%; text-align:center; min-width:125px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                <div class="newButton" style="position:absolute; width:380px; margin-left:400px; margin-bottom:20%; text-align:center; min-width:380px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>
@@ -26,7 +26,7 @@
             else
             {
 
-                <div class="newButton" style="position:absolute;  width:20%;  margin-top:20px;  min-width:125px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                <div class="newButton" style="position:absolute;  width:380px;  margin-top:20px;  min-width:380px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>

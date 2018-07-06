@@ -1,52 +1,54 @@
 ﻿@model pre_registration.Models.ViewModels.AddUserViewModel
 <script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $("#Phone").mask("+375 (99) 999-99-99");
+    });
+    $(document).ready(function () {
+        $(".g-recaptcha").show();
+
+    });
+    </script>
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 <h2>Регистрация нового пользователя</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
 <form method="post" asp-controller="Account" asp-action="Registration">
-    <div asp-validation-summary="ModelOnly"></div>
+
     <div>
         <label asp-for="Login"></label><br />
         <input asp-for="Login" />
-        <span asp-validation-for="Login"></span>
     </div>
     <div>
         <label asp-for="LastName"></label><br />
         <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
     </div>
     <div>
         <label asp-for="FirstName"></label><br />
         <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
     </div>
 
     <div>
         <label asp-for="SecondName"></label><br />
         <input asp-for="SecondName" />
-        <span asp-validation-for="SecondName"></span>
     </div>
     <div>
         <label asp-for="Phone"></label><br />
         <input asp-for="Phone" />
-        <span asp-validation-for="Phone"></span>
     </div>
     <div>
         <label asp-for="Password"></label><br />
         <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
     </div>
     <div>
         <label asp-for="PasswordConfirm"></label><br />
         <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+    <div>
+        <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
     </div>
     <div>
         <input type="submit" value="Регистрация" />
     </div>
 </form>
 
-<script>
-    $(function () {
-        $("#Phone").mask("+375 (99) 999-99-99");
-    });
-</script>

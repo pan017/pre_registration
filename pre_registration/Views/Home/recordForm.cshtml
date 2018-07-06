@@ -14,8 +14,9 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <div>
-    <h2>Заполните форму</h2>
-    <a class="backToSelectTime">Вернуться к выбору времени</a>
+    <br />
+    @*<h2>Заполните форму</h2>*@
+    @*<a class="backToSelectTime">Вернуться к выбору времени</a>*@
     <form method="post" asp-action="addRecord" asp-controller="Home">
         <div>
             <label asp-for="Client.UserData.LastName"></label><br />
@@ -82,9 +83,9 @@
             <input asp-for="Comment" />
             <span asp-validation-for="Comment"></span>
         </div>
-        <div> 
-            <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LdwakIUAAAAAEbnlV7nGwe2jzErM6nvjBVqGiJl"></div>
-            <input class="submintButton" type="submit" value="Записаться"/>
+        <div>
+            <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
+            <input class="submintButton" type="submit" value="Записаться" />
         </div>
     </form>
 </div>
