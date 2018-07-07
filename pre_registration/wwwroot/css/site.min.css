@@ -18,6 +18,11 @@ body {
     padding: 0px 5px; /* Поля в ячейках */
 }
 
+.capchaValidation {
+    color: red;
+    font-style: oblique;
+}
+
 a #userMenu {
     text-decoration: none;
 }
@@ -38,16 +43,252 @@ a #userMenu {
     padding: 10px;
     text-align: center;
     border-radius: 5px;
+    right: 17%;
+    position: absolute;
+    width: 15%;
+    background-color: #c1c1c1;
+}
+
+.areaInfo {
+    float: right;
+    width: 30%;
+}
+
+@media screen and (max-width: 1660px) {
+    #userMenu {
+        right: 10%;
+    }
+}
+
+@media screen and (max-width: 1360px) {
+    #userMenu {
+        right: 5%;
+    }
+}
+
+@media screen and (max-width: 1240px) {
+    #userMenu {
+        right: 0;
+        width: auto;
+        top: auto;
+        position: inherit;
+        margin-right: 5%;
+    }
+
+    .head-row {
+        position: absolute;
+        float: right;
+        right: 1%;
+        margin: -45px 20px;
+        cursor: pointer;
+    }
+}
+
+footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.leftAreaButton {
+    position: absolute;
+    width: 380px;
+    margin-top: 20px;
+    min-width: 380px;
+}
+
+.rightAreaButton {
+    position: absolute;
+    width: 380px;
+    margin-left: 400px;
+    margin-bottom: 20%;
+    text-align: center;
+    min-width: 380px;
+}
+
+.areaButtons {
+    margin-left: 19%;
+}
+
+.selectDate {
+    float: right;
+    width: 70%;
+}
+
+.calendar {
+    float: right;
+    width: 70%;
+}
+
+.selectTime {
+    float: right;
+    width: 70%;
+}
+
+.recordForm {
+    float: right;
+    width: 70%;
+}
+
+@media screen and (max-width: 700px) {
+    .areaButtons {
+        margin-left: 10%;
+    }
+
+    .titleHeadRow {
+        padding-right: 30%;
+    }
+
+    .areaInfo {
+        width: 30%;
+        text-align: center;
+        float: none;
+        margin-left: 15%;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .userMenuButton {
+        margin-right: 30%;
+    }
+
+    .titleHeadRow {
+        margin-right: 25%;
+    }
+
+    .leftAreaButton {
+        position: relative;
+        width: 380px;
+        min-width: 380px;
+    }
+
+    .rightAreaButton {
+        position: absolute;
+        width: 380px;
+        margin-left: 0px;
+        margin-bottom: 20%;
+        text-align: center;
+        min-width: 380px;
+    }
+
+    .areaInfo {
+        width: 30%;
+        text-align: center;
+        float: none;
+        margin-left: 20%;
+    }
+
+    .selectDate {
+        float: none;
+        width: 70%;
+    }
+
+    .calendar {
+        float: none;
+        width: 70%;
+    }
+
+    .selectTime {
+        float: none;
+        width: 70%;
+    }
+
+    .recordForm {
+        float: none;
+        width: 70%;
+    }
+
+    .contentForm input[type=text] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=password] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=email] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=submit] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=select] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=date] {
+        margin-right: 25%;
+    }
+
+    .contentForm input[type=checkbox] {
+        margin-right: 25%;
+    }
+
+    .contentForm label {
+        margin-right: 25%;
+    }
+
+    .contentForm a {
+        margin-right: 25%;
+    }
+
+    .contentForm .capchaValidation {
+        margin-right: 25%;
+    }
+
+    .contentDiv {
+        margin-right: 25%;
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    .head-row {
+        position: absolute;
+        float: left;
+        margin: 10px 20px;
+        cursor: pointer;
+        left: 0;
+    }
+
+    #userMenu {
+        text-align: left;
+    }
+
+    .userMenuRow {
+        left: 0;
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    .userMenuButton {
+        margin-right: 30%;
+    }
+
+    .areaButtons {
+        margin-left: 1%;
+    }
+}
+
+@media screen and (min-width: 1240px) {
+    .head-row {
+        position: relative;
+        float: right;
+        margin: 20px 20px;
+        cursor: pointer;
+    }
 }
 
 .validation-summary-errors ul {
     list-style-type: none;
 }
 
-userMenuRow {
-    text-align: center;
-    margin-bottom: 15px;
-}
+/*.userMenuRow {
+        text-align: center;
+        margin-bottom: 15px;
+    }*/
 
 .container-body {
     width: 1200px;
@@ -150,12 +391,7 @@ input[type=submit]:hover {
 }
 
 
-.head-row {
-    position: relative;
-    float: right;
-    margin: 20px 20px;
-    cursor: pointer;
-}
+
 
 
 
@@ -212,11 +448,12 @@ a.cancelButton {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     border: none;
     border-radius: 4px;
     cursor: pointer;
     width: 30%;
+    max-width: 380px;
 }
 
     .newButton:hover {

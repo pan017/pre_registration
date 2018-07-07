@@ -11,9 +11,9 @@
     </script>
 
     <script src='https://www.google.com/recaptcha/api.js'></script>
-<h2>Регистрация нового пользователя</h2>
+<h2 class="titleHeadRow">Регистрация нового пользователя</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
-<form method="post" asp-controller="Account" asp-action="Registration">
+<form method="post" asp-controller="Account" asp-action="Registration" class="contentForm">
 
     <div>
         <label asp-for="Login"></label><br />
@@ -44,7 +44,7 @@
         <label asp-for="PasswordConfirm"></label><br />
         <input asp-for="PasswordConfirm" />
     </div>
-    <div>
+    <div class="capchaValidation">
         <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
     </div>
     <div>

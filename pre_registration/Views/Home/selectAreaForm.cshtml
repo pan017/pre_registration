@@ -4,13 +4,13 @@
             <option disabled selected>Выберите район</option>
         </select>*@
     <br />
-    <div style="margin-left:19%;">
+    <div class="areaButtons" style="">
         @for (int i = 0; i < ViewBag.AreasList.Count; i++)
         {
             if (i % 2 != 0)
             {
 
-                <div class="newButton" style="position:absolute; width:380px; margin-left:400px; margin-bottom:20%; text-align:center; min-width:380px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                <div class="newButton rightAreaButton" style="" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>
@@ -26,7 +26,7 @@
             else
             {
 
-                <div class="newButton" style="position:absolute;  width:380px;  margin-top:20px;  min-width:380px; " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
+                <div class="newButton leftAreaButton" style=" " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
                             <td>@ViewBag.AreasList[i].Name</td>
