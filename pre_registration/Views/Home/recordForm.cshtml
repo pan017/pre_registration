@@ -38,7 +38,11 @@
                 $("#Client_UserData_EmailAdress").css("border-width", "2px");
                 errorCount++;
             }
+            if (!checkCapcha()) {
+                $(".capchaValidation").show();                
+                errorCount++;
 
+            }
             if (errorCount != 0) {
                 return false;
 
@@ -46,6 +50,21 @@
           
 
         });
+
+        function checkCapcha() {
+            var result;
+            $.ajax({
+                async: false,
+                url: '/home/checkCapcha?recaptchaResponse=6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-',
+                type: 'GET',
+                contentType: "application/json",
+                success: function (data) {
+                    result = data;
+                }
+            });
+            return result;
+
+        }
     </script>
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -120,6 +139,7 @@
             <span asp-validation-for="Comment"></span>
         </div>
         <div>
+            <div class="capchaValidation" style="display:none;">Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.</div>
             <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
             <input class="submintButton" type="submit" value="Записаться" />
         </div>

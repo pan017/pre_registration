@@ -16,6 +16,10 @@ body {
 .workTimeTable TD {
     padding: 0px 5px; /* Поля в ячейках */
 }
+.capchaValidation{
+    color:red;
+    font-style:oblique;
+}
 a #userMenu {
     text-decoration: none;
 }
