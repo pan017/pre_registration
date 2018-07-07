@@ -10,6 +10,42 @@
             $(".g-recaptcha").show();
 
         });
+
+        $('#mainRecordForm').submit(function () {
+            var errorCount = 0;
+            if ($("#Client_UserData_LastName").val().length < 1) {
+                $("#Client_UserData_LastName").css("border-color", "red");
+                $("#Client_UserData_LastName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_FirstName").val().length < 1) {
+                $("#Client_UserData_FirstName").css("border-color", "red");
+                $("#Client_UserData_FirstName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_SecondName").val().length < 1) {
+                $("#Client_UserData_SecondName").css("border-color", "red");
+                $("#Client_UserData_SecondName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_Phone").val().length < 1) {
+                $("#Client_UserData_Phone").css("border-color", "red");
+                $("#Client_UserData_Phone").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_EmailAdress").val().length < 1) {
+                $("#Client_UserData_EmailAdress").css("border-color", "red");
+                $("#Client_UserData_EmailAdress").css("border-width", "2px");
+                errorCount++;
+            }
+
+            if (errorCount != 0) {
+                return false;
+
+            }
+          
+
+        });
     </script>
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -17,7 +53,7 @@
     <br />
     @*<h2>Заполните форму</h2>*@
     @*<a class="backToSelectTime">Вернуться к выбору времени</a>*@
-    <form method="post" asp-action="addRecord" asp-controller="Home">
+    <form method="post" id="mainRecordForm" asp-action="recordForm" asp-controller="Home">
         <div>
             <label asp-for="Client.UserData.LastName"></label><br />
             @if (ViewBag.order != null)

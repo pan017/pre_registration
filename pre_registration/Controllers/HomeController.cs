@@ -151,7 +151,7 @@ namespace pre_registration.Controllers
             return PartialView();
         }
         [HttpPost]
-        public IActionResult addRecord(Order model)
+        public IActionResult recordForm(Order model)
         {
             string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
             HttpClient client = new HttpClient();
@@ -173,6 +173,7 @@ namespace pre_registration.Controllers
                 ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
                 return RedirectToAction("recordForm", "Home", model);
             }
+            
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
             Order newOrder = new Order();
 
