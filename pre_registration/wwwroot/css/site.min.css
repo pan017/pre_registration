@@ -1,16 +1,17 @@
 html {
-    min-width: 1200px;
+    /*min-width: 1200px;*/
     font-family: Arial;
     font-size: 13pt;
+    /*width:100%;*/
 }
 
 body {
-    margin: 0;
+    margin: 0 auto;
     border-top: 5px solid #7e7e7e;
     background: #f8f8f8;
     color: gray;
     font-family: Arial;
-    min-width: 1200px;
+    /*min-width: 1200px;*/
     height: 100%;
 }
 
@@ -72,7 +73,7 @@ a #userMenu {
         width: auto;
         top: auto;
         position: inherit;
-        margin-right: 5%;
+        /*margin-right:5%;*/
     }
 
     .head-row {
@@ -134,11 +135,9 @@ footer {
     .areaButtons {
         margin-left: 10%;
     }
-
-    .titleHeadRow {
+    /*.titleHeadRow {
         padding-right: 30%;
-    }
-
+    }*/
     .areaInfo {
         width: 30%;
         text-align: center;
@@ -148,14 +147,12 @@ footer {
 }
 
 @media screen and (max-width: 950px) {
-    .userMenuButton {
-        margin-right: 30%;
-    }
-
-    .titleHeadRow {
-        margin-right: 25%;
-    }
-
+    /*.userMenuButton {
+            margin-right: 30%;
+        }*/
+    /*.titleHeadRow {
+            margin-right:25%;
+        }*/
     .leftAreaButton {
         position: relative;
         width: 380px;
@@ -172,75 +169,65 @@ footer {
     }
 
     .areaInfo {
-        width: 30%;
+        width: 100%;
         text-align: center;
         float: none;
-        margin-left: 20%;
+        margin-left: inherit;
     }
 
     .selectDate {
         float: none;
-        width: 70%;
+        width: 100%;
     }
 
     .calendar {
         float: none;
-        width: 70%;
+        width: 100%;
     }
 
     .selectTime {
         float: none;
-        width: 70%;
+        width: 100%;
     }
 
     .recordForm {
         float: none;
-        width: 70%;
+        width: 100%;
     }
+    /*.contentForm input[type=text]  {
+            margin-right: 25%;
+        }
+        .contentForm input[type=password] {
+            margin-right: 25%;
+        }
+        .contentForm input[type=email] {
+            margin-right: 25%;
+        }
+        .contentForm input[type=submit] {
+            margin-right: 25%;
+        }
+        .contentForm input[type=select] {
+            margin-right: 25%;
+        }
+        .contentForm input[type=date] {
+            margin-right: 25%;
+        }
+        .contentForm input[type=checkbox] {
+            margin-right: 25%;
+        }
+        .contentForm label {
+            margin-right: 25%;
+        }
+        .contentForm a {
+            margin-right: 25%;
+        }
+        .contentForm .capchaValidation {
+            margin-right: 25%;
+        }
 
-    .contentForm input[type=text] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=password] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=email] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=submit] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=select] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=date] {
-        margin-right: 25%;
-    }
-
-    .contentForm input[type=checkbox] {
-        margin-right: 25%;
-    }
-
-    .contentForm label {
-        margin-right: 25%;
-    }
-
-    .contentForm a {
-        margin-right: 25%;
-    }
-
-    .contentForm .capchaValidation {
-        margin-right: 25%;
-    }
-
-    .contentDiv {
-        margin-right: 25%;
-    }
+        .contentDiv {
+            margin-right: 25%;
+        }*/
 }
 
 
@@ -251,6 +238,11 @@ footer {
         margin: 10px 20px;
         cursor: pointer;
         left: 0;
+    }
+
+    .titleHeadRow {
+        padding-right: 42%;
+        padding-top: 4%;
     }
 
     #userMenu {
@@ -291,7 +283,7 @@ footer {
     }*/
 
 .container-body {
-    width: 1200px;
+    /*width: 1200px;*/
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
@@ -557,6 +549,10 @@ a.cancelButton {
             background-position: 81px -81px;
         }
 
+.checkout-bar li:hover {
+    cursor: pointer;
+}
+
 .checkout-wrap {
     color: #444;
     font-family: 'PT Sans Caption', sans-serif;
@@ -572,6 +568,7 @@ ul.checkout-bar li {
     font-weight: 600;
     padding: 14px 20px 14px 80px;
     position: relative;
+    text-align: left;
 }
 
     ul.checkout-bar li:before {
@@ -597,6 +594,7 @@ ul.checkout-bar li {
     ul.checkout-bar li.active {
         color: #8bc53f;
         font-weight: bold;
+        text-align: left;
     }
 
         ul.checkout-bar li.active:before {
@@ -646,96 +644,94 @@ ul.checkout-bar a {
     text-decoration: none;
 }
 
-/*@media all and (min-width: 800px) { */
-.checkout-bar li.active:after {
-    -webkit-animation: myanimation 3s 0;
-    background-size: 35px 35px;
-    background-color: #8bc53f;
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-    content: "";
-    height: 15px;
-    width: 100%;
-    left: 50%;
-    position: absolute;
-    top: -50px;
-    z-index: 0;
-}
-
-.checkout-wrap {
-    margin: 80px auto;
-}
-
-ul.checkout-bar {
-    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-    background-size: 35px 35px;
-    background-color: #EcEcEc;
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
-    border-radius: 15px;
-    height: 15px;
-    margin: 0 auto;
-    padding: 0;
-    position: absolute;
-    width: 100%;
-}
-
-    ul.checkout-bar:before {
+@media all and (min-width: 800px) {
+    .checkout-bar li.active:after {
+        -webkit-animation: myanimation 3s 0;
         background-size: 35px 35px;
-        background-color: #57aed1;
+        background-color: #8bc53f;
         background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
         background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
         -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
         box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
-        content: " ";
+        content: "";
         height: 15px;
-        left: 0;
+        width: 100%;
+        left: 50%;
         position: absolute;
-        width: 10%;
+        top: -50px;
+        z-index: 0;
     }
 
-    ul.checkout-bar li {
-        display: inline-block;
-        margin: 50px 0 0;
+    .checkout-wrap {
+        margin: 40px auto;
+        padding-bottom: 50px;
+    }
+
+    ul.checkout-bar {
+        -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+        background-size: 35px 35px;
+        background-color: #EcEcEc;
+        background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
+        background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
+        border-radius: 15px;
+        height: 15px;
+        margin: 0 auto;
         padding: 0;
-        text-align: center;
-        width: 19%;
+        position: absolute;
+        width: 100%;
     }
 
-        ul.checkout-bar li:before {
-            height: 45px;
-            left: 40%;
-            line-height: 45px;
+        ul.checkout-bar:before {
+            background-size: 35px 35px;
+            background-color: #57aed1;
+            background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+            background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+            -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            content: " ";
+            height: 15px;
+            left: 0;
             position: absolute;
-            top: -65px;
-            width: 45px;
-            z-index: 9;
+            width: 10%;
         }
 
-        ul.checkout-bar li.visited {
-            background: none;
+        ul.checkout-bar li {
+            display: inline-block;
+            margin: 50px 0 0;
+            padding: 0;
+            text-align: center;
+            width: 19%;
         }
 
-            ul.checkout-bar li.visited:after {
-                background-size: 35px 35px;
-                background-color: #57aed1;
-                background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-                background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-                -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-                box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-                content: "";
-                height: 15px;
-                left: 50%;
+            ul.checkout-bar li:before {
+                height: 45px;
+                left: 40%;
+                line-height: 45px;
                 position: absolute;
-                top: -50px;
-                width: 100%;
+                top: -65px;
+                width: 45px;
                 z-index: 9;
             }
 
-.checkout-bar li:hover {
-    cursor: pointer;
+            ul.checkout-bar li.visited {
+                background: none;
+            }
+
+                ul.checkout-bar li.visited:after {
+                    background-size: 35px 35px;
+                    background-color: #57aed1;
+                    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+                    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+                    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+                    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+                    content: "";
+                    height: 15px;
+                    left: 50%;
+                    position: absolute;
+                    top: -50px;
+                    width: 100%;
+                    z-index: 9;
+                }
 }
