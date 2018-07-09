@@ -268,9 +268,12 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("CuponId");
             HttpContext.Session.Remove("continueWithOutRegistration");         
            
+            return View("Finish");
+        }
+        public IActionResult Finish()
+        {
             return View();
         }
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

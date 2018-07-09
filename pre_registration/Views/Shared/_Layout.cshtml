@@ -41,34 +41,34 @@
 
 
 </head>
-<body style="min-width">
+<body style=" max-width: 1200px;" >
     @RenderSection("Scripts", required: false)
     <div class="container-body">
-        <div style="width:inherit;min-width: 800px;">
+        @*<div style="width:inherit;min-width: 800px;">*@
+            <div>
+
+                <div style="background-color:#e7e7e7; vertical-align:middle;    ">
+
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
+                    <div class="head-row" style="">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <p id="userName">@User.Identity.Name</p>
+                        }
+                        else
+                        {
+                            <div>
+
+                                <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
+                                <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
+                            </div>
+                        }
+                    </div>
 
 
-            <div style="background-color:#e7e7e7; vertical-align:middle; ">
-
-                <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
-                <div class="head-row" style="">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <p id="userName">@User.Identity.Name</p>
-                    }
-                    else
-                    {
-                        <div>
-
-                            <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
-                            <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
-                        </div>
-                    }
                 </div>
 
-
             </div>
-
-        </div>
         <div style=" " id="userMenu">
             @if (User.Identity.IsAuthenticated)
             {
@@ -107,63 +107,64 @@
                 <a asp-controller="Account" asp-action="LogOff" class="userMenuButton">Выход</a>
             </div>
         </div>
-        <div style="min-width: 1200px;">
-            <div id="modDialog" class="modal">
-                <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
-            </div>
+        <div>
+            @*<div style="min-width: 1200px;">*@
+                <div id="modDialog" class="modal">
+                    <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
+                </div>
 
-            <div style="text-align:center">
-                @RenderBody()
-            </div>
-            <hr />
-            <div>
-                @*<footer>
+                <div style="text-align:center">
+                    @RenderBody()
+                </div>
+                <hr />
+                <div>
+                    @*<footer>
                     <p>&copy; 2018 - КУП Минское городское агентсво обслуживания населения</p>
                 </footer>*@
+                </div>
             </div>
-        </div>
 
 
 
-        <script type="text/javascript">
-            var userMenuIsHide = true;
+            <script type="text/javascript">
+                var userMenuIsHide = true;
 
-            $(document).mouseup(function (e) { // событие клика по веб-документу
-                var div = $("#userMenu"); // тут указываем ID элемента
-                if (!div.is(e.target) // если клик был не по нашему блоку
-                    && div.has(e.target).length === 0) { // и не по его дочерним элементам
-                    div.hide(); // скрываем его
-                }
-            });
-
-            $(document).ready(function () {
-                userMenuIsHide = true;
-                $("#userMenu").hide();
-            });
-            $("#userName").click(function () {
-                if (userMenuIsHide == true) {
-                    $("#userMenu").show();
-                    userMenuIsHide = false;
-                }
-                else {
-                    $("#userMenu").hide();
-                    userMenuIsHide = true;
-
-                }
-            })
-            $(function () {
-                $.ajaxSetup({ cache: false });
-                $(".loginButton").click(function (e) {
-
-                    e.preventDefault();
-                    $.get(this.href, function (data) {
-                        $('#dialogContent').html(data);
-                        $('#modDialog').modal('show');
-                    });
+                $(document).mouseup(function (e) { // событие клика по веб-документу
+                    var div = $("#userMenu"); // тут указываем ID элемента
+                    if (!div.is(e.target) // если клик был не по нашему блоку
+                        && div.has(e.target).length === 0) { // и не по его дочерним элементам
+                        div.hide(); // скрываем его
+                    }
                 });
-            })
-        </script>
-    </div>
+
+                $(document).ready(function () {
+                    userMenuIsHide = true;
+                    $("#userMenu").hide();
+                });
+                $("#userName").click(function () {
+                    if (userMenuIsHide == true) {
+                        $("#userMenu").show();
+                        userMenuIsHide = false;
+                    }
+                    else {
+                        $("#userMenu").hide();
+                        userMenuIsHide = true;
+
+                    }
+                })
+                $(function () {
+                    $.ajaxSetup({ cache: false });
+                    $(".loginButton").click(function (e) {
+
+                        e.preventDefault();
+                        $.get(this.href, function (data) {
+                            $('#dialogContent').html(data);
+                            $('#modDialog').modal('show');
+                        });
+                    });
+                })
+            </script>
+        </div>
 
 </body>
 </html>

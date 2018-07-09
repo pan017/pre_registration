@@ -282,7 +282,7 @@ namespace pre_registration.Controllers
                protocol: HttpContext.Request.Scheme);
             EmailService.SendMail(config.Value.NotificationEmail, user.Login, "Восстановление пароля",
                 $"<b>Здравствуйте, {user.UserData.GetFullName()}</b> <br>" +
-                $"Мы получили запрос на смену пароля от вашего аккаунта на OneWin.by " +               
+                $"Мы получили запрос на смену пароля от вашего аккаунта на  {config.Value.WebSiteName}" +               
                 $"Чтобы его изменить, перейдите по ссылке " +
                 $"<br> <a href='{callbackUrl}'>Изменить пароль</a> " +
                 $"<p>Если вы не отправляли запрос, просто проигнорируйте это письмо. " +
