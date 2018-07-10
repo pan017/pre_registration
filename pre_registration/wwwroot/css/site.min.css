@@ -94,17 +94,18 @@ footer {
 .leftAreaButton {
     position: absolute;
     width: 380px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     min-width: 380px;
 }
 
 .rightAreaButton {
-    position: absolute;
+    position: relative;
     width: 380px;
     margin-left: 400px;
-    margin-bottom: 20%;
+    /*margin-bottom: 20%;*/
     text-align: center;
     min-width: 380px;
+    margin-bottom: 20px;
 }
 
 .areaButtons {
@@ -160,13 +161,22 @@ footer {
     }
 
     .rightAreaButton {
+        position: relative;
+        /*width: 380px;*/
+        margin-left: 0px;
+        padding-bottom: 20%;
+        text-align: center;
+        /*min-width: 380px;*/
+    }
+
+    /*.rightAreaButton {
         position: absolute;
         width: 380px;
         margin-left: 0px;
         margin-bottom: 20%;
         text-align: center;
         min-width: 380px;
-    }
+    }*/
 
     .areaInfo {
         width: 100%;
@@ -240,11 +250,13 @@ footer {
         left: 0;
     }
 
-    .titleHeadRow {
+    .checkout-bar {
+        padding-left: 0px;
+    }
+    /*.titleHeadRow {
         padding-right: 42%;
         padding-top: 4%;
-    }
-
+    }*/
     #userMenu {
         text-align: left;
     }
@@ -260,7 +272,26 @@ footer {
     }
 
     .areaButtons {
-        margin-left: 1%;
+        margin-left: inherit;
+        min-width: initial;
+        width: auto;
+    }
+
+    .newButton {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .leftAreaButton {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .rightAreaButton {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
     }
 }
 
