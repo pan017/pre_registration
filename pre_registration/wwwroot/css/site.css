@@ -107,7 +107,9 @@ footer {
     min-width: 380px;
     margin-bottom: 20px;
 }
-
+.btn-menu {
+    display: none;
+}
 .areaButtons {
     margin-left: 19%;
 }
@@ -287,6 +289,12 @@ footer {
         width: 100%;
         min-width: 100%;
         max-width: 100%;
+    }
+    .btn-menu{
+        display:block;
+        position:absolute;
+        right:0px;
+        margin-right:20px;
     }
 }
 

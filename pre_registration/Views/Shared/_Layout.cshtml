@@ -45,30 +45,30 @@
     @RenderSection("Scripts", required: false)
     <div class="container-body">
         @*<div style="width:inherit;min-width: 800px;">*@
-            <div>
+        <div>
+           
+            <div style="background-color:#e7e7e7; vertical-align:middle;    ">
+                <div class="btn-menu">btn menu</div>
+                <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
+                <div class="head-row" style="">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <p id="userName">@User.Identity.Name</p>
+                    }
+                    else
+                    {
+                        <div>
 
-                <div style="background-color:#e7e7e7; vertical-align:middle;    ">
-
-                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
-                    <div class="head-row" style="">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <p id="userName">@User.Identity.Name</p>
-                        }
-                        else
-                        {
-                            <div>
-
-                                <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
-                                <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
-                            </div>
-                        }
-                    </div>
-
-
+                            <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
+                            <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
+                        </div>
+                    }
                 </div>
 
+
             </div>
+
+        </div>
         <div style=" " id="userMenu">
             @if (User.Identity.IsAuthenticated)
             {
