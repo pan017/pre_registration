@@ -47,6 +47,7 @@ a #userMenu {
     right: 17%;
     position: absolute;
     width: 15%;
+    z-index: 100;
     background-color: #c1c1c1;
 }
 
@@ -57,7 +58,7 @@ a #userMenu {
 
 @media screen and (max-width: 1660px) {
     #userMenu {
-        right: 10%;
+        right: 15%;
     }
 }
 
@@ -68,13 +69,13 @@ a #userMenu {
 }
 
 @media screen and (max-width: 1240px) {
-    #userMenu {
-        right: 0;
-        width: auto;
+    /*#userMenu {
+        /*right: 0;
+        /*width: auto;
         top: auto;
         position: inherit;
-        /*margin-right:5%;*/
-    }
+        margin-right:5%;
+    }*/
 
     .head-row {
         position: absolute;
@@ -106,6 +107,10 @@ footer {
     text-align: center;
     min-width: 380px;
     margin-bottom: 20px;
+}
+
+.btn-menu {
+    display: none;
 }
 
 .areaButtons {
@@ -145,9 +150,19 @@ footer {
         float: none;
         margin-left: 15%;
     }
+
+    .checkout-bar {
+        padding-left: 0px;
+    }
 }
 
 @media screen and (max-width: 950px) {
+    #userMenu {
+        right: 0;
+        width: auto;
+        top: auto;
+        position: inherit;
+    }
     /*.userMenuButton {
             margin-right: 30%;
         }*/
@@ -253,10 +268,11 @@ footer {
     .checkout-bar {
         padding-left: 0px;
     }
-    /*.titleHeadRow {
-        padding-right: 42%;
-        padding-top: 4%;
-    }*/
+
+    h2.titleHeadRow {
+        padding-top: 30px;
+    }
+
     #userMenu {
         text-align: left;
     }
@@ -292,6 +308,13 @@ footer {
         width: 100%;
         min-width: 100%;
         max-width: 100%;
+    }
+
+    .btn-menu {
+        display: block;
+        position: absolute;
+        right: 0px;
+        margin-right: 20px;
     }
 }
 
@@ -625,7 +648,7 @@ ul.checkout-bar li {
     ul.checkout-bar li.active {
         color: #8bc53f;
         font-weight: bold;
-        text-align: left;
+        /*text-align: left;*/
     }
 
         ul.checkout-bar li.active:before {
@@ -676,6 +699,7 @@ ul.checkout-bar a {
 }
 
 @media all and (min-width: 800px) {
+
     .checkout-bar li.active:after {
         -webkit-animation: myanimation 3s 0;
         background-size: 35px 35px;

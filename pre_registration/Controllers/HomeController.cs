@@ -262,7 +262,10 @@ namespace pre_registration.Controllers
             else
             {
                 EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", getMessageBody(newOrder, deniedCupon));
-            }        
+
+               
+            }
+            EmailService.SendMail(config.Value.NotificationEmail, newOrder.CuponDate.Area.NotificationEmail, "Запись на прием", getMessageForArea(newOrder));
             HttpContext.Session.Remove("Date");
             HttpContext.Session.Remove("Area");
             HttpContext.Session.Remove("CuponId");
@@ -270,6 +273,7 @@ namespace pre_registration.Controllers
            
             return View("Finish");
         }
+
         public IActionResult Finish()
         {
             return View();
@@ -319,6 +323,30 @@ namespace pre_registration.Controllers
               getAreaNameDeclination(order.CuponDate.Area.Name),
               order.CuponDate.Area.Adres,
               order.CuponDate.Area.Phone);
+        }
+        private string getMessageForArea(Order order)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            return String.Format(@"
+                 <html>
+                <body>
+                <br>
+                    Доброго времени суток.
+                    <br> Заявитель: {0} 
+                    <br> Дата записи: {1}
+                    <br> Время записи: {2}
+                    <br> Телефон: {3}
+                    <br> e-mail: {4}
+                    <br> {5}
+                 </body>
+                </html>
+            
+            ", order.CuponDate.date.ToShortDateString(),
+            order.CuponDate.date.ToLongTimeString(),
+            order.Client.UserData.GetFullName(), 
+            order.Client.UserData.Phone, 
+            order.Client.UserData.EmailAdress,
+            String.IsNullOrEmpty(order.Comment) ? "" : String.Format("Коментарий: {0}", order.Comment));
         }
     }
 }
