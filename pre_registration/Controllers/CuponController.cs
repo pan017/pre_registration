@@ -10,21 +10,23 @@ using Microsoft.EntityFrameworkCore;
 using pre_registration.Models.ViewModels;
 using pre_registration.Models.DataBaseModel;
 using System.Security.Claims;
+using pre_registration.Services;
+using Microsoft.Extensions.Options;
 
 namespace pre_registration.Controllers
 {
     public class CuponController : Controller
     {
         ApplicationContext db;
-        //SignInManager<ApplicationUser> _signInManager;
+        private readonly IOptions<AppConfig> config;
         public IActionResult Index()
         {
             return View();
         }
-        public  CuponController (ApplicationContext context)
+        public  CuponController (ApplicationContext context, IOptions<AppConfig> config)
         {
             db = context;
-      
+            this.config = config;
         }
       
         public List<CuponDate> getFreeCupons(int areaId)
@@ -150,6 +152,9 @@ namespace pre_registration.Controllers
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
                 model.AreaId = user.AreaId.Value;
             }
+          //  int interval = 0;
+            //bool isCorrectInterval = int.TryParse(model.interval, interval);
+          //  if (model.interval)
             DateTime tempDate = model.beginDate;
             while (model.endDate >= tempDate)
             {
@@ -178,13 +183,41 @@ namespace pre_registration.Controllers
             if (deniedCupon != null)
             {
                 Order order = db.Orders.FirstOrDefault(x => x.id == deniedCupon.OrderId);
+                order.Client = db.Clients.FirstOrDefault(x => x.id == order.ClientId);
+                order.Client.UserData = db.UsersData.FirstOrDefault(x => x.id == order.Client.UserDataID);
+                order.CuponDate = db.CuponDates.FirstOrDefault(x => x.id == order.CuponDateId);
+                order.CuponDate.Area = db.Areas.FirstOrDefault(x => x.Id == order.CuponDate.AreaId);
+                EmailService.SendMail(config.Value.NotificationEmail, order.CuponDate.Area.NotificationEmail, "Отмена записи", getMessageBody(order));
                 db.Orders.Remove(order);
                 db.SaveChanges();
+           
             }
 
             return RedirectToAction("MyCupons", "Cupon");
         }
+        private string getMessageBody(Order order)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            return String.Format(@"
+                 <html>
+                <body>
+                <br>
+                    Доброго времени суток.
+                    <br> Заявитель: {0} 
+                    <br> Дата записи: {1}
+                    <br> Время записи: {2}
+                    <br> Телефон: {3}
+                    <br> e-mail: {4}
+                 </body>
+                </html>
+            
+            ", order.Client.UserData.GetFullName(), 
+            order.CuponDate.date.ToShortDateString(),
+            order.CuponDate.date.ToLongTimeString(),
 
+            order.Client.UserData.Phone,
+            order.Client.UserData.EmailAdress);
+        }
         public ActionResult MyCupons()
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");

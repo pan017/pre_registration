@@ -1,15 +1,15 @@
 ﻿@model pre_registration.Models.ViewModels.SetCuponIntervalViewModel
 <h2 class="titleHeadRow">Добавление новых талонов для записи</h2>
 <div>
-<div class="validation" asp-validation-summary="ModelOnly"></div>
-    <form method="post" asp-controller="Cupon" asp-action="setCuponInterval"  class="contentForm">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <form method="post" asp-controller="Cupon" asp-action="setCuponInterval" class="contentForm">
 
         @if (User.IsInRole("admin"))
         {
-        <div class="contentDiv">
-            <label asp-for="AreaId"></label>
-            <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")'></select>
-        </div>
+            <div class="contentDiv">
+                <label asp-for="AreaId"></label><br />
+                <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")' class="selectList"></select>
+            </div>
         }
         <div>
             <label asp-for="beginDate"></label><br />
@@ -22,7 +22,7 @@
 
         <div>
             <label asp-for="interval"></label><br />
-            <input type="text" asp-for="interval" />
+            <input type="text" asp-for="interval" onkeyup="return proverka(this);" />
         </div>
         <div class="contentDiv">
             пн<input type="checkbox" asp-for="daysOfWeek[1]" />
@@ -36,7 +36,7 @@
         </div>
         <div class="contentDiv">
             <label asp-for="beginTimeHours"></label>
-            <select  asp-for="beginTimeHours" asp-items='new SelectList(ViewBag.Hours)'></select>
+            <select asp-for="beginTimeHours" asp-items='new SelectList(ViewBag.Hours)'></select>
             :
             <select asp-for="beginTimeMins" asp-items='new SelectList(ViewBag.Mins)'></select>
             <label asp-for="beginTimeMins"></label>
@@ -53,3 +53,14 @@
 
     </form>
 </div>
+
+<script type="text/javascript">
+    function proverka(input) {
+        var value = input.value;
+        var rep = /[-\./,/|~;@@!#$%_+=^&**()<>":'a-zA-Zа-яА-Я]/;
+        if (rep.test(value)) {
+            value = value.replace(rep, '');
+            input.value = value;
+        }
+    }
+</script> 

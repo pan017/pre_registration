@@ -289,6 +289,7 @@ namespace pre_registration.Controllers
             else
             {
                 string result = areaName;//.Replace("кий", "ого");
+                result = result.Replace("район", "");
                 result = result.Replace("кий", "ого");
                 result = result.Replace("ный", "ного");
                 result = result.Replace("кой", "кого");
@@ -341,9 +342,9 @@ namespace pre_registration.Controllers
                  </body>
                 </html>
             
-            ", order.CuponDate.date.ToShortDateString(),
+            ", order.Client.UserData.GetFullName(), 
+            order.CuponDate.date.ToShortDateString(),
             order.CuponDate.date.ToLongTimeString(),
-            order.Client.UserData.GetFullName(), 
             order.Client.UserData.Phone, 
             order.Client.UserData.EmailAdress,
             String.IsNullOrEmpty(order.Comment) ? "" : String.Format("Коментарий: {0}", order.Comment));
