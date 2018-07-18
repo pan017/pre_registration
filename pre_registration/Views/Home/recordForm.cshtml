@@ -38,6 +38,11 @@
                 $("#Client_UserData_EmailAdress").css("border-width", "2px");
                 errorCount++;
             }
+            if ($("#Comment").val().length < 1) {
+                $("#Comment").css("border-color", "red");
+                $("#Comment").css("border-width", "2px");
+                errorCount++;
+            }
             if (!checkCapcha()) {
                 $(".capchaValidation").show();                
                 errorCount++;

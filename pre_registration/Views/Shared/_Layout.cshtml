@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="~/css/site.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - предварительная запись в службу "Одно окно"</title>
+    <title>Предварительная запись в службу "Одно окно"</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
    
     <environment include="Development">
@@ -80,6 +80,9 @@
                     <div class="userMenuRow">
                         <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные талоны</a>
                     </div>
+                    <div class="userMenuRow">
+                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
+                    </div>
                 }
                 if (User.IsInRole("admin"))
                 {
@@ -88,6 +91,9 @@
                     </div>
                     <div class="userMenuRow">
                         <a asp-controller="Admin" asp-action="Index" class="userMenuButton">Администрирование</a>
+                    </div>
+                    <div class="userMenuRow">
+                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
                     </div>
                 }
                 if (User.IsInRole("user"))

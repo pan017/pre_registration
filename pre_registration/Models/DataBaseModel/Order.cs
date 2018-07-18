@@ -6,7 +6,7 @@ namespace pre_registration.Models.DataBaseModel
     public class Order
     {
         public int id { get; set; }
-        [Display(Name = "Коментарий")]
+        [Display(Name = "Ваш вопрос")]
         public string Comment { get; set; }
         public DateTime OrderDate { get; set; }
         public int ClientId { get; set; }

@@ -196,7 +196,14 @@ namespace pre_registration.Controllers
             
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
             Order newOrder = new Order();
-
+            var ordersList = db.Orders.ToList();
+            foreach (var item in ordersList)
+            {
+                if (item.CuponDateId == cuponDate.id)
+                {
+                    return View(model);
+                }
+            }
             ApplicationUser applicationUser = new ApplicationUser();// = db.Users.FirstOrDefault(x => x.Id == userId);
             
             newOrder.CuponDateId = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId"))).id;
@@ -209,8 +216,7 @@ namespace pre_registration.Controllers
                 applicationUser = db.Users.FirstOrDefault(x => x.Id == userId);
                 applicationUser.UserSettings = db.UserSettings.FirstOrDefault(x => x.id == applicationUser.UserSettingsId);
 
-                if (userClient == null)
-                {
+
                     Client newClient = new Client();
                     newClient.UserId = userId;
                     newClient.UserDataID = db.Users.First(x => x.Id == userId).UserDataID;
@@ -218,6 +224,26 @@ namespace pre_registration.Controllers
                     db.SaveChanges();
                     userClient = newClient;
                    
+                
+                userClient.UserData = db.UsersData.FirstOrDefault(x => x.id == userClient.UserDataID);
+                if (model.Client.UserData.FirstName != userClient.UserData.FirstName 
+                    || model.Client.UserData.LastName != userClient.UserData.LastName
+                    || model.Client.UserData.SecondName != userClient.UserData.SecondName
+                    || model.Client.UserData.EmailAdress != userClient.UserData.EmailAdress
+                    || model.Client.UserData.Phone != userClient.UserData.Phone)
+                {
+                    UserData userData = new UserData
+                    {
+                        EmailAdress = model.Client.UserData.EmailAdress,
+                        Phone = model.Client.UserData.Phone,
+                        SecondName = model.Client.UserData.SecondName,
+                        LastName = model.Client.UserData.LastName,
+                        FirstName = model.Client.UserData.FirstName
+                    };
+                    db.UsersData.Add(userData);
+                    db.SaveChanges();
+                    userClient.UserDataID = userData.id;
+                    userClient.UserData = userData;
                 }
                 newOrder.ClientId = userClient.id;
             }
@@ -273,7 +299,7 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("CuponId");
             HttpContext.Session.Remove("continueWithOutRegistration");         
            
-            return View("Finish");
+            return RedirectToAction("Finish");
         }
 
         public IActionResult Finish()
@@ -306,11 +332,11 @@ namespace pre_registration.Controllers
                 <html>
                 <body>
                 <br>
-                <br>Здравствуйте {0} {1} {2}, <br> Вы забронировали время подачи документов в службе Одно окно {3} на {4} в {5}.
-                Желательно распечатать это сообщение и принести его с собой на подачу документов.
+                <br>Здравствуйте, {0} {1} {2}, <br> Вы забронировали время подачи документов в службе «одно окно» администрации {3} на {4} в {5}.
+                Желательно распечатать это сообщение и принести его с собой на прием.
                 <p><b>Если Вы не можете</b> прийти в забронированное время, то, пожалуйста, <b>аннулируйте</b> бронирование здесь {6} </p>
-                <br>Это письмо было сгенерировано автоматически. Пожалуйста, не отвечайте на него.
-                <p>Служба Одно окно {7}.<br>
+                <br>Это письмо было сгенерировано автоматически. Отвечать на него не нужно.
+                <p>Служба «одно окно» администрации {7}.<br>
                 {8}<br>
                 {9}</p>
                 </body>

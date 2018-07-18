@@ -114,7 +114,7 @@ namespace pre_registration.Controllers
                 item.CuponDate = db.CuponDates.First(x => x.id == item.CuponDateId);
                 item.Client.UserData = db.UsersData.First(x => x.id == item.Client.UserDataID);
             }
-            
+            orders = orders.OrderBy(x => x.CuponDate.date).ToList();
             return View(orders);
             
         }
@@ -226,7 +226,7 @@ namespace pre_registration.Controllers
             {
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
                 List<MyCuponsViewModel> model = new List<MyCuponsViewModel>();
-                var orderList = db.Orders.Where(x => x.Client.UserId == user.Id).ToList();
+                var orderList = db.Orders.Where(x => x.Client.UserId == user.Id).OrderBy(x => x.CuponDate).ToList();
                 foreach (var item in orderList)
                 {
                     item.Client = db.Clients.First(x => x.id == item.ClientId);
