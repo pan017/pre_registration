@@ -83,11 +83,12 @@ namespace pre_registration.Controllers
             HttpContext.Session.SetString("Date", selectedDay.ToString("d"));
             var a = HttpContext.Session.GetString("continueWithOutRegistration");
             bool continueWithOutRegistration = false;
-            continueWithOutRegistration = bool.TryParse(HttpContext.Session.GetString("continueWithOutRegistration"), out continueWithOutRegistration);
+            continueWithOutRegistration = true; //bool.TryParse(HttpContext.Session.GetString("continueWithOutRegistration"), out continueWithOutRegistration);
             if (User.Identity.IsAuthenticated || continueWithOutRegistration)
             {                 
                 DateTime d = selectedDay.Date;
                 List<CuponDate> model = getFreeCupons(areaId).Where(x => x.date.Date == selectedDay.Date).ToList();//db.CuponDates.Where(x => x.Area.Id == areaId && x.date.Date == selectedDay.Date).ToList();
+                model = model.OrderBy(x => x.date).ToList();
                 return PartialView(model);
             }
             else

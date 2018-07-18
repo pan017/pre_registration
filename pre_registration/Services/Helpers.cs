@@ -25,5 +25,20 @@ namespace pre_registration
             int[] dateComponents = inputString.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
             return new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
         }
+
+        public static DateTime GetDateFromSession(string date)
+        {
+            try
+            {
+                var stringDate =date;
+                int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
+                return new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
+
+            }
+            catch (Exception e)
+            {
+                return new DateTime();
+            }
+        }
     }
 }

@@ -46,11 +46,12 @@ namespace pre_registration.Controllers
         }
         public IActionResult returnToSelectTime()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             HttpContext.Session.Remove("CuponId");
             //var stringDate = HttpContext.Session.GetString("Date"); 
             //int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
             //DateTime selectDay = new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
-            return RedirectToAction("viewTime", "Cupon", new { selectedDay = GetDateFromSession(), areaId = HttpContext.Session.GetInt32("Area") });
+            return RedirectToAction("viewTime", "Cupon", new { selectedDay = Helpers.GetDateFromSession(HttpContext.Session.GetString("Date")), areaId = HttpContext.Session.GetInt32("Area") });
         }
         private DateTime GetDateFromSession()
         {
@@ -114,6 +115,7 @@ namespace pre_registration.Controllers
         }
         public IActionResult selectAreaForm()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             List<Area> AreasList = db.Areas.ToList();
             //for (int i = 0; i < AreasList.Count; i++)
             //{
@@ -122,7 +124,7 @@ namespace pre_registration.Controllers
             ViewBag.SelectedArea = HttpContext.Session.GetInt32("Area");
             DateTime selectedDate = new DateTime();
             DateTime.TryParse(HttpContext.Session.GetString("Date"), out selectedDate);
-            ViewBag.selectedDate = GetDateFromSession();
+            ViewBag.selectedDate = Helpers.GetDateFromSession(HttpContext.Session.GetString("Date"));// GetDateFromSession();
             SelectList areasSelectList = new SelectList(AreasList, "Id", "Name");
             ViewBag.AreasList = db.Areas.ToList(); //areasSelectList;
             
