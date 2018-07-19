@@ -40,5 +40,20 @@ namespace pre_registration
                 return new DateTime();
             }
         }
+        public static string getAreaNameDeclination(string areaName)
+        {
+            if (areaName == "Мингорисполком")
+                return "Мингорисполкома";
+            else
+            {
+                string result = areaName;//.Replace("кий", "ого");
+                result = result.Replace("район", "");
+                result = result.Replace("кий", "ого");
+                result = result.Replace("ный", "ного");
+                result = result.Replace("кой", "кого");
+                result = "администрации " + result + " района";
+                return result;
+            }
+        }
     }
 }

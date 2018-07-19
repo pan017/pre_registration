@@ -276,22 +276,13 @@ namespace pre_registration.Controllers
                 }
                 if (applicationUser.UserSettings.SendReminder)
                 {
-                    SentNotification sentNotification = new SentNotification();
-                    sentNotification.isSent = false;
-                    sentNotification.OrderId = newOrder.id;
-                    db.SentNotifications.Add(new SentNotification
-                    {
-                        isSent = false,
-                        OrderId = newOrder.id
-                    });
-                    db.SaveChanges();
+                    addSentNotification(newOrder.id);
                 }
             }
             else
             {
                 EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", getMessageBody(newOrder, deniedCupon));
-
-               
+                addSentNotification(newOrder.id);
             }
             EmailService.SendMail(config.Value.NotificationEmail, newOrder.CuponDate.Area.NotificationEmail, "Запись на прием", getMessageForArea(newOrder));
             HttpContext.Session.Remove("Date");
@@ -301,7 +292,16 @@ namespace pre_registration.Controllers
            
             return RedirectToAction("Finish");
         }
-
+        public void addSentNotification(int orderId)
+        {
+            SentNotification sentNotification = new SentNotification();
+            db.SentNotifications.Add(new SentNotification
+            {
+                isSent = false,
+                OrderId = orderId
+            });
+            db.SaveChanges();
+        }
         public IActionResult Finish()
         {
             return View();
@@ -310,21 +310,21 @@ namespace pre_registration.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        private string getAreaNameDeclination(string areaName)
-        {
-            if (areaName == "Мингорисполком")
-                return areaName;
-            else
-            {
-                string result = areaName;//.Replace("кий", "ого");
-                result = result.Replace("район", "");
-                result = result.Replace("кий", "ого");
-                result = result.Replace("ный", "ного");
-                result = result.Replace("кой", "кого");
-                result = result + " района";
-                return result;
-            }
-        }
+        //private string getAreaNameDeclination(string areaName)
+        //{
+        //    if (areaName == "Мингорисполком")
+        //        return areaName;
+        //    else
+        //    {
+        //        string result = areaName;//.Replace("кий", "ого");
+        //        result = result.Replace("район", "");
+        //        result = result.Replace("кий", "ого");
+        //        result = result.Replace("ный", "ного");
+        //        result = result.Replace("кой", "кого");
+        //        result = result + " района";
+        //        return result;
+        //    }
+        //}
         public string getMessageBody(Order order, DeniedCupon deniedCupon)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
@@ -332,11 +332,11 @@ namespace pre_registration.Controllers
                 <html>
                 <body>
                 <br>
-                <br>Здравствуйте, {0} {1} {2}, <br> Вы забронировали время подачи документов в службе «одно окно» администрации {3} на {4} в {5}.
+                <br>Здравствуйте, {0} {1} {2}, <br> Вы забронировали время подачи документов в службе «одно окно» {3} на {4} в {5}.
                 Желательно распечатать это сообщение и принести его с собой на прием.
                 <p><b>Если Вы не можете</b> прийти в забронированное время, то, пожалуйста, <b>аннулируйте</b> бронирование здесь {6} </p>
                 <br>Это письмо было сгенерировано автоматически. Отвечать на него не нужно.
-                <p>Служба «одно окно» администрации {7}.<br>
+                <p>Служба «одно окно» {7}.<br>
                 {8}<br>
                 {9}</p>
                 </body>
@@ -345,11 +345,11 @@ namespace pre_registration.Controllers
               order.Client.UserData.FirstName,
               order.Client.UserData.SecondName,
 
-              getAreaNameDeclination(order.CuponDate.Area.Name),
+              Helpers.getAreaNameDeclination(order.CuponDate.Area.Name),
               order.CuponDate.date.ToShortDateString(),
               order.CuponDate.date.ToShortTimeString(),
               String.Format(@"<a href='http://{0}/Cupon/DeniedCupon?key={1}'>Отменить запись</a>", Request.Host.Value, deniedCupon.DeniedKey),
-              getAreaNameDeclination(order.CuponDate.Area.Name),
+              Helpers.getAreaNameDeclination(order.CuponDate.Area.Name),
               order.CuponDate.Area.Adres,
               order.CuponDate.Area.Phone);
         }
