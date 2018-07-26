@@ -93,7 +93,7 @@ namespace pre_registration.Controllers
 
             var values = new List<KeyValuePair<string, string>>();
             values.Add(new KeyValuePair<string, string>
-            ("secret", "6Lc_U2YUAAAAAKraYLP_-pCSi8Zn5cLlFmM9jPLv"));
+            ("secret", "6LcdnGIUAAAAAP_4UrRGJOTEaofjTPxbbfyu5Xtm"));
             values.Add(new KeyValuePair<string, string>
              ("response", captchaResponse));
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
