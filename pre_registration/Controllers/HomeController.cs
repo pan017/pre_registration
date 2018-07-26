@@ -154,6 +154,7 @@ namespace pre_registration.Controllers
         }
         public bool checkCapcha(string recaptchaResponse)
         {
+            return true;
             string captchaResponse = recaptchaResponse;// HttpContext.Request.Form["g-Recaptcha-Response"];
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://www.google.com");
