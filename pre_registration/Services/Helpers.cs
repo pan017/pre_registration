@@ -40,7 +40,7 @@ namespace pre_registration
                 return new DateTime();
             }
         }
-        public static string getAreaNameDeclination(string areaName)
+        public static string getAreaNameDeclination(string areaName, bool onlyAreaName = false)
         {
             if (areaName == "Мингорисполком")
                 return "Мингорисполкома";
@@ -48,11 +48,15 @@ namespace pre_registration
             {
                 string result = areaName;//.Replace("кий", "ого");
                 result = result.Replace("район", "");
-                result = result.Replace("кий", "ого");
+                result = result.Replace("кий", "кого");
                 result = result.Replace("ный", "ного");
                 result = result.Replace("кой", "кого");
-                result = "администрации " + result + " района";
+                if (!onlyAreaName)
+                    result = "администрации " + result + " района"; 
+                else
+                    result = result + " района";  //result = "Служба «одно окно» администрации " + result + " района";
                 return result;
+
             }
         }
     }

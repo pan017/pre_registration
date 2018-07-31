@@ -13,11 +13,11 @@
                 <div class="newButton rightAreaButton" style="" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
-                            <td>@ViewBag.AreasList[i].Name</td>
+                            <td><b> Служба «одно окно» <br /> администрации @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name, true)</b> </td>
 
                         </tr>
                         <tr>
-                            <td>@ViewBag.AreasList[i].Adres</td>
+                            <td><b>@ViewBag.AreasList[i].Adres</b> </td>
                         </tr>
                     </table>
                 </div>
@@ -29,11 +29,11 @@
                 <div class="newButton leftAreaButton" style=" " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
-                            <td>@ViewBag.AreasList[i].Name</td>
+                            <td><b> Служба «одно окно» <br /> администрации @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name, true) </b></td>
 
                         </tr>
                         <tr>
-                            <td>@ViewBag.AreasList[i].Adres</td>
+                            <td><b>@ViewBag.AreasList[i].Adres</b> </td>
                         </tr>
                     </table>
                 </div>
