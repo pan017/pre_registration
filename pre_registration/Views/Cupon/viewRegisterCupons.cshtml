@@ -6,6 +6,10 @@
 <table class="table">
     <tr>
         <th>id</th>
+        @if (User.IsInRole("admin"))
+        {
+            <th>Райнон</th>
+        }
         <th>Дата записи</th>
         <th>Дата талона</th>
         <th>Время талона</th>
@@ -18,20 +22,23 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.id</td>
+    <tr>
+        <td>@item.id</td>
+        @if (User.IsInRole("admin"))
+        {
+        <td>@item.CuponDate.Area.Name</td>
+        }
 
+        <td>@item.OrderDate.ToShortDateString()</td>
+        <td>@item.CuponDate.date.ToShortDateString()</td>
+        <td>@item.CuponDate.date.ToShortTimeString()</td>
+        <td>@item.Client.UserData.LastName</td>
+        <td>@item.Client.UserData.FirstName</td>
 
-            <td>@item.OrderDate.ToShortDateString()</td>
-            <td>@item.CuponDate.date.ToShortDateString()</td>
-            <td>@item.CuponDate.date.ToShortTimeString()</td>
-            <td>@item.Client.UserData.LastName</td>
-            <td>@item.Client.UserData.FirstName</td>
-
-            <td>@item.Client.UserData.SecondName</td>
-            <td>@item.Client.UserData.EmailAdress </td>
-            <td>@item.Client.UserData.Phone</td>
-            <td>@item.Comment</td>
-        </tr>
+        <td>@item.Client.UserData.SecondName</td>
+        <td>@item.Client.UserData.EmailAdress </td>
+        <td>@item.Client.UserData.Phone</td>
+        <td>@item.Comment</td>
+    </tr>
     }
 </table>

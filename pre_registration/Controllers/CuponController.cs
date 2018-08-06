@@ -113,6 +113,7 @@ namespace pre_registration.Controllers
                 item.Client = db.Clients.First(x => x.id == item.ClientId);
                 item.CuponDate = db.CuponDates.First(x => x.id == item.CuponDateId);
                 item.Client.UserData = db.UsersData.First(x => x.id == item.Client.UserDataID);
+                item.CuponDate.Area = db.Areas.FirstOrDefault(x => x.Id == item.CuponDate.AreaId);
             }
             orders = orders.OrderBy(x => x.CuponDate.date).ToList();
             return View(orders);

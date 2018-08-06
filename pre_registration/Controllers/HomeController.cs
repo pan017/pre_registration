@@ -48,9 +48,6 @@ namespace pre_registration.Controllers
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             HttpContext.Session.Remove("CuponId");
-            //var stringDate = HttpContext.Session.GetString("Date"); 
-            //int[] dateComponents = stringDate.Split('.').Select(n => Convert.ToInt32(n)).ToArray();
-            //DateTime selectDay = new DateTime(dateComponents[2], dateComponents[1], dateComponents[0]);
             return RedirectToAction("viewTime", "Cupon", new { selectedDay = Helpers.GetDateFromSession(HttpContext.Session.GetString("Date")), areaId = HttpContext.Session.GetInt32("Area") });
         }
         private DateTime GetDateFromSession()
@@ -117,10 +114,6 @@ namespace pre_registration.Controllers
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             List<Area> AreasList = db.Areas.ToList();
-            //for (int i = 0; i < AreasList.Count; i++)
-            //{
-            //    AreasList[i].Name = AreasList[i].Name == "Мингорисполком" ? AreasList[i].Name : AreasList[i].Name + " район";
-            //}
             ViewBag.SelectedArea = HttpContext.Session.GetInt32("Area");
             DateTime selectedDate = new DateTime();
             DateTime.TryParse(HttpContext.Session.GetString("Date"), out selectedDate);
@@ -140,9 +133,6 @@ namespace pre_registration.Controllers
                 var userData = db.UsersData.Where(x => x.id == userDataId).First();
                 Client userClient = new Client();
                 userClient.UserData = userData;
-                
-
-
                 Order order = new Order();
                 order.Client = userClient;
                 order.CuponDate = db.CuponDates.First(x => x.id == int.Parse(id));
@@ -173,28 +163,7 @@ namespace pre_registration.Controllers
         }
         [HttpPost]
         public IActionResult recordForm(Order model)
-        {
-            //string captchaResponse = HttpContext.Request.Form["g-Recaptcha-Response"];
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("https://www.google.com");
-
-            //var values = new List<KeyValuePair<string, string>>();
-            //values.Add(new KeyValuePair<string, string>
-            //("secret", "6LcdnGIUAAAAAP_4UrRGJOTEaofjTPxbbfyu5Xtm"));
-            //values.Add(new KeyValuePair<string, string>
-            // ("response", captchaResponse));
-            //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            //HttpResponseMessage response = client.PostAsync("/recaptcha/api/siteverify", content).Result;
-
-            //string verificationResponse = response.Content.
-            //ReadAsStringAsync().Result;
-            //var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
-            //if (!res.Success)
-            //{
-            //    ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
-            //    return RedirectToAction("recordForm", "Home", model);
-            //}
-            
+        { 
             CuponDate cuponDate = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId")));
             Order newOrder = new Order();
             var ordersList = db.Orders.ToList();
@@ -205,8 +174,7 @@ namespace pre_registration.Controllers
                     return View(model);
                 }
             }
-            ApplicationUser applicationUser = new ApplicationUser();// = db.Users.FirstOrDefault(x => x.Id == userId);
-            
+            ApplicationUser applicationUser = new ApplicationUser();
             newOrder.CuponDateId = db.CuponDates.First(x => x.id == int.Parse(HttpContext.Session.GetString("CuponId"))).id;
             newOrder.OrderDate = DateTime.Now;
             newOrder.Comment = model.Comment;
@@ -277,13 +245,13 @@ namespace pre_registration.Controllers
                 }
                 if (applicationUser.UserSettings.SendReminder)
                 {
-                    addSentNotification(newOrder.id);
+                 //   addSentNotification(newOrder.id);
                 }
             }
             else
             {
                 EmailService.SendMail(config.Value.NotificationEmail, newOrder.Client.UserData.EmailAdress, "Запись в службу 'Одно окно'", getMessageBody(newOrder, deniedCupon));
-                addSentNotification(newOrder.id);
+              //  addSentNotification(newOrder.id);
             }
             EmailService.SendMail(config.Value.NotificationEmail, newOrder.CuponDate.Area.NotificationEmail, "Запись на прием", getMessageForArea(newOrder));
             HttpContext.Session.Remove("Date");
@@ -311,21 +279,7 @@ namespace pre_registration.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        //private string getAreaNameDeclination(string areaName)
-        //{
-        //    if (areaName == "Мингорисполком")
-        //        return areaName;
-        //    else
-        //    {
-        //        string result = areaName;//.Replace("кий", "ого");
-        //        result = result.Replace("район", "");
-        //        result = result.Replace("кий", "ого");
-        //        result = result.Replace("ный", "ного");
-        //        result = result.Replace("кой", "кого");
-        //        result = result + " района";
-        //        return result;
-        //    }
-        //}
+        
         public string getMessageBody(Order order, DeniedCupon deniedCupon)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");

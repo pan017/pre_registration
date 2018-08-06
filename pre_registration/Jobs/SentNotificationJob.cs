@@ -13,8 +13,7 @@ namespace pre_registration.Jobs
     {
         public Task Execute(IJobExecutionContext context)
         {
-            string connectionString = context.JobDetail.JobDataMap.GetString("connectionString");//"Server = tcp:172.16.209.203, 1433; Database = PreRegistrationDB.mdf; User Id = sa; Password = QWEasdZXC123; Integrated Security = true";
-                                                                                                 //string connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
+            string connectionString = context.JobDetail.JobDataMap.GetString("connectionString");
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
             var options = optionsBuilder
                 .UseSqlServer(connectionString)
