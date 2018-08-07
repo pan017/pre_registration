@@ -1,7 +1,7 @@
 ﻿@model pre_registration.Models.Area
 
 <div>
-    <h2> Служба «одно окно» <br /> администрации @Helpers.getAreaNameDeclination(@Model.Name, true) </h2>
+    <h2> Служба «одно окно» <br />@Helpers.getAreaNameDeclination(@Model.Name) </h2>
     <h4><a asp-controller="Home" asp-action="GetMap" asp-route-areaId="@Model.Id" class="showMap">@Model.Adres</a></h4>
     <div>
         <p>Время работы</p>
