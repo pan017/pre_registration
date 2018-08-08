@@ -104,7 +104,9 @@ namespace pre_registration.Controllers
         {
             if (areaId != 0)
             {
-                HttpContext.Session.SetInt32("Area", areaId);
+                if (db.Areas.FirstOrDefault(x => x.Id == areaId) != null)
+                    HttpContext.Session.SetInt32("Area", areaId);
+               
             }
             return View();
         }
