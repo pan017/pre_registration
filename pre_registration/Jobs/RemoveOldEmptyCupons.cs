@@ -24,7 +24,7 @@ namespace pre_registration.Jobs
             using (ApplicationContext db = new ApplicationContext(options))
             {
                 List<Order> orders = db.Orders.ToList();
-                List<CuponDate> allCuponList = db.CuponDates.Where(x => x.date < DateTime.Now).ToList();
+                List<CuponDate> allCuponList = db.CuponDates.Where(x => x.date < DateTime.Now.AddHours(1)).ToList();
                 List<CuponDate> busyCupons = new List<CuponDate>();
 
                 foreach (var cupon in allCuponList)

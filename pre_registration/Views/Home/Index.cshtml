@@ -24,7 +24,8 @@
             $(".selectDate").hide();
             $(".selectTime").hide();
             $(".areaInfo").hide();
-            $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
+            window.location = '@Url.Action("returnToSelectArea", "Home")';
+           // $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
 
         }
 
@@ -32,6 +33,7 @@
             $('.recordForm').hide();
 
             $(".selectTime").show();
+            console.log(GetSelectedDate());
             $('.selectTime').load('@Url.Action("returnToSelectTime", "Home")');
 
         }

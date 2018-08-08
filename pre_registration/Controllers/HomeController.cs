@@ -36,7 +36,7 @@ namespace pre_registration.Controllers
             HttpContext.Session.Remove("Area");
             HttpContext.Session.Remove("CuponId");
             HttpContext.Session.Remove("Date");
-            return RedirectToAction("selectAreaForm");
+            return RedirectToAction("Index");
         }
         public IActionResult returnToSelectDate()
         {
@@ -100,11 +100,15 @@ namespace pre_registration.Controllers
         {
             return PartialView(db.Areas.FirstOrDefault(x => x.Id == areaId));
         }
-        public IActionResult Index()
+        public IActionResult Index(int areaId = 0)
         {
+            if (areaId != 0)
+            {
+                HttpContext.Session.SetInt32("Area", areaId);
+            }
             return View();
         }
-        
+
         public IActionResult selectTime(string cuponId)
         {
 
