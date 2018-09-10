@@ -8,25 +8,18 @@ using pre_registration.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using pre_registration.Models.ViewModels;
 using pre_registration.Models.DataBaseModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace pre_registration.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
-       // private readonly UserManager<ApplicationUser> _userManager;
-        //private readonly SignInManager<ApplicationUser> _signInManager;
-        //private readonly RoleManager<ApplicationRole> _roleManager;
         private ApplicationContext db;
 
         public AdminController(ApplicationContext context) //RoleManager<IdentityRole> roleManager,
         {
             db = context;
-            //_userManager = userManager;
-            //_signInManager = signInManager;
-            //_roleManager = roleManager;
-          //  _roleManager.CreateAsync(new IdentityRole("Пользователь"));
-            
-
         }
         public IActionResult Index()
         {

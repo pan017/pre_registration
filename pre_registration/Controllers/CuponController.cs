@@ -12,6 +12,7 @@ using pre_registration.Models.DataBaseModel;
 using System.Security.Claims;
 using pre_registration.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace pre_registration.Controllers
 {
@@ -96,6 +97,7 @@ namespace pre_registration.Controllers
                 return RedirectToAction("LoginOrContinue", "Account");
             }
         }
+        [Authorize(Roles = "admin, superuser")]
         public IActionResult viewRegisterCupons()
         {
             
@@ -119,7 +121,7 @@ namespace pre_registration.Controllers
             return View(orders);
             
         }
-
+        [Authorize(Roles = "admin, superuser")]
         public IActionResult setCuponInterval()
         {
             SetCuponIntervalViewModel model = new SetCuponIntervalViewModel();
@@ -133,6 +135,7 @@ namespace pre_registration.Controllers
             ViewBag.Areas = db.Areas.ToList();
             return View();
         }
+        [Authorize(Roles = "admin, superuser")]
         [HttpPost]
         public IActionResult setCuponInterval(SetCuponIntervalViewModel model)
         {
@@ -220,6 +223,7 @@ namespace pre_registration.Controllers
             order.Client.UserData.Phone,
             order.Client.UserData.EmailAdress);
         }
+        [Authorize]
         public ActionResult MyCupons()
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
