@@ -78,11 +78,15 @@
                         <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
                     </div>
                     <div class="userMenuRow">
+                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">Удалить талоны</a>
+                    </div>
+                    <div class="userMenuRow">
                         <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные талоны</a>
                     </div>
                     <div class="userMenuRow">
                         <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
                     </div>
+
                 }
                 if (User.IsInRole("admin"))
                 {
@@ -90,11 +94,15 @@
                         <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
                     </div>
                     <div class="userMenuRow">
+                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">Удалить талоны</a>
+                    </div>
+                    <div class="userMenuRow">
                         <a asp-controller="Admin" asp-action="Index" class="userMenuButton">Администрирование</a>
                     </div>
                     <div class="userMenuRow">
                         <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
                     </div>
+
                 }
                 if (User.IsInRole("user"))
                 {

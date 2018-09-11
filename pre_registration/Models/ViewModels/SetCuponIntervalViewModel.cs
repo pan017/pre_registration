@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace pre_registration.Models.ViewModels
 {
-    public class SetCuponIntervalViewModel
+    public class SetCuponIntervalViewModel: RemoveCuponsModel
     {
-        [Display(Name = "Начало периода")]
-        public DateTime beginDate { get; set; }
-        [Display(Name = "Окончание периода")]
-        public DateTime endDate { get; set; }
+        
         [Display(Name = "Часы")]
         public int beginTimeHours { get; set; }
         [Display(Name = "Мин.")]
@@ -22,9 +19,6 @@ namespace pre_registration.Models.ViewModels
         public int endTimeMins { get; set; }
         [Display(Name = "Интервал, мин.")]
         public int interval { get; set; }
-        [Display(Name = "Район")]
-        public int AreaId { get; set; }
-        [Display(Name = "Дни недели")]
-        public bool[] daysOfWeek { get; set; }
+       
     }
 }

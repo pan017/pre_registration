@@ -1,0 +1,36 @@
+﻿@model pre_registration.Models.ViewModels.RemoveCuponsModel
+<h2 class="titleHeadRow">Удаление талонов для записи</h2>
+<div>
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <form method="post" asp-controller="Cupon" asp-action="RemoveCupons" class="contentForm">
+
+        @if (User.IsInRole("admin"))
+        {
+            <div class="contentDiv">
+                <label asp-for="AreaId"></label><br />
+                <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")' class="selectList"></select>
+            </div>
+        }
+        <div>
+            <label asp-for="beginDate"></label><br />
+            <input type="date" asp-for="beginDate" value=""  />
+        </div>
+        <div>
+            <label asp-for="endDate"></label><br />
+            <input type="date" asp-for="endDate" value="" />
+        </div>
+
+        <div class="contentDiv">
+            пн<input type="checkbox" asp-for="daysOfWeek[1]" />
+            вт <input type="checkbox" asp-for="daysOfWeek[2]" />
+            ср<input type="checkbox" asp-for="daysOfWeek[3]" />
+            чт <input type="checkbox" asp-for="daysOfWeek[4]" />
+            пт <input type="checkbox" asp-for="daysOfWeek[5]" />
+            сб <input type="checkbox" asp-for="daysOfWeek[6]" />
+            вс <input type="checkbox" asp-for="daysOfWeek[0]" />
+
+        </div>
+        <input type="submit" value="Удалить" />
+
+    </form>
+</div>
