@@ -214,6 +214,8 @@ namespace pre_registration.Controllers
             }
             foreach (var item in removeList)
             {
+                if (db.Orders.Where(x => x.CuponDateId == item.id).Count() > 0)
+                    continue;
                 db.CuponDates.Remove(item);
             }
             db.SaveChanges();
