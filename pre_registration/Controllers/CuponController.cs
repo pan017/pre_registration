@@ -198,6 +198,15 @@ namespace pre_registration.Controllers
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
                 model.AreaId = user.AreaId.Value;
             }
+            bool isNotSelectedDays = true;
+            for (int i = 0; i < model.daysOfWeek.Count(); i++)
+            {
+                if (model.daysOfWeek[i] == true)
+                {
+                    isNotSelectedDays = true;
+                    break;
+                }
+            }
             List<CuponDate> removeList = new List<CuponDate>();
             DateTime tempDate = model.beginDate;
             while (model.endDate >= tempDate)
@@ -205,7 +214,7 @@ namespace pre_registration.Controllers
                 DateTime tempBeginTime = new DateTime(tempDate.Year, tempDate.Month, tempDate.Day, 0 , 0 , 0);
                 DateTime tempEndTime = new DateTime(tempDate.Year, tempDate.Month, tempDate.Day, 23, 59, 59);
                 var a = (int)tempBeginTime.DayOfWeek;
-                if (model.daysOfWeek[(int)tempBeginTime.DayOfWeek])
+                if (model.daysOfWeek[(int)tempBeginTime.DayOfWeek] || isNotSelectedDays)
                 {
                     removeList.AddRange(db.CuponDates.Where(x => x.AreaId == model.AreaId && x.date > tempBeginTime && x.date < tempEndTime).ToList());
                     
