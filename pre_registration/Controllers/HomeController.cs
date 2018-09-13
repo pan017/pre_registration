@@ -30,7 +30,11 @@ namespace pre_registration.Controllers
             db = context;
             this.config = config;           
         }
-
+        [HttpGet]
+        public IActionResult ShowModalWindow(string header, string text, bool isConfirmForm)
+        {
+            return PartialView(new Models.ViewModels.ModalFormModel { header = header, isConfirmForm = isConfirmForm, text = text});
+        }
         public IActionResult returnToSelectArea()
         {
             HttpContext.Session.Remove("Area");
@@ -49,6 +53,21 @@ namespace pre_registration.Controllers
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             HttpContext.Session.Remove("CuponId");
             return RedirectToAction("viewTime", "Cupon", new { selectedDay = Helpers.GetDateFromSession(HttpContext.Session.GetString("Date")), areaId = HttpContext.Session.GetInt32("Area") });
+        }
+        public bool isSuperUserCurrentArea()
+        {
+            if (User.Identity.IsAuthenticated && User.IsInRole("superuser"))
+            {
+                var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+                if (user.AreaId != null && getSessionArea() != null && user.AreaId.Value == getSessionArea().Id)
+                    return true;
+                
+            }
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                return true;
+            }
+            return false;
         }
         private DateTime GetDateFromSession()
         {

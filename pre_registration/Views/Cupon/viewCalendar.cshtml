@@ -65,27 +65,37 @@
 
                                 }
                             }
-                            @if (currentDate < DateTime.Now.AddDays(-1) || freeCupons == 0)
-                            {
-                                <div style="text-align:center;">
-                                    @currentDate.ToString("dd.MM")
-                                </div>
-                            }
-                            else
-                            {
-                                <div onclick="$('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = currentDate, areaId = ViewBag.SelectedArea})'); showTimeLink()">
+                            <div id="@currentDate.Ticks">
+                                @if (currentDate < DateTime.Now.AddDays(-1) || freeCupons == 0)
+                                {
                                     <div style="text-align:center;">
                                         @currentDate.ToString("dd.MM")
                                     </div>
-                                    <div>
-                                        Свободных мест
-                                        @freeCupons
+                                }
+                                else
+                                {
+                                    <script>
+                                       
+                                      
+                                    </script>
+                                    <div class="deleteDayButtonDiv">
+
+                                        <img src="~/images/delete_sign1600.png" alt="Удалить талоны на этот день" class="deleteDayButtonImage" onclick="deleteDay('@currentDate', '@currentDate.Ticks')" />
                                     </div>
-                                </div>
+                                    <div onclick="$('.selectTime').load('@Url.Action("viewTime", "Cupon", new { selectedDay = currentDate, areaId = ViewBag.SelectedArea})'); showTimeLink()">
+                                        <div style="text-align:center;">
+                                            @currentDate.ToString("dd.MM")
+                                        </div>
+                                        <div>
+                                            Свободных мест
+                                            @freeCupons
+                                        </div>
+                                    </div>
 
 
-                            }
-
+                                }
+                               
+                            </div>
                         </td>
 
 
@@ -99,3 +109,77 @@
         </table>
     </div>
 </div>
+
+<script>
+    var selectedDayForDelete;
+    var selectedDayDivId;
+    $(document).ready(function () {
+        if (isSuperUserCurrentArea()) {
+            $('.deleteDayButtonDiv').show();
+        }
+        else
+            $('.deleteDayButtonDiv').hide();
+
+    });
+    function deleteDay(currentDate, currentDiv) {
+      
+        ShowModalWindow('Удалить день?', 'Вы действительно хотите удалить', true);
+        selectedDayForDelete = currentDate;
+        selectedDayDivId = currentDiv;
+    }
+    //$(".deleteDayButtonImage").click(function () {
+
+    //    ShowModalWindow('Удалить день?', 'Вы действительно хотите удалить', true);
+    //    selectedDay = 
+    //}); 
+    function isSuperUserCurrentArea() {
+        var result;
+        $.ajax({
+            async: false,
+            url: '/home/isSuperUserCurrentArea',
+            type: 'GET',
+            contentType: "application/json",
+            success: function (data) {
+                result = data;
+            }
+        });
+        return result;
+
+    }
+    $('#modDialog').on('hide.bs.modal', function () {
+        var btn = $(this).find("input[type=submit]:focus");
+        if (btn.val() == "Подтвердить") {
+            if (RemoveDayCupons(selectedDayForDelete)) {
+                var currentDateDiv = new Date(selectedDayForDelete);
+                var qwe = new Date(2008, 0, 12);
+                var newDate = '';
+                if (currentDateDiv.getDate() < 9)
+                    newDate += '0' + currentDateDiv.getDate() + '.';
+                else
+                    newDate += currentDateDiv.getDate() + '.';
+                if (currentDateDiv.getMonth() < 9)
+                    newDate += '0' + (+currentDateDiv.getMonth().valueOf() + 1);
+                else
+                    newDate += +currentDateDiv.getMonth().valueOf() + 1;
+
+                $("#" + selectedDayDivId).empty();
+                $("#" + selectedDayDivId).html('<div style="text-align:center;">' + newDate + '</div>')
+            }
+            
+
+        }
+    });
+    function RemoveDayCupons(day) {
+        var result;
+        $.ajax({
+            async: false,
+            url: '/Cupon/RemoveDayCupons?day=' + day,
+            type: 'GET',
+            contentType: "application/json",
+            success: function (isDeleted) {
+                result = isDeleted;
+            }
+        });
+        return result;
+    }
+</script>

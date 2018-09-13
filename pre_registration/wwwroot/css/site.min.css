@@ -509,6 +509,7 @@ a.cancelButton {
     cursor: pointer;
     width: 30%;
     max-width: 380px;
+    font-size: 16px;
 }
 
     .newButton:hover {
@@ -611,6 +612,18 @@ a.cancelButton {
         .table-calendar > td.today:hover {
             background-position: 81px -81px;
         }
+
+.deleteDayButtonImage {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin-left: 25px;
+    margin-top: -8px;
+}
+
+    .deleteDayButtonImage:hover {
+        background-color: #414141;
+    }
 
 .checkout-bar li:hover {
     cursor: pointer;

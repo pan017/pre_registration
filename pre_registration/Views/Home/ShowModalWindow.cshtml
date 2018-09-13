@@ -1,0 +1,20 @@
+﻿@model pre_registration.Models.ViewModels.ModalFormModel
+<div class="modal-content" style="text-align:center;">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button><h3>@Model.header</h3>
+    </div>
+    <h4>  @Model.text</h4>
+    <br />
+    @if (Model.isConfirmForm)
+    {
+        <input type="submit" data-dismiss="modal" area-hidden="true" class="newButton" value="Подтвердить" />
+        <input type="button" data-dismiss="modal" area-hidden="true" class="newButton" value="Отменить" /><br /><br />
+
+    }
+    else
+    {
+        <input type="button"  data-dismiss="modal" area-hidden="true" class="newButton" value="OK" /><br /><br />
+
+    }
+    <br />
+</div>

@@ -198,6 +198,12 @@ namespace pre_registration.Controllers
                 var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
                 model.AreaId = user.AreaId.Value;
             }
+            RemoveCuponsMethod(model);
+            return RedirectToAction("Index", "Home");
+        }
+        void RemoveCuponsMethod(RemoveCuponsModel model)
+        {
+           
             bool isNotSelectedDays = true;
             for (int i = 0; i < model.daysOfWeek.Count(); i++)
             {
@@ -211,13 +217,13 @@ namespace pre_registration.Controllers
             DateTime tempDate = model.beginDate;
             while (model.endDate >= tempDate)
             {
-                DateTime tempBeginTime = new DateTime(tempDate.Year, tempDate.Month, tempDate.Day, 0 , 0 , 0);
+                DateTime tempBeginTime = new DateTime(tempDate.Year, tempDate.Month, tempDate.Day, 0, 0, 0);
                 DateTime tempEndTime = new DateTime(tempDate.Year, tempDate.Month, tempDate.Day, 23, 59, 59);
                 var a = (int)tempBeginTime.DayOfWeek;
                 if (model.daysOfWeek[(int)tempBeginTime.DayOfWeek] || isNotSelectedDays)
                 {
                     removeList.AddRange(db.CuponDates.Where(x => x.AreaId == model.AreaId && x.date > tempBeginTime && x.date < tempEndTime).ToList());
-                    
+
                 }
                 tempDate = tempDate.AddDays(1);
             }
@@ -228,7 +234,30 @@ namespace pre_registration.Controllers
                 db.CuponDates.Remove(item);
             }
             db.SaveChanges();
-            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        [Authorize(Roles = "admin, superuser")]
+        public bool RemoveDayCupons(string day)
+        {
+            DateTime selectDay;
+            if (DateTime.TryParse(day, out selectDay))
+            {
+                RemoveCuponsModel model = new RemoveCuponsModel { beginDate = selectDay, endDate = selectDay, daysOfWeek = new bool[6] };
+
+                if (User.Identity.IsAuthenticated && User.IsInRole("superuser"))
+                {
+                    var user = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+                    model.AreaId = user.AreaId.Value;
+                }
+                if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                {
+                    model.AreaId = HttpContext.Session.GetInt32("Area").Value;
+                }
+                RemoveCuponsMethod(model);
+
+                return true;
+            }
+            return false;
         }
         public ActionResult DeniedCupon(string key)
         {
