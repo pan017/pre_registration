@@ -21,3 +21,25 @@ function sendAjaxForm(ajax_form, url) {
     });
     return result;
 }
+
+function checkNumberValue(input) {
+    var value = input.value;
+    var rep = /[-\./,/|~;@@!#$%_+=^&**()<>":'a-zA-Zа-яА-Я]/;
+    if (rep.test(value)) {
+        value = value.replace(rep, '');
+        input.value = value;
+    }
+}
+
+function ValidMail() {
+    var re = /^[\w-\.]+@@[\w-]+\.[a-z]{2,4}$/i;
+    var myMail = document.getElementById('Client_UserData_EmailAdress').value;
+    var valid = re.test(myMail);
+    if (valid) output = '';
+    else {
+        output = 'Пожалуйста, введите существующий адрес электронной почты<br>так как на него будет выслан ответ службы "одно окно"';
+        document.getElementById('Client_UserData_EmailAdress').value = '';
+    }
+    document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = output;
+    return valid;
+}   

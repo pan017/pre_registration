@@ -154,6 +154,22 @@ footer {
     .checkout-bar {
         padding-left: 0px;
     }
+
+    .selectList.setCuponIntervalInputItem {
+        width: 80%;
+    }
+
+    input[type=text].setCuponIntervalInputItem {
+        width: 80%;
+    }
+
+    input[type=date].setCuponIntervalInputItem {
+        width: 80%;
+    }
+
+    input[type=submit].setCuponIntervalInputItem {
+        width: 80%;
+    }
 }
 
 @media screen and (max-width: 950px) {
@@ -163,6 +179,7 @@ footer {
         top: auto;
         position: inherit;
     }
+
     /*.userMenuButton {
             margin-right: 30%;
         }*/
@@ -370,6 +387,8 @@ footer {
         width: 1170px;
     }
 }*/
+
+
 input[type=text] {
     width: 50%;
     padding: 12px 20px;
@@ -432,7 +451,7 @@ input[type=button] {
 }
 
 input[type=date] {
-    width: 30%;
+    width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -445,10 +464,45 @@ input[type=submit]:hover {
     background-color: #45a049;
 }
 
+.selectList.setCuponIntervalInputItem {
+    width: 30%;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+input[type=text].setCuponIntervalInputItem {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
 
+input[type=date].setCuponIntervalInputItem {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
 
-
+input[type=submit].setCuponIntervalInputItem {
+    width: 30%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 .tdItem:hover {
     background-color: #e7e7e7;

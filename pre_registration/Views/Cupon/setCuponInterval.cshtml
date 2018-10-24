@@ -8,21 +8,21 @@
         {
             <div class="contentDiv">
                 <label asp-for="AreaId"></label><br />
-                <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")' class="selectList"></select>
+                <select asp-for="AreaId" asp-items='new SelectList(ViewBag.Areas, "Id", "Name")' class="selectList setCuponIntervalInputItem"></select>
             </div>
         }
         <div>
             <label asp-for="beginDate"></label><br />
-            <input type="date" asp-for="beginDate" />
+            <input type="date" asp-for="beginDate" class="setCuponIntervalInputItem" />
         </div>
         <div>
             <label asp-for="endDate"></label><br />
-            <input type="date" asp-for="endDate" />
+            <input type="date" asp-for="endDate"  class="setCuponIntervalInputItem" />
         </div>
 
         <div>
             <label asp-for="interval"></label><br />
-            <input type="text" asp-for="interval" onkeyup="return proverka(this);" />
+            <input type="text" asp-for="interval" onkeyup="return checkNumberValue(this);" class="setCuponIntervalInputItem" />
         </div>
         <div class="contentDiv">
             пн<input type="checkbox" asp-for="daysOfWeek[1]" />
@@ -49,19 +49,7 @@
             <select asp-for="endTimeMins" asp-items='new SelectList(ViewBag.Mins)'></select>
             <label asp-for="endTimeMins"></label>
         </div>
-        <input type="submit" />
+        <input type="submit"  class="setCuponIntervalInputItem"  />
 
     </form>
 </div>
-
-<script type="text/javascript">
-    function proverka(input) {
-        var value = input.value;
-        var rep = /[-\./,/|~;@@!#$%_+=^&**()<>":'a-zA-Zа-яА-Я]/;
-        if (rep.test(value)) {
-            value = value.replace(rep, '');
-            input.value = value;
-        }
-    }
-    
-</script> 

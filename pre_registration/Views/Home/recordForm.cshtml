@@ -1,6 +1,13 @@
 ﻿@model pre_registration.Models.DataBaseModel.Order
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $("#Client_UserData_Phone").mask("+375 (99) 999-99-99");
+    });
+
+</script>
 
 <script>
         $('.backToSelectTime').click(function () {
@@ -16,6 +23,17 @@
 
         $('#mainRecordForm').submit(function () {
             var errorCount = 0;
+            $("#Client_UserData_EmailAdress").removeAttr('style');
+            $("#Client_UserData_LastName").removeAttr('style');
+            $("#Client_UserData_FirstName").removeAttr('style');
+            $("#Client_UserData_SecondName").removeAttr('style');
+            $("#Client_UserData_Phone").removeAttr('style');
+            $("#Comment").removeAttr('style');
+            if (!ValidMail() ) {
+                $("#Client_UserData_EmailAdress").css("border-color", "red");
+                $("#Client_UserData_EmailAdress").css("border-width", "2px");
+                errorCount++;
+            }
             if ($("#Client_UserData_LastName").val().length < 1) {
                 $("#Client_UserData_LastName").css("border-color", "red");
                 $("#Client_UserData_LastName").css("border-width", "2px");
@@ -46,6 +64,7 @@
                 $("#Comment").css("border-width", "2px");
                 errorCount++;
             }
+
             //if (!checkCapcha()) {
             //    $(".capchaValidation").show();
             //    errorCount++;
@@ -58,7 +77,7 @@
 
 
         });
-
+      
         function checkCapcha() {
             var result;
             $.ajax({
@@ -83,6 +102,7 @@
     <form method="post" id="mainRecordForm" asp-action="recordForm" asp-controller="Home">
         <div>
             <label asp-for="Client.UserData.LastName"></label><br />
+            <span asp-validation-for="Client.UserData.LastName" id="Client_UserData_LastName_validation"></span><br />
             @if (ViewBag.order != null)
             {
                 <input asp-for="Client.UserData.LastName" value="@ViewBag.order.Client.UserData.LastName" />
@@ -91,10 +111,11 @@
             {
                 <input asp-for="Client.UserData.LastName" />
             }
-            <span asp-validation-for="Client.UserData.LastName"></span>
+
         </div>
         <div>
             <label asp-for="Client.UserData.FirstName"></label><br />
+            <span asp-validation-for="Client.UserData.FirstName" id="Client_UserData_FirstName_validation"></span><br />
             @if (ViewBag.order != null)
             {
                 <input asp-for="Client.UserData.FirstName" value="@ViewBag.order.Client.UserData.FirstName" />
@@ -103,10 +124,11 @@
             {
                 <input asp-for="Client.UserData.FirstName" />
             }
-            <span asp-validation-for="Client.UserData.FirstName"></span>
+
         </div>
         <div>
             <label asp-for="Client.UserData.SecondName"></label><br />
+            <span asp-validation-for="Client.UserData.SecondName" id="Client_UserData_SecondName_validation"></span><br />
             @if (ViewBag.order != null)
             {
                 <input asp-for="Client.UserData.SecondName" value="@ViewBag.order.Client.UserData.SecondName" />
@@ -115,10 +137,11 @@
             {
                 <input asp-for="Client.UserData.SecondName" />
             }
-            <span asp-validation-for="Client.UserData.SecondName"></span>
+
         </div>
         <div>
             <label asp-for="Client.UserData.Phone"></label><br />
+            <span asp-validation-for="Client.UserData.Phone" id="Client_UserData_Phone_validation"></span><br />
             @if (ViewBag.order != null)
             {
                 <input asp-for="Client.UserData.Phone" value="@ViewBag.order.Client.UserData.Phone" />
@@ -127,10 +150,11 @@
             {
                 <input asp-for="Client.UserData.Phone" />
             }
-            <span asp-validation-for="Client.UserData.Phone"></span>
+
         </div>
         <div>
             <label asp-for="Client.UserData.EmailAdress"></label><br />
+            <span asp-validation-for="Client.UserData.EmailAdress" id="Client_UserData_EmailAdress_validation"></span><br />
             @if (ViewBag.order != null)
             {
                 <input asp-for="Client.UserData.EmailAdress" value="@ViewBag.order.Client.UserData.EmailAdress" />
@@ -139,12 +163,13 @@
             {
                 <input asp-for="Client.UserData.EmailAdress" />
             }
-            <span asp-validation-for="Client.UserData.EmailAdress"></span>
+
         </div>
         <div>
             <label asp-for="Comment"></label><br />
+            <span asp-validation-for="Comment" id="Comment_validation"></span><br />
             <input asp-for="Comment" />
-            <span asp-validation-for="Comment"></span>
+
         </div>
         <div>
             <div class="capchaValidation" style="display:none;">Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.</div>
