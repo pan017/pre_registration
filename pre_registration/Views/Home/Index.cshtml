@@ -1,198 +1,176 @@
-﻿@section scripts
-    {
-    <script type="text/javascript">
-        var dateOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long',
-            timezone: 'UTC',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        };
+﻿@model pre_registration.Models.DataBaseModel.Order
 
-        var currentArea;
-        $(document).ready(function () {
-            $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
-        });
-        $(document).ready(setCheckOutBar());
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $("#Client_UserData_Phone").mask("+375 (99) 999-99-99");
+    });
 
-        function backToSelectArea() {
-          //  $(".selectArea").show();
-            $('.recordForm').hide();
-            $(".selectDate").hide();
-            $(".selectTime").hide();
-            $(".areaInfo").hide();
-            window.location = '@Url.Action("returnToSelectArea", "Home")';
-           // $('.selectArea').load('@Url.Action("returnToSelectArea", "Home")');
-
-        }
-
-        function backToSelectTime() {
-            $('.recordForm').hide();
-
-            $(".selectTime").show();
-            console.log(GetSelectedDate());
-            $('.selectTime').load('@Url.Action("returnToSelectTime", "Home")');
-
-        }
-        function backToSelectDate() {
-            $(".selectTime").hide();
-            $('.recordForm').hide();
-            $(".selectDate").show();
-            $('.selectDate').load('@Url.Action("returnToSelectDate", "Home")');
-        }     
-        function GetArea() {
-            var result;
-            $.ajax({   
-                async: false,
-                url: '/home/getSessionArea',
-                type: 'GET',
-                contentType: "application/json",
-                success: function (area) {
-                    result = area;
-                }
-            });
-            return result;
-        }
-        function GetSelectedDate() {
-            var result;
-            $.ajax({
-                async: false,
-                url: '/home/getSelectedDate',
-                type: 'GET',
-                contentType: "application/json",
-                success: function (data) {
-                    result = data;
-                }
-            });
-            return result;
-        }
-        function getSelectedCupon() {
-            var result;
-            $.ajax({
-                async: false,
-                url: '/home/GetSelectedCupon',
-                type: 'GET',
-                contentType: "application/json",
-                success: function (data) {
-                    result = data;
-                }
-            });
-            return result;
-
-        }
-        function setCheckOutBar()
-        {
-            var selectedArea = GetArea();
-            var selectedDate = GetSelectedDate();
-            var selectedCupon = getSelectedCupon();
-            if (selectedCupon.id != 0)
-            {
-                var date = new Date(selectedCupon.date);
-                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
-                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
-                $("#secondPunkt").text(date.toLocaleDateString());
-                $("#secondPunkt").attr('onClick', 'backToSelectDate()');
-                //$("#secondPunkt").html('<p onClick="backToSelectDate()">' + date.toLocaleDateString() + '</p>');
-                //$("#thirdPunkt").html('<p onClick="backToSelectTime()">' + date.getHours() + ':' + (date.getMinutes() == 0 ? '00' : date.getMinutes()) + '</p>');
-                $("#thirdPunkt").text(date.getHours() + ':' + (date.getMinutes() == 0 ? '00' : date.getMinutes()));
-                $("#thirdPunkt").attr('onClick', 'backToSelectTime()');
-                $("#forthPunkt").addClass('active');
-                $("#thirdPunkt").addClass('visited');
-                $("#secondPunkt").addClass('visited');
-                $("#firstPunkt").addClass('visited');
-                return;
-            }
-            if (selectedDate != undefined && selectedDate.length > 2)
-            {
-                var date = new Date(selectedDate);
-                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
-                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
-                //$("#firstPunkt").html('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');
-                //$("#secondPunkt").html('<p onClick="backToSelectDate()">' + selectedDate + '</p>');
-                $("#secondPunkt").text(selectedDate);
-                $("#secondPunkt").attr('onClick', 'backToSelectDate()');
-                $("#thirdPunkt").text('Выбор времени');
-                $("#forthPunkt").removeClass();
-                $("#thirdPunkt").removeClass();
-
-                $("#thirdPunkt").addClass('active');
-                $("#secondPunkt").addClass('visited');
-                $("#firstPunkt").addClass('visited');
-                return;
-
-            }
-            if (selectedArea.id != 0)
-            {
-
-                $("#firstPunkt").text(selectedArea.name); /*attr('<p onClick="backToSelectArea()">' + selectedArea.name + '</p>');*/
-                $("#firstPunkt").attr('onClick', 'backToSelectArea()');
-                $("#secondPunkt").removeClass();
-                $("#thirdPunkt").removeClass();
-                $("#forthPunkt").removeClass();
-                $("#secondPunkt").text('Выбор даты');
-                $("#secondPunkt").addClass('active');
-                $("#firstPunkt").addClass('visited');
-                return;
-
-            }
-            if (selectedArea.id == 0)
-            {
-                $("#firstPunkt").text('Выбор района');
-                $("#secondPunkt").text('Выбор даты');
-                $("#thirdPunkt").text('Выбор времени');
-                $("#secondPunkt").removeClass();
-                $("#firstPunkt").removeClass();
-                $("#forthPunkt").removeClass();
-                $("#thirdPunkt").removeClass();
-                $("#firstPunkt").addClass('active');
-                $("#firstPunkt").addClass('first');
-            }
-        }
-    </script>
-}
-
-    <div>
-
-        <h2 class="titleHeadRow">Запись на прием в службу "Одно окно"</h2>
-        <div class="checkout-wrap">
-            <ul class="checkout-bar">
-                <li id="firstPunkt" class="active first">
-                    <a href="#">Выбор района</a>
-                </li>
-
-                <li id="secondPunkt" class="next ">Выбор даты</li>
-
-                <li id="thirdPunkt" class="next">Выбор времени</li>
-
-                <li id="forthPunkt">Запись</li>
-
-                <li id="lastPunkt">Готово</li>
-
-            </ul>
-        </div>
-        @*<br /> <br />
-        <br /><br />*@
-        <div>
-            <div class="areaInfo" style=""></div>
-            <div class="selectArea">
-            </div>
-
-            <div class="selectDate" style="" hidden>
-            </div>
-            <div class="calendar" style="">
-            </div>
-
-            <div class="selectTime" style="">
-
-            </div>
-
-            <div class="recordForm" style=""></div>
-        </div>
-    </div>
+</script>
 
 <script>
-   
+        $('.backToSelectTime').click(function () {
+            $('.recordForm').hide();
+            $(".selectTime").show();
+            $('.selectTime').load('@Url.Action("returnToSelectTime", "Home")');
+        });
+        $(document).ready(setCheckOutBar());
+        $(document).ready(function () {
+            $(".g-recaptcha").show();
+
+        });
+
+        $('#mainRecordForm').submit(function () {
+            var errorCount = 0;
+            $("#Client_UserData_EmailAdress").removeAttr('style');
+            $("#Client_UserData_LastName").removeAttr('style');
+            $("#Client_UserData_FirstName").removeAttr('style');
+            $("#Client_UserData_SecondName").removeAttr('style');
+            $("#Client_UserData_Phone").removeAttr('style');
+            $("#Comment").removeAttr('style');
+            if (!ValidMail() ) {
+                $("#Client_UserData_EmailAdress").css("border-color", "red");
+                $("#Client_UserData_EmailAdress").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_LastName").val().length < 1) {
+                $("#Client_UserData_LastName").css("border-color", "red");
+                $("#Client_UserData_LastName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_FirstName").val().length < 1) {
+                $("#Client_UserData_FirstName").css("border-color", "red");
+                $("#Client_UserData_FirstName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_SecondName").val().length < 1) {
+                $("#Client_UserData_SecondName").css("border-color", "red");
+                $("#Client_UserData_SecondName").css("border-width", "2px");
+                errorCount++;
+            }
+            if ($("#Client_UserData_Phone").val().length < 1) {
+                $("#Client_UserData_Phone").css("border-color", "red");
+                $("#Client_UserData_Phone").css("border-width", "2px");
+                errorCount++;
+            }
+
+            if ($("#Comment").val().length < 1) {
+                $("#Comment").css("border-color", "red");
+                $("#Comment").css("border-width", "2px");
+                errorCount++;
+            }
+
+            //if (!checkCapcha()) {
+            //    $(".capchaValidation").show();
+            //    errorCount++;
+
+            //}
+            if (errorCount != 0) {
+                return false;
+
+            }
+
+
+        });
+
+        function checkCapcha() {
+            var result;
+            $.ajax({
+                async: false,
+                url: '/home/checkCapcha?recaptchaResponse=6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-',
+                type: 'GET',
+                contentType: "application/json",
+                success: function (data) {
+                    result = data;
+                }
+            });
+            console.log(result);
+            return true;
+
+        }
 </script>
+
+<div>
+    <br />
+    @*<h2>Заполните форму</h2>*@
+    @*<a class="backToSelectTime">Вернуться к выбору времени</a>*@
+    <form method="post" id="mainRecordForm" asp-action="recordForm" asp-controller="Home">
+        <div>
+            <label asp-for="Client.UserData.LastName"></label><br />
+            <span asp-validation-for="Client.UserData.LastName" id="Client_UserData_LastName_validation"></span><br />
+            @if (ViewBag.order != null)
+            {
+                <input asp-for="Client.UserData.LastName" value="@ViewBag.order.Client.UserData.LastName" />
+            }
+            else
+            {
+                <input asp-for="Client.UserData.LastName" />
+            }
+
+        </div>
+        <div>
+            <label asp-for="Client.UserData.FirstName"></label><br />
+            <span asp-validation-for="Client.UserData.FirstName" id="Client_UserData_FirstName_validation"></span><br />
+            @if (ViewBag.order != null)
+            {
+                <input asp-for="Client.UserData.FirstName" value="@ViewBag.order.Client.UserData.FirstName" />
+            }
+            else
+            {
+                <input asp-for="Client.UserData.FirstName" />
+            }
+
+        </div>
+        <div>
+            <label asp-for="Client.UserData.SecondName"></label><br />
+            <span asp-validation-for="Client.UserData.SecondName" id="Client_UserData_SecondName_validation"></span><br />
+            @if (ViewBag.order != null)
+            {
+                <input asp-for="Client.UserData.SecondName" value="@ViewBag.order.Client.UserData.SecondName" />
+            }
+            else
+            {
+                <input asp-for="Client.UserData.SecondName" />
+            }
+
+        </div>
+        <div>
+            <label asp-for="Client.UserData.Phone"></label><br />
+            <span asp-validation-for="Client.UserData.Phone" id="Client_UserData_Phone_validation"></span><br />
+            @if (ViewBag.order != null)
+            {
+                <input asp-for="Client.UserData.Phone" value="@ViewBag.order.Client.UserData.Phone" />
+            }
+            else
+            {
+                <input asp-for="Client.UserData.Phone" />
+            }
+
+        </div>
+        <div>
+            <label asp-for="Client.UserData.EmailAdress"></label><br />
+            <span asp-validation-for="Client.UserData.EmailAdress" id="Client_UserData_EmailAdress_validation"></span><br />
+            @if (ViewBag.order != null)
+            {
+                <input asp-for="Client.UserData.EmailAdress" value="@ViewBag.order.Client.UserData.EmailAdress" />
+            }
+            else
+            {
+                <input asp-for="Client.UserData.EmailAdress" />
+            }
+
+        </div>
+        <div>
+            <label asp-for="Comment"></label><br />
+            <span asp-validation-for="Comment" id="Comment_validation"></span><br />
+            <input asp-for="Comment" />
+
+        </div>
+        <div>
+            <div class="capchaValidation" style="display:none;">Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.</div>
+            <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
+            <input class="submintButton" type="submit" value="Записаться" />
+        </div>
+    </form>
+</div>
