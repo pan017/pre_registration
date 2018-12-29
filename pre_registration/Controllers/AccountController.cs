@@ -51,11 +51,17 @@ namespace pre_registration.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                    if (Helpers.GetCulture(HttpContext) == "be")
+                        ModelState.AddModelError("", "Няправільны лагін і (або) пароль");
+                    else
+                        ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                     return View("LoginForm", model);
                 }
             }
-            ModelState.AddModelError("", "Заполните все поля");
+            if (Helpers.GetCulture(HttpContext) == "be")
+                ModelState.AddModelError("", "Запоўніце ўсе палі");
+            else
+                ModelState.AddModelError("", "Заполните все поля");
             return View("LoginForm", model);
         }
         private async Task Authenticate(ApplicationUser user)
@@ -103,21 +109,69 @@ namespace pre_registration.Controllers
             ReadAsStringAsync().Result;
             var res = JsonConvert.DeserializeObject<ReCaptchaValidationResult>(verificationResponse);
             if (!res.Success)
-                ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Вы не прайшлі праверку бяспекі. Калі ласка, паспрабуйце яшчэ раз.");
+                else
+                    ModelState.AddModelError("", "Ошибка! Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.");
+            }
+               
             if (String.IsNullOrEmpty(model.Login))
-                ModelState.AddModelError("", "Ошибка! Введите e-mail");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Калі ласка, увядзіце e-mail");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите e-mail");
+            }
+
             if (String.IsNullOrEmpty(model.LastName))
-                ModelState.AddModelError("", "Ошибка! Введите фамилию");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Калі ласка, увядзіце прозвішча");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите фамилию");
+            }
+
             if (String.IsNullOrEmpty(model.FirstName))
-                ModelState.AddModelError("", "Ошибка! Введите имя");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Увядзіце імя");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите имя");
+            }
+          
             if (String.IsNullOrEmpty(model.SecondName))
-                ModelState.AddModelError("", "Ошибка! Введите отчество");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Увядзіце імя па бацьку");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите отчество");
+            }
+            
             if (String.IsNullOrEmpty(model.Phone))
-                ModelState.AddModelError("", "Ошибка! Введите телефон");           
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Увядзіце нумар тэлефона");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите телефон");
+            }
+                 
             if (String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm))
-                ModelState.AddModelError("", "Ошибка! Введите пароль");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Увядзіце пароль");
+                else
+                    ModelState.AddModelError("", "Ошибка! Введите пароль");
+            }
+           
             if (!String.IsNullOrEmpty(model.Password) && !String.IsNullOrEmpty(model.PasswordConfirm) && model.PasswordConfirm != model.Password)
-                ModelState.AddModelError("", "Ошибка! Пароли не совпадают");
+            {
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Паролі не супадаюць");
+                else
+                    ModelState.AddModelError("", "Ошибка! Пароли не совпадают");
+            }
+            
             if (ModelState.ErrorCount != 0)
             {
                 return View(model);
@@ -148,7 +202,14 @@ namespace pre_registration.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Пользователь с таким адресом электронной почты уже зарегестрирован");
+                if (String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm))
+                {
+                    if (Helpers.GetCulture(HttpContext) == "be")
+                        ModelState.AddModelError("", "Карыстальнік з такім адрасам электроннай пошты ўжо існуе");
+                    else
+                        ModelState.AddModelError("", "Пользователь с таким адресом электронной почты уже существует");
+                }
+             
             }
             
 
@@ -214,7 +275,10 @@ namespace pre_registration.Controllers
                 user.UserSettings.SendEmail = model.SendEmail;
                 user.UserSettings.SendReminder = model.SendReminder;
                 db.SaveChanges();
-                ModelState.AddModelError("", "Данные успешно сохранены!");
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Дадзеныя паспяхова захаваны!");
+                else
+                    ModelState.AddModelError("", "Данные успешно сохранены!");
                 return View(model);
             }
             else
@@ -241,7 +305,11 @@ namespace pre_registration.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Ошибка! Старый пароль введен не верно!");
+                if (Helpers.GetCulture(HttpContext) == "be")
+                    ModelState.AddModelError("", "Памылка! Стары пароль уведзены няправільна!");
+                else
+                    ModelState.AddModelError("", "Ошибка! Старый пароль введен не верно!");
+
                 model.oldPassword = "";
                 return RedirectToAction("Settings", model);
             }
@@ -261,7 +329,11 @@ namespace pre_registration.Controllers
                 UserData userData = db.UsersData.FirstOrDefault(x => x.Phone.Trim().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "") == model.Query.Trim().Replace("(","").Replace(")","").Replace("-", "").Replace(" ", ""));
                 if (userData == null)
                 {
-                    ModelState.AddModelError("", "Пользователь не найден! Проверьте правильность ввода данных и повторите попытку");
+                    if (Helpers.GetCulture(HttpContext) == "be")
+                        ModelState.AddModelError("", "Карыстальнік не знойдзены! Праверце правільнасць ўводу дадзеных і паўтарыце спробу");
+                    else
+                        ModelState.AddModelError("", "Пользователь не найден! Проверьте правильность ввода данных и повторите попытку");
+
                     return View(model);
                 }
                 else

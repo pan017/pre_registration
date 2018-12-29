@@ -13,6 +13,9 @@ using pre_registration.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using pre_registration.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace pre_registration
 {
@@ -48,7 +51,23 @@ namespace pre_registration
             services.AddSession(options => 
             options.Cookie.HttpOnly = true);
 
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddDataAnnotationsLocalization()
+                .AddViewLocalization();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("be"),
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
             services.AddOptions();
             services.Configure<AppConfig>(Configuration);
         }
@@ -71,6 +90,10 @@ namespace pre_registration
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
             app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();

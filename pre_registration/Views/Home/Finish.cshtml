@@ -1,15 +1,17 @@
-﻿<h2 class="titleHeadRow">Запись на прием в службу "Одно окно"</h2>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h2 class="titleHeadRow">@Localizer["Header"]</h2>
 <div class="checkout-wrap">
     <ul class="checkout-bar">
-        <li class="visited first">Выбор района</li>
+        <li class="visited first">@Localizer["SelectArea"]</li>
 
-        <li class="visited">Выбор даты</li>
+        <li class="visited">@Localizer["SelectDate"]</li>
 
-        <li class="visited">Выбор времени</li>
+        <li class="visited">@Localizer["SelectTime"]</li>
 
-        <li class="visited">Запись</li>
+        <li class="visited">@Localizer["Record"]</li>
 
-        <li class="active">Готово</li>
+        <li class="active">@Localizer["Finish"]</li>
 
     </ul>
 </div>
@@ -17,11 +19,10 @@
 <div class="titleHeadRow">
 
 
-    <h2>Спасибо, что воспользовались нашей услугой</h2>
-    <div>На указанный вами адрес электронной почты будет выслано сообщение с временем и датой записи.</div>
+    <h2>@Localizer["HeaderPage"] </h2>
+    <div>@Localizer["Message"] </div>
     <div>
-        Также в сообщении будет содержаться порядок отмены записи на прием.
-        <b>Если Вы не можете</b> прийти в забронированное время, то, пожалуйста, <b>аннулируйте</b> бронирование.
+        @Localizer["CancelMessage"] 
     </div>
 
 </div>

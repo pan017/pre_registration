@@ -1,4 +1,8 @@
 ﻿@model pre_registration.Models.ViewModels.AddUserViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
 <script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
 <script>
     $(function () {
@@ -8,47 +12,47 @@
         $(".g-recaptcha").show();
 
     });
-    </script>
+</script>
 
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-<h2 class="titleHeadRow">Регистрация нового пользователя</h2>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<h2 class="titleHeadRow">@Localizer["Header"]</h2>
 <div class="validation" asp-validation-summary="ModelOnly"></div>
 <form method="post" asp-controller="Account" asp-action="Registration" class="contentForm">
 
     <div>
-        <label asp-for="Login"></label><br />
+        <label>@Localizer["EmailAdress"]</label><br />
         <input asp-for="Login" />
     </div>
     <div>
-        <label asp-for="LastName"></label><br />
+        <label>@Localizer["LastName"]</label><br />
         <input asp-for="LastName" />
     </div>
     <div>
-        <label asp-for="FirstName"></label><br />
+        <label>@Localizer["FirstName"]</label><br />
         <input asp-for="FirstName" />
     </div>
 
     <div>
-        <label asp-for="SecondName"></label><br />
+        <label>@Localizer["SecondName"]</label><br />
         <input asp-for="SecondName" />
     </div>
     <div>
-        <label asp-for="Phone"></label><br />
+        <label>@Localizer["Phone"]</label><br />
         <input asp-for="Phone" />
     </div>
     <div>
-        <label asp-for="Password"></label><br />
+        <label>@Localizer["Password"]</label><br />
         <input asp-for="Password" />
     </div>
     <div>
-        <label asp-for="PasswordConfirm"></label><br />
+        <label>@Localizer["PasswordConfirm"]</label><br />
         <input asp-for="PasswordConfirm" />
     </div>
     <div class="capchaValidation">
         <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
     </div>
     <div>
-        <input type="submit" value="Регистрация" />
+        <input type="submit" value="@Localizer["Registration"]" />
     </div>
 </form>
 

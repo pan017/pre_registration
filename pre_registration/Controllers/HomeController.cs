@@ -17,6 +17,9 @@ using System.Security.Claims;
 using pre_registration.Services;
 using System.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using System.Threading;
 
 namespace pre_registration.Controllers
 {
@@ -28,8 +31,32 @@ namespace pre_registration.Controllers
         {
 
             db = context;
-            this.config = config;           
+            this.config = config;
+        //   var rqf = HttpContext.Features.Get<IRequestCultureFeature>();
+            // Culture contains the information of the requested culture
+            //var culture = rqf.RequestCulture.Culture;
         }
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
+        }
+
+        //public string GetCulture()
+        //{
+
+
+        //        CultureInfo.CurrentCulture = new CultureInfo(code);
+        //        CultureInfo.CurrentUICulture = new CultureInfo(code);
+
+        //    return $"{CultureInfo.CurrentUICulture.Name}";
+        //}
         [HttpGet]
         public IActionResult ShowModalWindow(string header, string text, bool isConfirmForm)
         {
@@ -94,6 +121,7 @@ namespace pre_registration.Controllers
             }
                 
         }
+       
         public string getSelectedDate()
         {
 

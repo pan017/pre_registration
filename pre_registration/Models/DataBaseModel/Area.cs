@@ -12,6 +12,9 @@ namespace pre_registration.Models
         [Display(Name = "Название района")]
         public string Name { get; set; }
         [Required]
+        [Display(Name = "Название района на беларуском")]
+        public string NameBY { get; set; }
+        [Required]
         [Display(Name = "Электронная почта для уведомлений")]
         public string NotificationEmail { get; set; }
         [Required]
@@ -20,6 +23,9 @@ namespace pre_registration.Models
         [Required]
         [Display(Name = "Адрес")]
         public string Adres { get; set; }
+        [Required]
+        [Display(Name = "Адрес на беларуском")]
+        public string AdresBY { get; set; }
 
         [Display(Name = "Время раобы")]
         public string WorkTime { get; set; }

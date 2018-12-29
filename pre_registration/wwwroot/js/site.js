@@ -32,13 +32,13 @@ function checkNumberValue(input) {
 }
 
 function ValidMail() {
-    var re = '/^[\w-\.]+@@[\w-]+\.[a-z]{2,4}$/i';
+    var re = new RegExp("^(()?\\d{3}())?(-|\\s)?\\d{3}(-|\\s)?\\d{4}$");
     var myMail = document.getElementById('Client_UserData_EmailAdress').value;
     var valid = re.test(myMail);
-    if (valid) output = '';
-    else {
-        output = 'Пожалуйста, введите существующий адрес электронной почты<br>так как на него будет выслан ответ службы "одно окно"';
-    }
-    document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = output;
+    //if (valid) output = '';
+    //else {
+    //    output = 'Пожалуйста, введите существующий адрес электронной почты<br>так как на него будет выслан ответ службы "одно окно"';
+    //}
+    //document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = output;
     return valid;
 }   

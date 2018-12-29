@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,7 +11,7 @@
     <script src="~/js/site.js?v=1.2"></script>
     <title>Предварительная запись в службу "Одно окно"</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-   
+
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css?v=3.4.3" />
     </environment>
@@ -42,12 +46,12 @@
 
 
 </head>
-<body style=" max-width: 1200px;" >
+<body style=" max-width: 1200px;">
     @RenderSection("Scripts", required: false)
     <div class="container-body">
         @*<div style="width:inherit;min-width: 800px;">*@
         <div>
-           
+
             <div style="background-color:#e7e7e7; vertical-align:middle;    ">
                 @*<div class="btn-menu">btn menu</div>*@
                 <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/sm_full.gif" /></a>
@@ -60,8 +64,8 @@
                     {
                         <div>
 
-                            <a asp-controller="Account" asp-action="Login" class="loginButton newButton">Вход</a>
-                            <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">Регистрация</a>
+                            <a asp-controller="Account" asp-action="Login" class="loginButton newButton">@Localizer["LoginButton"]</a>
+                            <a asp-controller="Account" asp-action="Registration" class="newButton registrationButton">@Localizer["RegistrationButton"]</a>
                         </div>
                     }
                 </div>
@@ -76,110 +80,115 @@
                 if (User.IsInRole("superuser"))
                 {
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
+                        <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">@Localizer["AddCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">Удалить талоны</a>
+                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">@Localizer["RemoveCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">Зарегестрированные талоны</a>
+                        <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">@Localizer["ViewRegisterCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
+                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">@Localizer["MyCuponsButton"]</a>
                     </div>
 
                 }
                 if (User.IsInRole("admin"))
                 {
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">Добавить талоны</a>
+                        <a asp-controller="Cupon" asp-action="setCuponInterval" class="userMenuButton">@Localizer["AddCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">Удалить талоны</a>
+                        <a asp-controller="Cupon" asp-action="RemoveCupons" class="userMenuButton">@Localizer["RemoveCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Admin" asp-action="Index" class="userMenuButton">Администрирование</a>
+                        <a asp-controller="Cupon" asp-action="viewRegisterCupons" class="userMenuButton">@Localizer["ViewRegisterCuponsButton"]</a>
                     </div>
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
+                        <a asp-controller="Admin" asp-action="Index" class="userMenuButton">@Localizer["AdminMenuButton"]</a>
+                    </div>
+                    <div class="userMenuRow">
+                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">@Localizer["MyCuponsButton"]</a>
                     </div>
 
                 }
                 if (User.IsInRole("user"))
                 {
                     <div class="userMenuRow">
-                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">Мои талоны</a>
+                        <a asp-controller="Cupon" asp-action="MyCupons" class="userMenuButton">@Localizer["MyCuponsButton"]</a>
                     </div>
 
                 }
             }
 
             <div class="userMenuRow">
-                <a asp-controller="Account" asp-action="Settings" class="userMenuButton">Настройки</a>
+                <a asp-controller="Account" asp-action="Settings" class="userMenuButton">@Localizer["SettingsButton"]</a>
             </div>
 
             <div class="userMenuRow">
-                <a asp-controller="Account" asp-action="LogOff" class="userMenuButton">Выход</a>
+                <a asp-controller="Account" asp-action="LogOff" class="userMenuButton">@Localizer["LogOffButton"]</a>
             </div>
         </div>
         <div>
             @*<div style="min-width: 1200px;">*@
-                <div id="modDialog" class="modal">
-                    <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
-                </div>
-
-                <div style="text-align:center">
-                    @RenderBody()
-                </div>
-                <hr />
-                <div>
-                    @*<footer>
-                    <p>&copy; 2018 - КУП Минское городское агентсво обслуживания населения</p>
-                </footer>*@
-                </div>
+            <div id="modDialog" class="modal">
+                <div id="dialogContent" style="z-index:999999;" class="modal-dialog"></div>
             </div>
-
-
-
-            <script type="text/javascript">
-                var userMenuIsHide = true;
-
-                $(document).mouseup(function (e) { // событие клика по веб-документу
-                    var div = $("#userMenu"); // тут указываем ID элемента
-                    if (!div.is(e.target) // если клик был не по нашему блоку
-                        && div.has(e.target).length === 0) { // и не по его дочерним элементам
-                        div.hide(); // скрываем его
-                    }
-                });
-
-                $(document).ready(function () {
-                    userMenuIsHide = true;
-                    $("#userMenu").hide();
-                });
-                $("#userName").click(function () {
-                    if (userMenuIsHide == true) {
-                        $("#userMenu").show();
-                        userMenuIsHide = false;
-                    }
-                    else {
-                        $("#userMenu").hide();
-                        userMenuIsHide = true;
-
-                    }
-                })
-                $(function () {
-                    $.ajaxSetup({ cache: false });
-                    $(".loginButton").click(function (e) {
-
-                        e.preventDefault();
-                        $.get(this.href, function (data) {
-                            $('#dialogContent').html(data);
-                            $('#modDialog').modal('show');
-                        });
-                    });
-                })
-            </script>
+            <div>
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </div>
+            <div style="text-align:center">
+                @RenderBody()
+            </div>
+            <hr />
+            <div>
+                @*<footer>
+                        <p>&copy; 2018 - КУП Минское городское агентсво обслуживания населения</p>
+                    </footer>*@
+            </div>
         </div>
+
+
+
+        <script type="text/javascript">
+            var userMenuIsHide = true;
+
+            $(document).mouseup(function (e) { // событие клика по веб-документу
+                var div = $("#userMenu"); // тут указываем ID элемента
+                if (!div.is(e.target) // если клик был не по нашему блоку
+                    && div.has(e.target).length === 0) { // и не по его дочерним элементам
+                    div.hide(); // скрываем его
+                }
+            });
+
+            $(document).ready(function () {
+                userMenuIsHide = true;
+                $("#userMenu").hide();
+            });
+            $("#userName").click(function () {
+                if (userMenuIsHide == true) {
+                    $("#userMenu").show();
+                    userMenuIsHide = false;
+                }
+                else {
+                    $("#userMenu").hide();
+                    userMenuIsHide = true;
+
+                }
+            })
+            $(function () {
+                $.ajaxSetup({ cache: false });
+                $(".loginButton").click(function (e) {
+
+                    e.preventDefault();
+                    $.get(this.href, function (data) {
+                        $('#dialogContent').html(data);
+                        $('#modDialog').modal('show');
+                    });
+                });
+            })
+        </script>
+    </div>
 
 </body>
 </html>

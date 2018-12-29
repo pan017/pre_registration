@@ -1,10 +1,34 @@
 ﻿@model pre_registration.Models.Area
+@using Microsoft.AspNetCore.Mvc.Localization
 
+@inject IViewLocalizer Localizer
+
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 <div>
-    <h2> Служба «одно окно» <br />@Helpers.getAreaNameDeclination(@Model.Name) </h2>
-    <h4><a asp-controller="Home" asp-action="GetMap" asp-route-areaId="@Model.Id" class="showMap">@Model.Adres</a></h4>
+    <h2>
+        Служба «одно окно» <br />   @if (Helpers.GetCulture(Context) == "be")
+        {
+            @Helpers.getAreaNameDeclinationBY(Model.NameBY)
+        }
+        else
+        {
+            @Helpers.getAreaNameDeclination(Model.Name)
+        }
+    </h2>
+    <h4>
+        <a asp-controller="Home" asp-action="GetMap" asp-route-areaId="@Model.Id" class="showMap">
+            @if (Helpers.GetCulture(Context) == "be")
+            {
+                @Model.AdresBY
+            }
+            else
+            {
+                @Model.Adres
+            }
+        </a>
+    </h4>
     <div>
-        <p>Время работы</p>
+        <p>@SharedLocalizer["WorkingTime"]</p>
         <table align="center" cellspacing="10" class="workTimeTable">
             <tr>
                 <td><b>ПН-ПТ</b></td>
@@ -23,16 +47,16 @@
                     <tr>
                         <td><img src="~/images/tel.png" width="30" /> @item</td>
                     </tr>
-                  
-                    
+
+
                 }
             }
             @*<tr>
-                <td> <img src="~/images/email.png" width="25" style="float:left; position:absolute;" /><a  style="float:left;" href="mailto:@Model.email">@Model.email</a>  </td>
-            </tr>*@
+                    <td> <img src="~/images/email.png" width="25" style="float:left; position:absolute;" /><a  style="float:left;" href="mailto:@Model.email">@Model.email</a>  </td>
+                </tr>*@
         </table>
         <br />
-       
+
     </div>
 </div>
 

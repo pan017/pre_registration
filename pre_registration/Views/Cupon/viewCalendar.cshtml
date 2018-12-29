@@ -1,4 +1,9 @@
 ﻿@model List<pre_registration.Models.CuponDate>
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 <div>
     @*<h2>Выберите дату</h2>*@
     <style type="text/css">
@@ -16,7 +21,7 @@
             $('.selectDate').hide();
 
         }
-          
+
         $(document).ready(setCheckOutBar());
         @*$(document).ready(function () {
             $('.selectArea').load('@Url.Action("selectAreaForm", "Home")');
@@ -75,8 +80,8 @@
                                 else
                                 {
                                     <script>
-                                       
-                                      
+
+
                                     </script>
                                     <div class="deleteDayButtonDiv">
 
@@ -87,14 +92,15 @@
                                             @currentDate.ToString("dd.MM")
                                         </div>
                                         <div>
-                                            Свободных мест
+                                            @SharedLocalizer["FreePlaces"]
+                                           
                                             @freeCupons
                                         </div>
                                     </div>
 
 
                                 }
-                               
+
                             </div>
                         </td>
 
@@ -122,7 +128,7 @@
 
     });
     function deleteDay(currentDate, currentDiv) {
-      
+
         ShowModalWindow('Удалить день?', 'Вы действительно хотите удалить', true);
         selectedDayForDelete = currentDate;
         selectedDayDivId = currentDiv;
@@ -130,8 +136,8 @@
     //$(".deleteDayButtonImage").click(function () {
 
     //    ShowModalWindow('Удалить день?', 'Вы действительно хотите удалить', true);
-    //    selectedDay = 
-    //}); 
+    //    selectedDay =
+    //});
     function isSuperUserCurrentArea() {
         var result;
         $.ajax({
@@ -165,7 +171,7 @@
                 $("#" + selectedDayDivId).empty();
                 $("#" + selectedDayDivId).html('<div style="text-align:center;">' + newDate + '</div>')
             }
-            
+
 
         }
     });

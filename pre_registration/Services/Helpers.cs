@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -36,7 +37,7 @@ namespace pre_registration
 
             }
             catch (Exception e)
-            {
+            { 
                 return new DateTime();
             }
         }
@@ -54,10 +55,37 @@ namespace pre_registration
                 if (!onlyAreaName)
                     result = "администрации " + result + " района"; 
                 else
-                    result = result + " района";  //result = "Служба «одно окно» администрации " + result + " района";
+                    result = result + " района";  
                 return result;
 
             }
+        }
+        public static string getAreaNameDeclinationBY(string areaName, bool onlyAreaName = false)
+        {
+            if (areaName == "Мінгарвыканкам")
+                return "Мінгарвыканкама";
+            else
+            {
+                string result = areaName;//.Replace("кий", "ого");
+                result = result.Replace("раён", "");
+                result = result.Replace("скі", "скага");
+                result = result.Replace("ны", "нага");
+                result = result.Replace("цкі", "цкага");
+                if (!onlyAreaName)
+                    result = "адміністрацыі " + result + " раёна";
+                else
+                    result = result + " раёна";  //result = "Служба «одно окно» администрации " + result + " района";
+                return result;
+
+            }
+        }
+        
+        public static string GetCulture(HttpContext context)
+        {
+            var rqf = context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+            // Culture contains the information of the requested culture
+            var culture = rqf.RequestCulture.Culture;
+            return rqf.RequestCulture.Culture.Name;
         }
     }
 }

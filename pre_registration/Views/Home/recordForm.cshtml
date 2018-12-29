@@ -1,5 +1,9 @@
 ﻿@model pre_registration.Models.DataBaseModel.Order
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="~/lib/jquery/dist/jquery.maskedinput.min.js"></script>
 <script>
@@ -29,10 +33,14 @@
             $("#Client_UserData_SecondName").removeAttr('style');
             $("#Client_UserData_Phone").removeAttr('style');
             $("#Comment").removeAttr('style');
-            if (!ValidMail() ) {
+            if (!ValidMail()) {
                 $("#Client_UserData_EmailAdress").css("border-color", "red");
                 $("#Client_UserData_EmailAdress").css("border-width", "2px");
+                document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = '@Localizer["EmailError"]'
                 errorCount++;
+            }
+            else {
+                document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = '';
             }
             if ($("#Client_UserData_LastName").val().length < 1) {
                 $("#Client_UserData_LastName").css("border-color", "red");
@@ -54,17 +62,13 @@
                 $("#Client_UserData_Phone").css("border-width", "2px");
                 errorCount++;
             }
-            if ($("#Client_UserData_EmailAdress").val().length < 1) {
-                $("#Client_UserData_EmailAdress").css("border-color", "red");
-                $("#Client_UserData_EmailAdress").css("border-width", "2px");
-                errorCount++;
-            }
+
             if ($("#Comment").val().length < 1) {
                 $("#Comment").css("border-color", "red");
                 $("#Comment").css("border-width", "2px");
                 errorCount++;
             }
-
+            console.log(errorCount);
             //if (!checkCapcha()) {
             //    $(".capchaValidation").show();
             //    errorCount++;
@@ -77,7 +81,7 @@
 
 
         });
-      
+
         function checkCapcha() {
             var result;
             $.ajax({
@@ -101,7 +105,7 @@
     @*<a class="backToSelectTime">Вернуться к выбору времени</a>*@
     <form method="post" id="mainRecordForm" asp-action="recordForm" asp-controller="Home">
         <div>
-            <label asp-for="Client.UserData.LastName"></label><br />
+            <label>@Localizer["LastName"]</label><br />
             <span asp-validation-for="Client.UserData.LastName" id="Client_UserData_LastName_validation"></span><br />
             @if (ViewBag.order != null)
             {
@@ -114,7 +118,7 @@
 
         </div>
         <div>
-            <label asp-for="Client.UserData.FirstName"></label><br />
+            <label>@Localizer["FirstName"]</label><br />
             <span asp-validation-for="Client.UserData.FirstName" id="Client_UserData_FirstName_validation"></span><br />
             @if (ViewBag.order != null)
             {
@@ -127,7 +131,7 @@
 
         </div>
         <div>
-            <label asp-for="Client.UserData.SecondName"></label><br />
+            <label>@Localizer["SecondName"]</label><br />
             <span asp-validation-for="Client.UserData.SecondName" id="Client_UserData_SecondName_validation"></span><br />
             @if (ViewBag.order != null)
             {
@@ -140,7 +144,7 @@
 
         </div>
         <div>
-            <label asp-for="Client.UserData.Phone"></label><br />
+            <label>@Localizer["Phone"]</label><br />
             <span asp-validation-for="Client.UserData.Phone" id="Client_UserData_Phone_validation"></span><br />
             @if (ViewBag.order != null)
             {
@@ -153,7 +157,7 @@
 
         </div>
         <div>
-            <label asp-for="Client.UserData.EmailAdress"></label><br />
+            <label>@Localizer["EmailAdress"]</label><br />
             <span asp-validation-for="Client.UserData.EmailAdress" id="Client_UserData_EmailAdress_validation"></span><br />
             @if (ViewBag.order != null)
             {
@@ -166,7 +170,7 @@
 
         </div>
         <div>
-            <label asp-for="Comment"></label><br />
+            <label>@Localizer["Comment"]</label><br />
             <span asp-validation-for="Comment" id="Comment_validation"></span><br />
             <input asp-for="Comment" />
 
@@ -174,7 +178,7 @@
         <div>
             <div class="capchaValidation" style="display:none;">Вы не прошли проверку безопасности. Пожалуйста, повторите ещё раз.</div>
             <div style="display:table;margin:0 auto;" class="g-recaptcha" data-sitekey="6LcdnGIUAAAAAOSv914w9CcbgrV41KTNeUGUxi9-"></div>
-            <input class="submintButton" type="submit" value="Записаться" />
+            <input class="submintButton" type="submit" value="@Localizer["Recording"]" />
         </div>
     </form>
 </div>

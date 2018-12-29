@@ -13,15 +13,34 @@
                 <div class="newButton rightAreaButton" style="" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
-                            <td><b> Служба «одно окно» <br />  @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name)</b> </td>
+                            <td>
+                                <b> Служба «одно окно» <br />  </b>
+                                @if (Helpers.GetCulture(Context) == "be")
+                                {
+                                    <b>@Helpers.getAreaNameDeclinationBY(ViewBag.AreasList[i].NameBY)</b>
+                                }
+                                else
+                                {
+                                    <b> @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name)</b>
+                                }
+
+                            </td>
 
                         </tr>
                         <tr>
-                            <td><b>@ViewBag.AreasList[i].Adres</b> </td>
+                            <td><b>
+                            @if (Helpers.GetCulture(Context) == "be")
+                            {
+                                @ViewBag.AreasList[i].AdresBY
+                            }
+                            else
+                            {
+                                @ViewBag.AreasList[i].Adres
+                            }
+                        </b></td>
                         </tr>
                     </table>
                 </div>
-                @*<br /> <br /> <br /> <br />*@
             }
             else
             {
@@ -29,60 +48,39 @@
                 <div class="newButton leftAreaButton" style=" " onclick="showCalendar(@ViewBag.AreasList[i].Id)">
                     <table class="selectAreaTable">
                         <tr>
-                            <td><b> Служба «одно окно» <br /> @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name) </b></td>
+                            <td><b>
+                                Служба «одно окно» </b><br />
+                                @if (Helpers.GetCulture(Context) == "be")
+                                {
+                                    <b>@Helpers.getAreaNameDeclinationBY(ViewBag.AreasList[i].NameBY)</b>
+                                }
+                                else
+                                {
+                                    <b> @Helpers.getAreaNameDeclination(ViewBag.AreasList[i].Name)</b>
+                                }
+                            </td>
 
                         </tr>
                         <tr>
-                            <td><b>@ViewBag.AreasList[i].Adres</b> </td>
+                            <td><b>
+
+                                @if (Helpers.GetCulture(Context) == "be")
+                                {
+                                    @ViewBag.AreasList[i].AdresBY
+                                }
+                                else
+                                {
+                                    @ViewBag.AreasList[i].Adres
+                                }
+
+</b> </td>
                         </tr>
                     </table>
                 </div>
-                @*<br />*@
             }
-            @*<div class="newButton" onclick="showCalendar(@ViewBag.AreasList[i].Id)">
-                <table class="selectAreaTable">
-                    <tr>
-                        <td>@ViewBag.AreasList[i].Name</td>
 
-                    </tr>
-                    <tr>
-                        <td>@ViewBag.AreasList[i].Adres</td>
-                    </tr>
-                </table>
-            </div>
-            <br />*@
-
-            @*}
-            else
-            {
-                <br />
-                    <div class="newButton " style=" width:30%;"  onclick="showCalendar(@ViewBag.AreasList[i].Id)">
-                        <table class="selectAreaTable">
-                            <tr>
-                                <td>@ViewBag.AreasList[i].Name</td>
-                                <td>@ViewBag.AreasList[i].Adres</td>
-                            </tr>
-
-                            <tr><td>@ViewBag.AreasList[i].email</td><td>@ViewBag.AreasList[i].website</td></tr>
-                            <tr>
-                                <td>@ViewBag.AreasList[i].Phone</td>
-                                <td>@ViewBag.AreasList[i].WorkTime</td>
-
-                            </tr>
-                        </table>
-                    </div>
-
-            }*@
         }
-        @*@foreach (var item in ViewBag.AreasList)
-        {
-            <div class="newButton" onclick="showCalendar(@item.Id)">
 
-                    @item.Name <br />
-                    @item.Phone
-
-            </div>
-        }*@
     </div>
 </div>
 <script>
