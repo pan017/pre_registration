@@ -34,6 +34,7 @@
             $("#Client_UserData_Phone").removeAttr('style');
             $("#Comment").removeAttr('style');
             if (!ValidMail()) {
+                console.log(ValidMail());
                 $("#Client_UserData_EmailAdress").css("border-color", "red");
                 $("#Client_UserData_EmailAdress").css("border-width", "2px");
                 document.getElementById('Client_UserData_EmailAdress_validation').innerHTML = '@Localizer["EmailError"]'

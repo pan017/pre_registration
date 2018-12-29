@@ -36,7 +36,7 @@ namespace pre_registration.Controllers
             // Culture contains the information of the requested culture
             //var culture = rqf.RequestCulture.Culture;
         }
-        [HttpPost]
+       // [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
             Response.Cookies.Append(

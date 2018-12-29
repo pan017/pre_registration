@@ -118,10 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CancelMessage" xml:space="preserve">
-    <value>Таксама ў паведамленні будзе ўтрымлівацца парадак адмены запісу на прыём.&lt;b&gt;Калі вы не можаце&lt;/b&gt; прыйсці ў забраніраваны час, то, калі ласка, &lt;b&gt;анулюйце&lt;/b&gt; браніраванне.</value>
+    <value>Звяртаем Вашу ўвагу, што паведамленн змяшчае парадак &lt;b&gt;адмены запісу&lt;/b&gt; на прыём. 
+У выпадку, калі &lt;b&gt;Вы не можаце прыйсці&lt;/b&gt; ў забраніраваны час прыёму, просьба, &lt;b&gt;ануляваць&lt;/b&gt; браніраванне.</value>
   </data>
   <data name="Finish" xml:space="preserve">
-    <value>Гатова</value>
+    <value>Выканана</value>
   </data>
   <data name="Header" xml:space="preserve">
     <value>Запіс на прыём у службу "одно окно"</value>
@@ -130,7 +131,7 @@
     <value>Дзякуй, што скарысталіся нашай паслугай</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>На ўказаны Вамі адрас электроннай пошты будзе выслана паведамленне з часам і датай запісу.</value>
+    <value>На Ваш адрас электроннай пошты будзе выслана паведамленне з часам і датай запісу.</value>
   </data>
   <data name="Record" xml:space="preserve">
     <value>Запіс</value>

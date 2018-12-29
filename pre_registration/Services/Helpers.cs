@@ -64,11 +64,15 @@ namespace pre_registration
         {
             if (areaName == "Мінгарвыканкам")
                 return "Мінгарвыканкама";
+           
             else
             {
                 string result = areaName;//.Replace("кий", "ого");
                 result = result.Replace("раён", "");
-                result = result.Replace("скі", "скага");
+                //if (areaName == "Завадскі раён")
+                //    result = "Заводскага";
+                //else
+                    result = result.Replace("скі", "скага");
                 result = result.Replace("ны", "нага");
                 result = result.Replace("цкі", "цкага");
                 if (!onlyAreaName)

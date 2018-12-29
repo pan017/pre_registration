@@ -124,7 +124,7 @@
     <value>Адрас электроннай пошты</value>
   </data>
   <data name="EmailError" xml:space="preserve">
-    <value>Калі ласка, увядзіце існуючы адрас электроннай пошты &lt;br&gt;так як на яго будзе высланы адказ службы "одно окно"</value>
+    <value>Калі ласка, увядзіце існуючы адрас электроннай пошты, &lt;br&gt;таму што на яго трэба выслаць адказ службы "одно окно"</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>Імя</value>

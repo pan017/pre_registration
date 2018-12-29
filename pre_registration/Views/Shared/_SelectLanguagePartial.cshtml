@@ -16,10 +16,19 @@
         .ToList();
 }
 
-<form asp-controller="Home" asp-action="SetLanguage" style="margin-top:20px;"
+<b style="float:right">
+    <a href='@Url.Action("SetLanguage", "Home", new {culture  = "be", returnUrl = Context.Request.Path })'>BY</a>
+    <img src="~/images/byFlag.jpg" style="width:30px;cursor:pointer;" onclick="location.href='@Url.Action("SetLanguage", "Home", new {culture  = "be", returnUrl = Context.Request.Path })'" />
+
+
+    <br />
+    <a href='@Url.Action("SetLanguage", "Home", new {culture  = "ru" , returnUrl = Context.Request.Path})'>RU</a>
+    <img src="~/images/ruFlag.jpg" style="width:30px;cursor:pointer;" onclick="location.href='@Url.Action("SetLanguage", "Home", new {culture  = "ru" , returnUrl = Context.Request.Path})'" />
+</b>
+@*<form asp-controller="Home" asp-action="SetLanguage" style="margin-top:20px;"
       asp-route-returnUrl="@Context.Request.Path"
       method="post" class="form-horizontal">
     @Localizer["Language"] <select name="culture" onchange="this.form.submit();"
                                     asp-for="@requestCulture.RequestCulture.UICulture.Name"
                                     asp-items="cultureItems"></select>
-</form>
+</form>*@

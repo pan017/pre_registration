@@ -32,9 +32,15 @@ function checkNumberValue(input) {
 }
 
 function ValidMail() {
-    var re = new RegExp("^(()?\\d{3}())?(-|\\s)?\\d{3}(-|\\s)?\\d{4}$");
+   // var re = new RegExp(/^[\w-\.]+@@[\w-]+\.[a-z]{2,4}$/i);
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var myMail = document.getElementById('Client_UserData_EmailAdress').value;
-    var valid = re.test(myMail);
+    
+
+   
+    console.log(myMail);
+    var valid = reg.test(myMail);
+    console.log(valid);
     //if (valid) output = '';
     //else {
     //    output = 'Пожалуйста, введите существующий адрес электронной почты<br>так как на него будет выслан ответ службы "одно окно"';
