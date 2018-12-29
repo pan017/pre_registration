@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CancelMessage" xml:space="preserve">
-    <value>Также в сообщении будет содержаться порядок отмены записи на прием.&lt;b&gt;Если Вы не можете&lt;/b&gt; прийти в забронированное время, то, пожалуйста, &lt;b&gt;аннулируйте&lt;/b&gt; бронирование.</value>
+    <value>Обращаем Ваше внимание, что уведомление содержит порядок отмены записи на прием.&lt;b&gt;Если Вы не можете&lt;/b&gt; прийти в забронированное время, то, пожалуйста, &lt;b&gt;аннулируйте&lt;/b&gt; бронирование.</value>
   </data>
   <data name="Finish" xml:space="preserve">
     <value>Готово</value>
@@ -130,7 +130,7 @@
     <value>Спасибо, что воспользовались нашей услугой</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>На указанный вами адрес электронной почты будет выслано сообщение с временем и датой записи.</value>
+    <value>На указанный Вами адрес электронной почты будет выслано уведомление с временем и датой записи.</value>
   </data>
   <data name="Record" xml:space="preserve">
     <value>Запись</value>

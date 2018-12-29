@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CancelMessage" xml:space="preserve">
-    <value>Звяртаем Вашу ўвагу, што паведамленн змяшчае парадак &lt;b&gt;адмены запісу&lt;/b&gt; на прыём. 
-У выпадку, калі &lt;b&gt;Вы не можаце прыйсці&lt;/b&gt; ў забраніраваны час прыёму, просьба, &lt;b&gt;ануляваць&lt;/b&gt; браніраванне.</value>
+    <value>Звяртаем Вашу ўвагу, што паведамленне змяшчае парадак &lt;b&gt;адмены запісу&lt;/b&gt; на прыём. 
+У выпадку, калі &lt;b&gt;Вы не можаце прыйсці&lt;/b&gt; ў забраніраваны час прыёму, просім &lt;b&gt;ануляваць&lt;/b&gt; браніраванне.</value>
   </data>
   <data name="Finish" xml:space="preserve">
     <value>Выканана</value>
