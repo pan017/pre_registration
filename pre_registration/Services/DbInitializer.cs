@@ -24,21 +24,21 @@ namespace pre_registration.Services
                     FirstName = "admin",
                     LastName = "admin",
                     SecondName = "admin",
-                    Login = "notification.prereg@mgaon.by",
-                    Password = "4rfvBGT5",
-                    PasswordConfirm = "4rfvBGT5",
+                    Login = "",
+                    Password = "",
+                    PasswordConfirm = "",
                     Phone = "+375171234567",
                     RoleId = context.Roles.FirstOrDefault(x => x.Name == "admin").Id                    
                 }, context);
                 UserService.CreateUser(new Models.ViewModels.AddUserViewModel
                 {
-                    FirstName = "Илья",
-                    LastName = "Паныш",
-                    SecondName = "Сергеевич",
-                    Login = "pan017@yandex.by",
-                    Password = "a2l6e3x2IS",
-                    PasswordConfirm = "a2l6e3x2IS",
-                    Phone = "+375291849927",
+                    FirstName = "",
+                    LastName = "",
+                    SecondName = "",
+                    Login = "",
+                    Password = "",
+                    PasswordConfirm = "",
+                    Phone = "",
                     RoleId = context.Roles.FirstOrDefault(x => x.Name == "admin").Id
                 }, context);
             }
